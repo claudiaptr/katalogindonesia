@@ -19,7 +19,7 @@
     <!-- JQVMap -->
     <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="<?= base_url(); ?>asset/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>asset/dists/css/adminlte.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Daterange picker -->
@@ -900,11 +900,11 @@
     <!-- overlayScrollbars -->
     <script src="<?= base_url(); ?>asset/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="<?= base_url(); ?>asset/dist/js/adminlte.js"></script>
+    <script src="<?= base_url(); ?>asset/dists/js/adminlte.js"></script>
     <!-- AdminLTE for demo purposes -->
-    <script src="<?= base_url(); ?>asset/dist/js/demo.js"></script>
+    <script src="<?= base_url(); ?>asset/dists/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="<?= base_url(); ?>asset/dist/js/pages/dashboard.js"></script>
+    <script src="<?= base_url(); ?>asset/dists/js/pages/dashboard.js"></script>
 </body>
 
 </html>
