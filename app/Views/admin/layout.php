@@ -243,6 +243,14 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url(); ?> logout" class="nav-link">
+                                <i class="nav-icon fas fa-arrow-left"></i>
+                                <p>
+                                    Log out
+                                </p>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
