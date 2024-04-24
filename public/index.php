@@ -36,7 +36,7 @@ if (getcwd() . DIRECTORY_SEPARATOR !== FCPATH) {
 
 /*
  *---------------------------------------------------------------
- * BOOTSTRAP THE APPLICATION
+ * BOOTSTRAP THE APPLICATION`
  *---------------------------------------------------------------
  * This process sets up the path constants, loads and registers
  * our autoloader, along with Composer's, loads our constants
