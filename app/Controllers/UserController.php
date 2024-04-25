@@ -8,4 +8,12 @@ class UserController extends BaseController
     {
         return view('user/home');
     }
+    public function detail()
+    {
+        return view('user/detail');
+    }
+    public function contact()
+    {
+        return view('user/contact');
+    }
 }
