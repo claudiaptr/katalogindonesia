@@ -11,6 +11,7 @@ $routes->get('/register', 'Auth::register');
 $routes->get('/user/home', 'UserController::home');
 $routes->get('/user/detail', 'UserController::detail');
 $routes->get('/user/contact', 'UserController::contact');
+$routes->get('/sales/home', 'SalesController::home');
 $routes->get('/auth/register', 'Auth::register');
 $routes->add('/auth/save_register', 'Auth::save_register');
 $routes->add('/auth/cek_login', 'Auth::cek_login');
