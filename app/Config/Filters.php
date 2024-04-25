@@ -71,7 +71,8 @@ class Filters extends BaseFilters
      */
     public array $globals = [
         'before' => [
-            'authfilter' =>['except' => ['auth/*', '/']]
+            // ini filter pake login
+            // 'authfilter' =>['except' => ['auth/*', '/']]
             // 'honeypot',
             // 'csrf',
             // 'invalidchars',
