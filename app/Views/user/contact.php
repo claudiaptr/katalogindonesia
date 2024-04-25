@@ -1,4 +1,4 @@
-  <?= $this->extend('user/contact'); ?>
+  <?= $this->extend('user/layout'); ?>
   <?= $this->section('content'); ?>
   <!-- Breadcrumb Start -->
   <div class="container-fluid">
