@@ -12,6 +12,8 @@ $routes->get('/admin/dashboard', 'Home::index');
 //Auth
 $routes->get('/', 'Auth::login');
 $routes->get('/register', 'Auth::register');
+$routes->get('/user/detail', 'UserController::detail');
+$routes->get('/user/contact', 'UserController::contact');
 $routes->get('/auth/register', 'Auth::register');
 $routes->add('/auth/save_register', 'Auth::save_register');
 $routes->add('/auth/cek_login', 'Auth::cek_login');
