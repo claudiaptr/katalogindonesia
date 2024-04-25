@@ -77,13 +77,18 @@
       </div>
     </div>
     <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
-      <div class="col-lg-4">
-        <a href="" class="text-decoration-none">
-          <span class="h1 text-uppercase text-primary bg-dark px-2">KATALOG</span>
-          <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">INDONESIA</span>
-        </a>
+      <div class="col-lg-4 d-flex align-items-end">
+        <div class="">
+          <img class="img-fluid" width="50px" src="img/katalog1.png" alt="">
+        </div>
+        <div class="">
+          <a href="" class="text-decoration-none">
+            <span class="h3 text-uppercase text-primary bg-dark px-2">atalog</span>
+            <span class="h3 text-uppercase text-dark bg-primary px-2 ml-n1">Indonesia</span>
+          </a>
+        </div>
       </div>
-      <div class="col-lg-4 col-6 text-left">
+      <div class="col-lg-4 col-4 text-left">
         <form action="">
           <div class="input-group">
             <input type="text" class="form-control" placeholder="Search for products">
@@ -146,7 +151,7 @@
           <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
             <div class="navbar-nav mr-auto py-0">
               <a href="home" class="nav-item nav-link active">Home</a>
-              <a href="shop.html" class="nav-item nav-link">Shop</a>
+              <a href="<?php echo base_url('user/shop'); ?>" class="nav-item nav-link">Shop</a>
               <a href="detail" class="nav-item nav-link">Shop Detail</a>
               <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i class="fa fa-angle-down mt-1"></i></a>

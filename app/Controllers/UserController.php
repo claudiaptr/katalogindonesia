@@ -16,4 +16,9 @@ class UserController extends BaseController
     {
         return view('user/contact');
     }
+
+    public function shop()
+    {
+        return view('user/shop');
+    }
 }
