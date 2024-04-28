@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Model_Auth;
+use App\Models\ModelPenjual;
 
 class Auth extends BaseController
 {
@@ -68,7 +69,7 @@ class Auth extends BaseController
         } else {
             session()->setFlashdata('errors', \Config\Services::validation()->getErrors());
         }
-        return redirect()->to(base_url('login'));
+        return redirect()->to(base_url('auth/login'));
     }
     public function login()
     {
@@ -102,8 +103,13 @@ class Auth extends BaseController
               session()->set('username',$cek['username']);
               session()->set('email',$cek['email']);
               session()->set('level',$cek['level']);
-              session()->set('foto_user',$cek['foto_user']);
-              return redirect()->to(base_url('admin/dashboard'));
+              session()->set('id', $cek['id']);
+              if (session()->get('level') == 1) {
+                return redirect()->to(base_url('admin/dashboard'));
+              }
+              else {
+                return redirect()->to(base_url('/'));
+              }
             }
             else {
                 session()->setFlashdata('pesan', 'Login Gagal, Username dan Password Tidak Cocok !!!');
@@ -122,5 +128,44 @@ class Auth extends BaseController
         session()->remove('foto_user');
         session()->setFlashdata('pesan', 'Logout Sukses !!!');
         return redirect()->to(base_url('/'));
+    }
+
+    public function daftar_penjual()  {
+       
+        return view('daftar_penjual');
+    }
+    public function add_penjual() {
+        if ($this->validate([
+            'nama_toko' => [
+                'label' => 'Nama Toko',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'You must choose a Nama Toko.',
+                ],
+            ],
+            'alamat' => [
+                'label' => 'Alamat',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'You must choose a Alamat.',
+                ],
+            ],
+           
+        ])) {
+            $Penjual = new ModelPenjual();
+            $Penjual->save([
+                'nama_toko' => $this->request->getPost('nama_toko'),
+                'alamat' => $this->request->getPost('alamat'),
+                'id_user' => session()->get('id')
+            ]);
+            // $data = array(
+            //     'nama_toko' => $this->request->getPost('nama_toko'),
+            //     'alamat' => $this->request->getPost('alamat'),
+            //     'id_user' => session()->get('username')
+            // );
+            session()->setFlashdata('pesan', 'Pendaftaran Berhasil !!!');
+        } else {
+            session()->setFlashdata('errors', \Config\Services::validation()->getErrors());
+        }
     }
 }

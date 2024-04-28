@@ -40,13 +40,26 @@
       </div>
       <div class="col-lg-6 text-center text-lg-right">
         <div class="d-inline-flex align-items-center">
-          <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
-            <div class="dropdown-menu dropdown-menu-right">
-              <button class="dropdown-item" type="button">Sign in</button>
-              <button class="dropdown-item" type="button">Sign up</button>
+
+
+          <?php if (session()->get('username')) : ?>
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown"><?= session()->get('username'); ?> </button>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a  href="<?= base_url(); ?>daftar/penjual" class="dropdown-item" type="button">Daftar Sebagai Penjual</a>
+                <a href="<?= base_url(); ?>logout" class="dropdown-item" type="button">Log Out</a>
+              </div> 
             </div>
-          </div>
+          <?php else : ?>
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a href="<?= base_url(); ?>auth/login" class="dropdown-item" type="button">Login</a>
+                <a href="<?= base_url(); ?>auth/register" class="dropdown-item" type="button">Daftar</a>
+              </div>
+            </div>
+          <?php endif ?>
+
           <div class="btn-group mx-2">
             <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">USD</button>
             <div class="dropdown-menu dropdown-menu-right">
@@ -79,7 +92,7 @@
     <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
       <div class="col-lg-4 d-flex align-items-end">
         <div class="">
-          <img class="img-fluid" width="50px" src="img/katalog1.png" alt="">
+          <img class="img-fluid" width="50px" src="<?= base_url(); ?>user/img/katalog1.png" alt="">
         </div>
         <div class="">
           <a href="" class="text-decoration-none">
@@ -150,9 +163,9 @@
           </button>
           <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
             <div class="navbar-nav mr-auto py-0">
-              <a href="home" class="nav-item nav-link active">Home</a>
+              <a href="<?= base_url(); ?>" class="nav-item nav-link active">Home</a>
               <a href="<?php echo base_url('user/shop'); ?>" class="nav-item nav-link">Shop</a>
-              <a href="detail" class="nav-item nav-link">Shop Detail</a>
+              <a href="<?= base_url(); ?>user/detail" class="nav-item nav-link">Shop Detail</a>
               <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i class="fa fa-angle-down mt-1"></i></a>
                 <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
