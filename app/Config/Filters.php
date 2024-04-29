@@ -72,7 +72,7 @@ class Filters extends BaseFilters
     public array $globals = [
         'before' => [
             // ini untuk filter session akun
-            // 'authfilter' =>['except' => ['auth/*', '/']]
+            'authfilter' =>['except' => ['auth/*', '/']]
             // 'honeypot',
             // 'csrf',
             // 'invalidchars',
