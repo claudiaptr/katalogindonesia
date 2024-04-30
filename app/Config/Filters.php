@@ -74,8 +74,8 @@ class Filters extends BaseFilters
     public array $globals = [
         'before' => [
             // ini untuk filter session akun
-            'userfilter' =>['except' => ['auth/*', '/']],
-            'penjualfilter' =>['except' => ['auth/*', '/']],
+            'userfilter' =>['except' => ['auth/*', '/','user/*']],
+            'penjualfilter' =>['except' => ['auth/*', '/','user/*']],
             // 'honeypot',
             // 'csrf',
             // 'invalidchars',
