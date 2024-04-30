@@ -21,4 +21,12 @@ class UserController extends BaseController
     {
         return view('user/shop');
     }
+    public function checkout()
+    {
+        return view('user/checkout');
+    }
+    public function cart()
+    {
+        return view('user/cart');
+    }
 }
