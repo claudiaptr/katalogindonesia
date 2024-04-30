@@ -14,6 +14,8 @@ $routes->get('/', 'Auth::login');
 $routes->get('/register', 'Auth::register');
 $routes->get('/user/detail', 'UserController::detail');
 $routes->get('/user/contact', 'UserController::contact');
+$routes->get('/user/checkout', 'UserController::checkout');
+$routes->get('/user/cart', 'UserController::cart');
 $routes->get('/sales/home', 'SalesController::home');
 $routes->get('/auth/register', 'Auth::register');
 $routes->add('/auth/save_register', 'Auth::save_register');
