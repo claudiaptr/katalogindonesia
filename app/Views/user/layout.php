@@ -177,7 +177,7 @@ if (session()->has('id')) {
             <span class="h1 text-uppercase text-light bg-danger px-2">KATALOG</span>
             <span class="h1 text-uppercase text-danger bg-light px-2 ml-n1">INDONESIA</span>
           </a>
-          <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+          <button type="bp;utton" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
