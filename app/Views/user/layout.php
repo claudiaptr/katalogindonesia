@@ -188,11 +188,11 @@ if (session()->has('id')) {
               <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i class="fa fa-angle-down mt-1"></i></a>
                 <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                  <a href="cart.html" class="dropdown-item">Shopping Cart</a>
-                  <a href="checkout.html" class="dropdown-item">Checkout</a>
+                  <a href="cart" class="dropdown-item">Shopping Cart</a>
+                  <a href="checkout" class="dropdown-item">Checkout</a>
                 </div>
               </div>
-              <a href="contact.html" class="nav-item nav-link">Contact</a>
+              <a href="contact" class="nav-item nav-link">Contact</a>
             </div>
             <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
               <a href="" class="btn px-0">
@@ -205,7 +205,7 @@ if (session()->has('id')) {
               </a>
             </div>
           </div>
-        </nav>
+        </nav>`
       </div>
     </div>
   </div>

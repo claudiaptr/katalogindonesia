@@ -19,7 +19,9 @@ $routes->add('/auth/cek_login', 'Auth::cek_login');
 
 $routes->get('/user/detail', 'UserController::detail');
 $routes->get('/user/contact', 'UserController::contact');
-
+$routes->get('/user/checkout', 'UserController::checkout');
+$routes->get('/user/cart', 'UserController::cart');
+$routes->get('/sales/home', 'SalesController::home');
 
 
 //User
