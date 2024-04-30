@@ -2,7 +2,8 @@
 
 namespace Config;
 
-use App\Filters\AuthFilter;
+use App\Filters\PenjualFilter;
+use App\Filters\UserFilter;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
@@ -35,7 +36,8 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
-        'authfilter'   => AuthFilter::class,
+        'userfilter'   => UserFilter::class,
+        'penjualfilter'   => PenjualFilter::class,
     ];
 
     /**
@@ -72,12 +74,15 @@ class Filters extends BaseFilters
     public array $globals = [
         'before' => [
             // ini untuk filter session akun
-            'authfilter' =>['except' => ['auth/*', '/']]
+            'userfilter' =>['except' => ['auth/*', '/']],
+            'penjualfilter' =>['except' => ['auth/*', '/']],
             // 'honeypot',
             // 'csrf',
             // 'invalidchars',
         ],
         'after' => [
+            'userfilter' =>['except' => [ '/','user/*','daftar/penjual']],
+            'penjualfilter' =>['except' => [ '/','user/*','penjual/*','sales/*']],
             // 'honeypot',
             // 'secureheaders',
         ],

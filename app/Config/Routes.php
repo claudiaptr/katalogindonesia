@@ -19,7 +19,7 @@ $routes->add('/auth/cek_login', 'Auth::cek_login');
 
 $routes->get('/user/detail', 'UserController::detail');
 $routes->get('/user/contact', 'UserController::contact');
-$routes->get('/sales/home', 'SalesController::home');
+
 
 
 //User
@@ -32,6 +32,7 @@ $routes->add('/logout', 'Auth::logout');
 // penjual
 $routes->get('/daftar/penjual','Auth::daftar_penjual');
 $routes->add('/store/penjual','Auth::add_penjual');
+$routes->get('/sales/home', 'SalesController::home');
 
 // user
 $routes->get('/', 'UserController::home');

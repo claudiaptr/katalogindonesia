@@ -6,7 +6,7 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class AuthFilter implements FilterInterface
+class UserFilter implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
@@ -17,8 +17,8 @@ class AuthFilter implements FilterInterface
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
-        if (session()->get('log') == true) {
-            return redirect()->to(base_url('/dashboard'));
+        if (session()->get('level') == 3) {
+            return redirect()->to(base_url('/'));
         }
     }
 }

@@ -34,12 +34,24 @@ class User extends Migration
             'foto_profil' => [
                 'type' => 'VARCHAR',
                 'constraint' => '100',
+                'null' => true,
+            ],
+            'nama_toko' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '100',
+                'null' => true,
+            ],
+            'alamat' => [
+                'type' => 'VARCHAR',
+                'constraint' => '250',
+                'null' => true,
             ],
             'level' => [
                 'type' => 'ENUM',
-                'constraint' => ['1', '2'],
-                'default' => '2',
+                'constraint' => ['1', '2', '3'],
+                'default' => 3,
             ],
+
         ]);
         $this->forge->addKey('id', true);
         $this->forge->createTable('user');

@@ -99,29 +99,28 @@ class Auth extends BaseController
             $password = $this->request->getPost('password');
             $cek = $this->Model_Auth->Ceklogin($email, $password);
             if ($cek) {
-              session()->set('log',true);
-              session()->set('username',$cek['username']);
-              session()->set('email',$cek['email']);
-              session()->set('level',$cek['level']);
-              session()->set('id', $cek['id']);
-              if (session()->get('level') == 1) {
-                return redirect()->to(base_url('admin/dashboard'));
-              }
-              else {
-                return redirect()->to(base_url('/'));
-              }
-            }
-            else {
+                session()->set('log', true);
+                session()->set('username', $cek['username']);
+                session()->set('email', $cek['email']);
+                session()->set('level', $cek['level']);
+                session()->set('id', $cek['id']);
+                if (session()->get('level') == 1) {
+                    return redirect()->to(base_url('admin/dashboard'));
+                } else {
+                    return redirect()->to(base_url('/'));
+                }
+            } else {
                 session()->setFlashdata('pesan', 'Login Gagal, Username dan Password Tidak Cocok !!!');
-                return redirect()->to(base_url('/'));
+                return redirect()->to(base_url('auth/login'));
             }
         } else {
-            
+
             session()->setFlashdata('errors', \Config\Services::validation()->getErrors());
             return redirect()->to(base_url('/'));
         }
     }
-    public function logout() {
+    public function logout()
+    {
         session()->remove('log');
         session()->remove('username');
         session()->remove('level');
@@ -130,11 +129,13 @@ class Auth extends BaseController
         return redirect()->to(base_url('/'));
     }
 
-    public function daftar_penjual()  {
-       
+    public function daftar_penjual()
+    {
+
         return view('daftar_penjual');
     }
-    public function add_penjual() {
+    public function add_penjual()
+    {
         if ($this->validate([
             'nama_toko' => [
                 'label' => 'Nama Toko',
@@ -150,22 +151,24 @@ class Auth extends BaseController
                     'required' => 'You must choose a Alamat.',
                 ],
             ],
-           
+
         ])) {
-            $Penjual = new ModelPenjual();
-            $Penjual->save([
+            $data = array(
+                'id' => session()->get('id'),
                 'nama_toko' => $this->request->getPost('nama_toko'),
                 'alamat' => $this->request->getPost('alamat'),
-                'id_user' => session()->get('id')
-            ]);
-            // $data = array(
-            //     'nama_toko' => $this->request->getPost('nama_toko'),
-            //     'alamat' => $this->request->getPost('alamat'),
-            //     'id_user' => session()->get('username')
-            // );
-            session()->setFlashdata('pesan', 'Pendaftaran Berhasil !!!');
+                'level' => 2,
+            );
+            $this->Model_Auth->update_register($data);
+            session()->remove('log');
+            session()->remove('username');
+            session()->remove('level');
+            session()->remove('foto_user');
+            session()->setFlashdata('pesan', 'Pendaftaran Berhasil, silahkan Login kembali !!!');
+            return redirect()->to(base_url('auth/login'));
         } else {
             session()->setFlashdata('errors', \Config\Services::validation()->getErrors());
+            return redirect()->to(base_url('daftar/penjual'));
         }
     }
 }

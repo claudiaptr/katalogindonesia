@@ -1,3 +1,18 @@
+<?php
+
+use App\Models\Model_Auth;
+
+if (session()->has('id')) {
+  $userId = session()->get('id');
+
+  // Load model pengguna
+  $userModel = new Model_Auth();
+
+  // Ambil data pengguna yang login
+  $data = $userModel->getLogin($userId);
+  
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,9 +61,13 @@
             <div class="btn-group">
               <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown"><?= session()->get('username'); ?> </button>
               <div class="dropdown-menu dropdown-menu-right">
-                <a  href="<?= base_url(); ?>daftar/penjual" class="dropdown-item" type="button">Daftar Sebagai Penjual</a>
+                <?php if ($data['level'] == 2) : ?>
+                  <a href="<?= base_url(); ?>sales/home" class="dropdown-item" type="button">Masuk Ke Halaman Penjual</a>
+                <?php else : ?>
+                  <a href="<?= base_url(); ?>daftar/penjual" class="dropdown-item" type="button">Daftar Sebagai Penjual</a>
+                <?php endif; ?>
                 <a href="<?= base_url(); ?>logout" class="dropdown-item" type="button">Log Out</a>
-              </div> 
+              </div>
             </div>
           <?php else : ?>
             <div class="btn-group">
