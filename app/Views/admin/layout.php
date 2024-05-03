@@ -209,8 +209,7 @@
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
+
                         <li class="nav-item">
                             <a href="<?= base_url(); ?> admin/dashboard" class="nav-link">
                                 <i class="nav-icon  fas fa-th-large"></i>
@@ -223,21 +222,21 @@
                             <a href="#" class="nav-link active">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
-                                    Starter Pages
+                                    Iklan
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link active">
+                                    <a href="<?= base_url() ?>admin/view_iklan_carausel" class="nav-link active">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Active Page</p>
+                                        <p>Iklan Carausel</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Inactive Page</p>
+                                        <p>iklan tetap</p>
                                     </a>
                                 </li>
                             </ul>
@@ -267,9 +266,8 @@
         </aside>
 
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
+        <div class="content-wrapper ">
             <?= $this->renderSection('content'); ?>
-
         </div>
         <!-- /.content-wrapper -->
         <footer class="main-footer">
@@ -322,6 +320,37 @@
     <script src="<?= base_url(); ?>asset/dists/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="<?= base_url(); ?>asset/dists/js/pages/dashboard.js"></script>
+    <script src="<?= base_url(); ?>asset/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="<?= base_url(); ?>asset/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="<?= base_url(); ?>asset/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="<?= base_url(); ?>asset/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="<?= base_url(); ?>asset/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="<?= base_url(); ?>asset/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="<?= base_url(); ?>asset/plugins/jszip/jszip.min.js"></script>
+    <script src="<?= base_url(); ?>asset/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="<?= base_url(); ?>asset/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="<?= base_url(); ?>asset/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="<?= base_url(); ?>asset/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="<?= base_url(); ?>asset/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script>
+        $(function() {
+            $("#example1").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
+                // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
 </body>
 
 </html>

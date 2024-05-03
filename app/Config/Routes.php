@@ -8,6 +8,9 @@ use CodeIgniter\Router\RouteCollection;
 
 //Admin
 $routes->get('/admin/dashboard', 'Home::index');
+$routes->get('/admin/view_iklan_carausel', 'AdminController::view_iklan_carausel');
+$routes->post('/admin/store_iklan_carausel', 'AdminController::store_iklan_carausel');
+$routes->get('/admin/add_iklan_carausel', 'AdminController::add_iklan_carausel');
 
 // login dan register admin
 $routes->get('/auth/login', 'Auth::login');

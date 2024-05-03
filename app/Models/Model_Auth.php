@@ -11,9 +11,9 @@ class Model_Auth extends Model
    {
       $this->db->table('user')->insert($data);
    }
-   public function update_register($data)
+   public function update_register($data,$id)
    {
-      $this->db->table('user')->update($data);
+      $this->db->table('user')->where('id',$id)->update($data);
    }
    public function Ceklogin($email, $password)
    {

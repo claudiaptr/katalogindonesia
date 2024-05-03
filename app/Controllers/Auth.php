@@ -153,13 +153,13 @@ class Auth extends BaseController
             ],
 
         ])) {
+            $id =  session()->get('id');
             $data = array(
-                'id' => session()->get('id'),
                 'nama_toko' => $this->request->getPost('nama_toko'),
                 'alamat' => $this->request->getPost('alamat'),
                 'level' => 2,
             );
-            $this->Model_Auth->update_register($data);
+            $this->Model_Auth->update_register($data,$id);
             session()->remove('log');
             session()->remove('username');
             session()->remove('level');
