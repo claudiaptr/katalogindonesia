@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="d-flex mb-2 justify-content-between">
                 <div class="">
-                    <h1 class="m-0">Tambah Iklan Caraeusel</h1>
+                    <h1 class="m-0">Edit Iklan Caraeusel</h1>
                 </div><!-- /.col -->
 
             </div><!-- /.row -->
@@ -17,23 +17,23 @@
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form  id="quickForm" action=" <?= base_url() ?>admin/store_iklan_carausel"  method="post">
-            <?=csrf_field(); ?>
+        <form  id="quickForm" action=" <?= base_url() ?>admin/update_iklan_carausel/<?= $iklan['id']; ?>"  method="post">
+            <?= csrf_field(); ?>
             <div class="card-body">
                 <div class="form-group">
                     <label for="exampleInputEmail1">Masukan judul iklan</label>
-                    <input name="judul_iklan" type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                    <input name="judul_iklan" type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter email" value="<?= $iklan['judul_iklan']; ?>">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Isi Iklan</label>
-                    <input name="isi_iklan" type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    <input name="isi_iklan" type="text" class="form-control" id="exampleInputPassword1" placeholder="Password" value="<?= $iklan['isi_iklan']; ?>">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputFile">Background iklan</label>
                     <div class="input-group">
                         <div class="custom-file">
                             <!-- <input name="foto_iklan" type="text" class="custom-file-input" id="exampleInputFile"> -->
-                            <input name="foto_iklan" type="text" class="form-control" >
+                            <input name="foto_iklan" type="text" class="form-control"  value="<?= $iklan['foto_iklan']; ?>">
                             <!-- <label class="custom-file-label" for="exampleInputFile">Choose file</label> -->
                         </div>
                     </div>

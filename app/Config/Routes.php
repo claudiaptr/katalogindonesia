@@ -11,6 +11,10 @@ $routes->get('/admin/dashboard', 'Home::index');
 $routes->get('/admin/view_iklan_carausel', 'AdminController::view_iklan_carausel');
 $routes->post('/admin/store_iklan_carausel', 'AdminController::store_iklan_carausel');
 $routes->get('/admin/add_iklan_carausel', 'AdminController::add_iklan_carausel');
+$routes->delete('/admin/delete_iklan_carausel/(:num)', 'AdminController::delete_iklan_carusel/$1');
+$routes->get('/admin/edit_iklan_carausel/(:any)', 'AdminController::edit_iklan_carausel/$1');
+$routes->post('/admin/update_iklan_carausel/(:num)', 'AdminController::update_iklan_carausel/$1');
+
 
 // login dan register admin
 $routes->get('/auth/login', 'Auth::login');

@@ -6,7 +6,7 @@
             <div class="">
                 <h1 class="m-0">Iklan Caraeusel</h1>
             </div><!-- /.col -->
-            <div  class="">
+            <div class="">
                 <a href="<?= base_url() ?>/admin/add_iklan_carausel" class="btn btn-primary"> Tambah Data </a>
             </div>
         </div><!-- /.row -->
@@ -32,19 +32,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach($iklan as $ik) : ?>
-                                <tr>
-                                    <td><?= $ik['foto_iklan']; ?></td>
-                                    <td><?= $ik['judul_iklan']; ?></td>
-                                    <td><?= $ik['isi_iklan']; ?></td>
-                                    <td>
-                                        <button class="btn btn-primary ">Edit Data</button>
-                                        <button class="btn btn-danger ">Hapus Data</button>
-                                    </td>
-                                </tr>
+                                <?php foreach ($iklan as $ik) : ?>
+                                    <tr>
+                                        <td><?= $ik['foto_iklan']; ?></td>
+                                        <td><?= $ik['judul_iklan']; ?></td>
+                                        <td><?= $ik['isi_iklan']; ?></td>
+                                        <td class="d-flex">
+                                            <a href="<?= base_url(); ?>admin/edit_iklan_carausel/<?= $ik['slug']; ?>" class="btn btn-primary ">Edit Data</a>
+                                            <form action="<?= base_url(); ?>admin/delete_iklan_carausel/<?= $ik['id']; ?>" method="post">
+                                            <?= csrf_field(); ?>
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <button class="btn btn-danger ">Hapus Data</button>
+                                            </form>
+                                        </td>
+                                    </tr>
                                 <?php endforeach; ?>
                             </tbody>
-                           
+
                         </table>
                     </div>
                     <!-- /.card-body -->

@@ -37,16 +37,18 @@ class Auth extends BaseController
             ],
             'no_hp' => [
                 'label' => 'Nomor Handphone',
-                'rules' => 'required',
+                'rules' => 'required|is_unique[user.no_hp]',
                 'errors' => [
                     'required' => 'You must choose a Nomor Handphone.',
+                    'is_unique'=> 'Nomor HP telah digunakan'
                 ],
             ],
             'email' => [
                 'label' => 'Email',
-                'rules' => 'required',
+                'rules' => 'required|is_unique[user.email]',
                 'errors' => [
                     'required' => 'You must choose a Email.',
+                    'is_unique'=> 'email telah digunakan'
                 ],
             ],
             'retype_password' => [
@@ -66,10 +68,12 @@ class Auth extends BaseController
             );
             $this->Model_Auth->save_register($data);
             session()->setFlashdata('pesan', 'Register Berhasil !!!');
+            return redirect()->to(base_url('auth/login'));
         } else {
             session()->setFlashdata('errors', \Config\Services::validation()->getErrors());
+            return redirect()->to(base_url('auth/register'));
         }
-        return redirect()->to(base_url('auth/login'));
+        
     }
     public function login()
     {
@@ -110,13 +114,13 @@ class Auth extends BaseController
                     return redirect()->to(base_url('/'));
                 }
             } else {
-                session()->setFlashdata('pesan', 'Login Gagal, Username dan Password Tidak Cocok !!!');
+                session()->setFlashdata('error', 'Login Gagal, Username dan Password Tidak Cocok !!!');
                 return redirect()->to(base_url('auth/login'));
             }
         } else {
 
             session()->setFlashdata('errors', \Config\Services::validation()->getErrors());
-            return redirect()->to(base_url('/'));
+            return redirect()->to(base_url('auth/login'));
         }
     }
     public function logout()

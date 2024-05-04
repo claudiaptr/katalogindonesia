@@ -24,6 +24,7 @@
     <!-- /.login-logo -->
     <div class="card">
       <div class="card-body login-card-body">
+      <?php $errors = session()->getFlashdata('errors') ?>
         <?php if (!empty($errors)) : ?>
           <div class="alert alert-danger" role="alert">
             <ul>
@@ -36,8 +37,15 @@
 
         <?php
         if (session()->getFlashdata('pesan')) {
-          echo ' <div class="alert alert-danger" role="alert">';
+          echo ' <div class="alert alert-success" role="alert">';
           echo session()->getFlashdata('pesan');
+          echo '</div>';
+        }
+        ?>
+        <?php
+        if (session()->getFlashdata('error')) {
+          echo ' <div class="alert alert-danger" role="alert">';
+          echo session()->getFlashdata('error');
           echo '</div>';
         }
         ?>
