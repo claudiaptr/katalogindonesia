@@ -37,8 +37,11 @@ class AdminController extends BaseController
            return redirect()->to('admin/add_iklan_carausel')->withInput()->with('validation',$validation);
         }
         $slug = url_title($this->request->getVar('judul_iklan'),'-',true);
+        $foto_iklan = $this->request->getFile('foto_iklan');
+        $foto_iklan->move('img');
+        $nama_foto = $foto_iklan->getName();
         $this->iklancarausel->save([
-            'foto_iklan' => $this->request->getVar('foto_iklan'),
+            'foto_iklan' => $nama_foto,
             'isi_iklan' => $this->request->getVar('isi_iklan'),
             'slug'=> $slug,
             'judul_iklan' => $this->request->getVar('judul_iklan'),
@@ -57,6 +60,15 @@ class AdminController extends BaseController
     }
 
     public function update_iklan_carausel($id)  {
+        $foto = $this->request->getFile('foto_iklan');
+
+        if ($foto->getError() == 4) {
+            $this->request->getVar('foto_lama');
+        } else {
+            $foto->move('img');
+            unlink('img/'.$this->request->getVar('foto_lama'));
+        }
+        
 
         if (!$this->validate([
             'judul_iklan' => 'required'
@@ -67,7 +79,7 @@ class AdminController extends BaseController
         $slug = url_title($this->request->getVar('judul_iklan'),'-',true);
         $this->iklancarausel->save([
             'id'=>$id,
-            'foto_iklan' => $this->request->getVar('foto_iklan'),
+            'foto_iklan' => $foto->getName(),
             'isi_iklan' => $this->request->getVar('isi_iklan'),
             'slug'=> $slug,
             'judul_iklan' => $this->request->getVar('judul_iklan'),
@@ -76,6 +88,8 @@ class AdminController extends BaseController
     }
 
     public function delete_iklan_carusel($id){
+        $foto = $this->iklancarausel->find($id);
+        unlink('img/'. $foto['foto_iklan']);
         $this->iklancarausel->delete($id);
         return redirect()->to('/admin/view_iklan_carausel');
     }

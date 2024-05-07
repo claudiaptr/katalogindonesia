@@ -24,7 +24,7 @@
                     <div class="card-body">
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
-                                <tr>
+                                <tr class="text-center">
                                     <th> Foto Iklan</th>
                                     <th>Judul Iklan</th>
                                     <th>Isi Iklan</th>
@@ -33,17 +33,20 @@
                             </thead>
                             <tbody>
                                 <?php foreach ($iklan as $ik) : ?>
-                                    <tr>
-                                        <td><?= $ik['foto_iklan']; ?></td>
+                                    <tr class="text-center">
+                                        <td><img width="120px" src="<?= base_url(); ?>img/<?= $ik['foto_iklan']; ?>" alt=""></td>
                                         <td><?= $ik['judul_iklan']; ?></td>
-                                        <td><?= $ik['isi_iklan']; ?></td>
-                                        <td class="d-flex">
-                                            <a href="<?= base_url(); ?>admin/edit_iklan_carausel/<?= $ik['slug']; ?>" class="btn btn-primary ">Edit Data</a>
-                                            <form action="<?= base_url(); ?>admin/delete_iklan_carausel/<?= $ik['id']; ?>" method="post">
-                                            <?= csrf_field(); ?>
-                                                <input type="hidden" name="_method" value="DELETE">
-                                                <button class="btn btn-danger ">Hapus Data</button>
-                                            </form>
+                                        <td><?= $ik['isi_iklan']; ?></td> 
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                                <a href="<?= base_url(); ?>admin/edit_iklan_carausel/<?= $ik['slug']; ?>" class="btn btn-primary mr-3">Edit Data</a>
+                                                <form action="<?= base_url(); ?>admin/delete_iklan_carausel/<?= $ik['id']; ?>" method="post" >
+                                                    <?= csrf_field(); ?>
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                    <button class="btn btn-danger ">Hapus Data</button>
+                                                </form>
+                                            </div>
+
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

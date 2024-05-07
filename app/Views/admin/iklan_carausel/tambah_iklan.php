@@ -17,8 +17,8 @@
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form  id="quickForm" action=" <?= base_url() ?>admin/store_iklan_carausel"  method="post">
-            <?=csrf_field(); ?>
+        <form id="quickForm" action=" <?= base_url() ?>admin/store_iklan_carausel" enctype="multipart/form-data" method="post">
+            <?= csrf_field(); ?>
             <div class="card-body">
                 <div class="form-group">
                     <label for="exampleInputEmail1">Masukan judul iklan</label>
@@ -29,12 +29,11 @@
                     <input name="isi_iklan" type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputFile">Background iklan</label>
+                    <label for="exampleInputFile">Backround Iklan</label>
                     <div class="input-group">
                         <div class="custom-file">
-                            <!-- <input name="foto_iklan" type="text" class="custom-file-input" id="exampleInputFile"> -->
-                            <input name="foto_iklan" type="text" class="form-control" >
-                            <!-- <label class="custom-file-label" for="exampleInputFile">Choose file</label> -->
+                            <input type="file" name="foto_iklan" class="custom-file-input" id="exampleInputFile">
+                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                         </div>
                     </div>
                 </div>
@@ -50,45 +49,53 @@
 </div>
 <?= $this->endSection(); ?>
 <?= $this->section('scripts') ?>
+<script src="<?= base_url(); ?>asset/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
 <script>
-        $(function() {
-          
-            $('#quickForm').validate({
-                rules: {
-                    judul_iklan: {
-                        required: true,
+    $(function() {
 
-                    },
-                    isi_iklan: {
-                        required: true,
+        $('#quickForm').validate({
+            rules: {
+                judul_iklan: {
+                    required: true,
 
-                    },
-                    foto_iklan: {
-                        required: true
-                    },
                 },
-                messages: {
-                    judul_iklan: {
-                        required: "Please enter judul iklan",
-                       
-                    },
-                    isi_iklan: {
-                        required: "Please provide a isi iklan",
-                    },
-                    foto_iklan: "Please accept foto iklan"
+                isi_iklan: {
+                    required: true,
+
                 },
-                errorElement: 'span',
-                errorPlacement: function(error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
+                foto_iklan: {
+                    required: true
                 },
-                highlight: function(element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
+            },
+            messages: {
+                judul_iklan: {
+                    required: "Please enter judul iklan",
+
                 },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                }
-            });
+                isi_iklan: {
+                    required: "Please provide a isi iklan",
+                },
+                foto_iklan: "Please accept foto iklan"
+            },
+            errorElement: 'span',
+            errorPlacement: function(error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function(element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
         });
-    </script>
-    <?= $this->endSection() ?>
+    });
+</script>
+<script>
+    $(function() {
+        bsCustomFileInput.init();
+    });
+</script>
+
+
+<?= $this->endSection() ?>
