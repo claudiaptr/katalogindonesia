@@ -6,7 +6,7 @@
             <div class="">
                 <h1 class="m-0">Iklan Caraeusel</h1>
             </div><!-- /.col -->
-            <div  class="">
+            <div class="">
                 <a href="<?= base_url() ?>/admin/add_iklan_carausel" class="btn btn-primary"> Tambah Data </a>
             </div>
         </div><!-- /.row -->
@@ -24,7 +24,7 @@
                     <div class="card-body">
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
-                                <tr>
+                                <tr class="text-center">
                                     <th> Foto Iklan</th>
                                     <th>Judul Iklan</th>
                                     <th>Isi Iklan</th>
@@ -32,19 +32,26 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach($iklan as $ik) : ?>
-                                <tr>
-                                    <td><?= $ik['foto_iklan']; ?></td>
-                                    <td><?= $ik['judul_iklan']; ?></td>
-                                    <td><?= $ik['isi_iklan']; ?></td>
-                                    <td>
-                                        <button class="btn btn-primary ">Edit Data</button>
-                                        <button class="btn btn-danger ">Hapus Data</button>
-                                    </td>
-                                </tr>
+                                <?php foreach ($iklan as $ik) : ?>
+                                    <tr class="text-center">
+                                        <td><img width="120px" src="<?= base_url(); ?>img/<?= $ik['foto_iklan']; ?>" alt=""></td>
+                                        <td><?= $ik['judul_iklan']; ?></td>
+                                        <td><?= $ik['isi_iklan']; ?></td> 
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                                <a href="<?= base_url(); ?>admin/edit_iklan_carausel/<?= $ik['slug']; ?>" class="btn btn-primary mr-3">Edit Data</a>
+                                                <form action="<?= base_url(); ?>admin/delete_iklan_carausel/<?= $ik['id']; ?>" method="post" >
+                                                    <?= csrf_field(); ?>
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                    <button class="btn btn-danger ">Hapus Data</button>
+                                                </form>
+                                            </div>
+
+                                        </td>
+                                    </tr>
                                 <?php endforeach; ?>
                             </tbody>
-                           
+
                         </table>
                     </div>
                     <!-- /.card-body -->

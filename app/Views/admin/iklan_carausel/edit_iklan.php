@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="d-flex mb-2 justify-content-between">
                 <div class="">
-                    <h1 class="m-0">Tambah Iklan Caraeusel</h1>
+                    <h1 class="m-0">Edit Iklan Caraeusel</h1>
                 </div><!-- /.col -->
 
             </div><!-- /.row -->
@@ -17,23 +17,27 @@
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form id="quickForm" action=" <?= base_url() ?>admin/store_iklan_carausel" enctype="multipart/form-data" method="post">
+        <form id="quickForm" action=" <?= base_url() ?>admin/update_iklan_carausel/<?= $iklan['id']; ?>" method="post" enctype="multipart/form-data">
             <?= csrf_field(); ?>
             <div class="card-body">
+
+                <input name="foto_lama" type="hidden" class="form-control" id="exampleInputEmail1" value="<?= $iklan['foto_iklan']; ?>">
+
                 <div class="form-group">
                     <label for="exampleInputEmail1">Masukan judul iklan</label>
-                    <input name="judul_iklan" type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                    <input name="judul_iklan" type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter email" value="<?= $iklan['judul_iklan']; ?>">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Isi Iklan</label>
-                    <input name="isi_iklan" type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    <input name="isi_iklan" type="text" class="form-control" id="exampleInputPassword1" placeholder="Password" value="<?= $iklan['isi_iklan']; ?>">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputFile">Backround Iklan</label>
+                    <label for="exampleInputFile">Background iklan</label>
                     <div class="input-group">
                         <div class="custom-file">
-                            <input type="file" name="foto_iklan" class="custom-file-input" id="exampleInputFile">
-                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                            <input name="foto_iklan" type="file" class="custom-file-input" id="exampleInputFile">
+
+                            <label class="custom-file-label" for="exampleInputFile"><?= $iklan['foto_iklan']; ?></label>
                         </div>
                     </div>
                 </div>
@@ -96,6 +100,4 @@
         bsCustomFileInput.init();
     });
 </script>
-
-
 <?= $this->endSection() ?>

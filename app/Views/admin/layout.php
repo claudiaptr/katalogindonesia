@@ -332,6 +332,7 @@
     <script src="<?= base_url(); ?>asset/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
     <script src="<?= base_url(); ?>asset/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="<?= base_url(); ?>asset/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="<?= base_url(); ?>asset/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script>
         $(function() {
             $("#example1").DataTable({
@@ -351,6 +352,8 @@
             });
         });
     </script>
+    <?= $this->renderSection('scripts') ?>
+   
 </body>
 
 </html>

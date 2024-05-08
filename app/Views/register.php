@@ -115,7 +115,7 @@
                     </a>
                 </div> -->
 
-                <a href="<?= base_url(); ?>login" class="text-center">I already have a membership</a>
+                <a href="<?= base_url(); ?>auth/login" class="text-center">I already have a membership</a>
             </div>
             <!-- /.form-box -->
         </div><!-- /.card -->
