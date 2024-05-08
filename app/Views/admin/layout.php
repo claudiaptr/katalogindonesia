@@ -234,9 +234,9 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="<?= base_url() ?>admin/view_iklan_tetap"  class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>iklan tetap</p>
+                                        <p>Iklan Tetap</p>
                                     </a>
                                 </li>
                             </ul>

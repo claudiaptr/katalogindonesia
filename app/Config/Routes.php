@@ -12,6 +12,10 @@ $routes->get('/admin/view_iklan_carausel', 'AdminController::view_iklan_carausel
 $routes->post('/admin/store_iklan_carausel', 'AdminController::store_iklan_carausel');
 $routes->get('/admin/add_iklan_carausel', 'AdminController::add_iklan_carausel');
 
+$routes->get('/admin/view_iklan_tetap', 'IklanController::view_iklan_tetap');
+$routes->post('/admin/store_iklan_tetap', 'IklanController::store_iklan_tetap');
+$routes->get('/admin/add_iklan_tetap', 'IklanController::add_iklan_tetap');
+
 // login dan register admin
 $routes->get('/auth/login', 'Auth::login');
 $routes->get('/auth/register', 'Auth::register');

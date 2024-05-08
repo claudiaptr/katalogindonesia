@@ -8,5 +8,4 @@ class SalesController extends BaseController
     {
         return view('sales/home');
     }
-   
 }

@@ -8,6 +8,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 
 class AdminController extends BaseController
 {
+    //iklan Carausel
     protected $iklancarausel;
     public function __construct()
     {
