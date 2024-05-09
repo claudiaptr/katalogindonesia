@@ -25,20 +25,70 @@ class IklanController extends BaseController
         return view('admin/iklan_tetap/tambah_iklan_tetap');
     }
 
-    public function store_iklan_tetap()  
-    {
-        $judul_iklan = $this->request->getVar('judul_iklan');
-        $slug = url_title($judul_iklan, '-', true);
+    public function store_iklan_tetap()  {
 
-        $iklanData = [
-            'foto_iklan' => $this->request->getVar('foto_iklan'),
+        if (!$this->validate([
+            'judul_iklan' => 'required'
+        ])) {
+            $validation = \Config\Services::validation();
+           return redirect()->to('admin/add_iklan_tetap')->withInput()->with('validation',$validation);
+        }
+        $slug = url_title($this->request->getVar('judul_iklan'),'-',true);
+        $foto_iklan = $this->request->getFile('foto_iklan');
+        $foto_iklan->move('img');
+        $nama_foto = $foto_iklan->getName();
+        $this->iklantetap->save([
+            'foto_iklan' => $nama_foto,
             'isi_iklan' => $this->request->getVar('isi_iklan'),
-            'slug' => $slug,
-            'judul_iklan' => $judul_iklan,
+            'slug'=> $slug,
+            'judul_iklan' => $this->request->getVar('judul_iklan'),
+        ]);
+        return redirect()->to('/admin/view_iklan_tetap');
+    }
+
+
+    public function edit_iklan_tetap($slug)
+    {
+        session();
+        $data = [
+            'validation'=>\Config\Services::validation(),
+            'iklan'=> $this->iklantetap->getIklantetap($slug)
+
         ];
+        return view('admin/iklan_tetap/edit_iklan_tetap',$data);
+    }
 
-        $this->iklantetap->save($iklanData);
+    public function update_iklan_tetap($id)  {
+        $foto = $this->request->getFile('foto_iklan');
 
+        if ($foto->getError() == 4) {
+            $this->request->getVar('foto_lama');
+        } else {
+            $foto->move('img');
+            unlink('img/'.$this->request->getVar('foto_lama'));
+        }
+        
+        if (!$this->validate([
+            'judul_iklan' => 'required'
+        ])) {
+            $validation = \Config\Services::validation();
+           return redirect()->to('admin/edit_iklan_tetap'.$this->request->getVar('slug'))->withInput()->with('validation',$validation);
+        }
+        $slug = url_title($this->request->getVar('judul_iklan'),'-',true);
+        $this->iklantetap->save([
+            'id'=>$id,
+            'foto_iklan' => $foto->getName(),
+            'isi_iklan' => $this->request->getVar('isi_iklan'),
+            'slug'=> $slug,
+            'judul_iklan' => $this->request->getVar('judul_iklan'),
+        ]);
+        return redirect()->to('/admin/view_iklan_tetap');
+    }
+
+    public function delete_iklan_tetap($id){
+        $foto = $this->iklantetap->find($id);
+        unlink('img/'. $foto['foto_iklan']);
+        $this->iklantetap->delete($id);
         return redirect()->to('/admin/view_iklan_tetap');
     }
 }

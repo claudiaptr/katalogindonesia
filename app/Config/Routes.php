@@ -19,6 +19,10 @@ $routes->post('/admin/update_iklan_carausel/(:num)', 'AdminController::update_ik
 $routes->get('/admin/view_iklan_tetap', 'IklanController::view_iklan_tetap');
 $routes->post('/admin/store_iklan_tetap', 'IklanController::store_iklan_tetap');
 $routes->get('/admin/add_iklan_tetap', 'IklanController::add_iklan_tetap');
+$routes->delete('/admin/delete_iklan_tetap/(:num)', 'IklanController::delete_iklan_tetap/$1');
+$routes->get('/admin/edit_iklan_tetap/(:any)', 'IklanController::edit_iklan_tetap/$1');
+$routes->post('/admin/update_iklan_tetap/(:num)', 'IklanController::update_iklan_tetap/$1');
+
 
 // login dan register admin
 $routes->get('/auth/login', 'Auth::login');
