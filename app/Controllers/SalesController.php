@@ -8,4 +8,7 @@ class SalesController extends BaseController
     {
         return view('sales/home');
     }
+   public function view_barang()  {
+    
+   }
 }
