@@ -141,7 +141,7 @@
                         </div><!-- /.item -->
                         <!-- chat item -->
                         <div class="item">
-                            <img src="dist/img/user2-160x160.jpg" alt="user image" class="offline">
+                            <img src="<?= base_url(); ?>sales/dist/img/user2-160x160.jpg" alt="user image" class="offline">
                             <p class="message">
                                 <a href="#" class="name">
                                     <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
@@ -440,4 +440,8 @@
 
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
+<?= $this->endSection(); ?>
+<?= $this->section('scripts'); ?>
+<script src="<?= base_url(); ?>sales/plugins/morris/morris.min.js"></script>
+<script src="<?= base_url(); ?>sales/dists/js/pages/dashboard.js"></script>
 <?= $this->endSection(); ?>

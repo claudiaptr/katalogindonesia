@@ -42,6 +42,10 @@ $routes->add('/logout', 'Auth::logout');
 $routes->get('/daftar/penjual','Auth::daftar_penjual');
 $routes->add('/store/penjual','Auth::add_penjual');
 $routes->get('/sales/home', 'SalesController::home');
+$routes->get('/sales/view_barang','SalesController::view_barang');
+$routes->get('/sales/add_barang','SalesController::add_barang');
+$routes->post('/sales/store_barang','SalesController::store_barang');
+$routes->post('/sales/upload','TmpGambarController::upload');
 
 // user
 $routes->get('/', 'UserController::home');

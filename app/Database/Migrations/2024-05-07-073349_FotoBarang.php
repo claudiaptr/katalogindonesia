@@ -37,7 +37,7 @@ class FotoBarang extends Migration
         ]);
         $this->forge->addKey('id', true);
         $this->forge->createTable('foto_barang');
-        $this->forge->addForeignKey('id_barang', 'barang', 'id', 'CASCADE', 'CASCADE', 'my_fk_foto_barang');
+        $this->db->query('ALTER TABLE `foto_barang` ADD CONSTRAINT `my_fk_foto_barang` FOREIGN KEY (`id_barang`) REFERENCES `barang`(`id`) ON DELETE CASCADE ON UPDATE CASCADE');
     }
 
     public function down()
