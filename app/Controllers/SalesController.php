@@ -44,7 +44,9 @@ class SalesController extends BaseController
     {
         $foto_barang = $this->request->getFile('foto_barang');
     
-       
+        // if (!$foto_barang->isValid()) {
+        //     return redirect()->back()->with('error', $foto_barang->getErrorString().'('.$foto_barang->getError().')');
+        // }
     
         $nama_foto = $foto_barang->getRandomName();
         $foto_barang->move('barang', $nama_foto);
@@ -58,22 +60,22 @@ class SalesController extends BaseController
             'deskripsi_barang' =>  $this->request->getVar('deskripsi_barang'),
         ]);
     
-        // $files = $this->request->getFileMultiple('foto_detail');
+        $files = $this->request->getFileMultiple('foto_detail');
     
-        // if ($files) {
-        //     foreach ($files as $file) {
-        //         if ($file->isValid() && !$file->hasMoved()) {
-        //             $file->move('fotobarang');
+        if ($files) {
+            foreach ($files as $file) {
+                if ($file->isValid() && !$file->hasMoved()) {
+                    $file->move('fotobarang');
     
-        //             $this->fotoBarang->save([
-        //                 'foto_barang_lain' => $file->getName(),
-        //                 'id_barang' => $this->request->getVar('id'),
-        //             ]);
-        //         } else {
-        //             return redirect()->back()->with('error', 'One or more detail images failed to upload.');
-        //         }
-        //     }
-        // }
+                    $this->fotoBarang->save([
+                        'foto_barang_lain' => $file->getName(),
+                        'id_barang' => $this->request->getVar('id'),
+                    ]);
+                } else {
+                    return redirect()->back()->with('error', 'One or more detail images failed to upload.');
+                }
+            }
+        }
     
         return redirect()->to('/sales/view_barang');
     }
