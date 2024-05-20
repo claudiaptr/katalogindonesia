@@ -44,8 +44,9 @@ $routes->add('/store/penjual','Auth::add_penjual');
 $routes->get('/sales/home', 'SalesController::home');
 $routes->get('/sales/view_barang','SalesController::view_barang');
 $routes->get('/sales/add_barang','SalesController::add_barang');
+$routes->get('/sales/edit_barang/(:num)','SalesController::edit_barang/$1');
 $routes->post('/sales/store_barang','SalesController::store_barang');
-$routes->post('/sales/upload','TmpGambarController::upload');
+
 
 // user
 $routes->get('/', 'UserController::home');
