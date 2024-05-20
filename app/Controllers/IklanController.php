@@ -1,66 +1,64 @@
 <?php
 
 namespace App\Controllers;
-
+use App\Models\IklanTetap;
 use App\Controllers\BaseController;
-use App\Models\IklanCarausel;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class AdminController extends BaseController
+class IklanController extends BaseController
 {
-    //iklan Carausel
-    protected $iklancarausel;
+    //iklan tetap
+    protected $iklantetap;
     public function __construct()
     {
-        $this->iklancarausel = new IklanCarausel();
+        $this->iklantetap = new IklanTetap();
     }
-    public function view_iklan_carausel()
+
+    public function view_iklan_tetap()
     {
-        $data = [
-            'iklan'=> $this->iklancarausel->getIklanCarausel()
-        ];
-        return view('admin/iklan_carausel/view_iklan',$data);
+        $iklan = $this->iklantetap->getIklanTetap();
+        return view('admin/iklan_tetap/view_iklan_tetap', compact('iklan'));
     }
-    public function add_iklan_carausel()
+
+    public function add_iklan_tetap()
     {
-        session();
-        $data = [
-            'validation'=>\Config\Services::validation()
-        ];
-        return view('admin/iklan_carausel/tambah_iklan',$data);
+        return view('admin/iklan_tetap/tambah_iklan_tetap');
     }
-    public function store_iklan_carausel()  {
+
+    public function store_iklan_tetap()  {
 
         if (!$this->validate([
             'judul_iklan' => 'required'
         ])) {
             $validation = \Config\Services::validation();
-           return redirect()->to('admin/add_iklan_carausel')->withInput()->with('validation',$validation);
+           return redirect()->to('admin/add_iklan_tetap')->withInput()->with('validation',$validation);
         }
         $slug = url_title($this->request->getVar('judul_iklan'),'-',true);
         $foto_iklan = $this->request->getFile('foto_iklan');
         $foto_iklan->move('img');
         $nama_foto = $foto_iklan->getName();
-        $this->iklancarausel->save([
+        $this->iklantetap->save([
             'foto_iklan' => $nama_foto,
             'isi_iklan' => $this->request->getVar('isi_iklan'),
             'slug'=> $slug,
             'judul_iklan' => $this->request->getVar('judul_iklan'),
         ]);
-        return redirect()->to('/admin/view_iklan_carausel');
+        return redirect()->to('/admin/view_iklan_tetap');
     }
-    public function edit_iklan_carausel($slug)
+
+
+    public function edit_iklan_tetap($slug)
     {
         session();
         $data = [
             'validation'=>\Config\Services::validation(),
-            'iklan'=> $this->iklancarausel->getIklanCarausel($slug)
+            'iklan'=> $this->iklantetap->getIklantetap($slug)
 
         ];
-        return view('admin/iklan_carausel/edit_iklan',$data);
+        return view('admin/iklan_tetap/edit_iklan_tetap',$data);
     }
 
-    public function update_iklan_carausel($id)  {
+    public function update_iklan_tetap($id)  {
         $foto = $this->request->getFile('foto_iklan');
 
         if ($foto->getError() == 4) {
@@ -70,28 +68,27 @@ class AdminController extends BaseController
             unlink('img/'.$this->request->getVar('foto_lama'));
         }
         
-
         if (!$this->validate([
             'judul_iklan' => 'required'
         ])) {
             $validation = \Config\Services::validation();
-           return redirect()->to('admin/edit_iklan_carausel'.$this->request->getVar('slug'))->withInput()->with('validation',$validation);
+           return redirect()->to('admin/edit_iklan_tetap'.$this->request->getVar('slug'))->withInput()->with('validation',$validation);
         }
         $slug = url_title($this->request->getVar('judul_iklan'),'-',true);
-        $this->iklancarausel->save([
+        $this->iklantetap->save([
             'id'=>$id,
             'foto_iklan' => $foto->getName(),
             'isi_iklan' => $this->request->getVar('isi_iklan'),
             'slug'=> $slug,
             'judul_iklan' => $this->request->getVar('judul_iklan'),
         ]);
-        return redirect()->to('/admin/view_iklan_carausel');
+        return redirect()->to('/admin/view_iklan_tetap');
     }
 
-    public function delete_iklan_carusel($id){
-        $foto = $this->iklancarausel->find($id);
+    public function delete_iklan_tetap($id){
+        $foto = $this->iklantetap->find($id);
         unlink('img/'. $foto['foto_iklan']);
-        $this->iklancarausel->delete($id);
-        return redirect()->to('/admin/view_iklan_carausel');
+        $this->iklantetap->delete($id);
+        return redirect()->to('/admin/view_iklan_tetap');
     }
 }
