@@ -12,7 +12,7 @@ class Barang extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id','foto_barang','deskripsi_barang','jenis_barang','judul_barang','harga_barang','jumlah_barang'];
+    protected $allowedFields    = ['id','foto_barang','deskripsi_barang','jenis_barang','judul_barang','harga_barang','pemilik','jumlah_barang'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -43,4 +43,8 @@ class Barang extends Model
     // protected $afterFind      = [];
     // protected $beforeDelete   = [];
     // protected $afterDelete    = [];
+    public function getRandomBarang($limit = 6)
+    {
+        return $this->orderBy('RAND()')->findAll($limit);
+    }
 }

@@ -19,7 +19,7 @@
     <!-- Main content -->
     <section class="content">
         <form role="form" id="demoform" method="post" enctype="multipart/form-data" action="<?= base_url('sales/store_barang'); ?>">
-           
+
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box box-warning">
@@ -29,7 +29,7 @@
                         <div class="box-body">
 
                             <!-- text input -->
-                          
+
                             <div class="form-group col-md-6">
                                 <label>Judul Barang</label>
                                 <input type="text" class="form-control" name="judul_barang" placeholder="Enter Judul Barang">
@@ -92,8 +92,18 @@
 
                             </div>
                             <div class="add-more-data">
-                                
-                               
+                                <?php foreach ($foto_detail as $bk) : ?>
+                                    <div style="margin-top: 10px;" class="row">
+                                        <div class="col-lg-10">
+                                            <div class="custom-file">
+                                            <img width="200px" src="<?= base_url(); ?>fotobarang/<?= $bk['foto_barang_lain']; ?>" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <button class="btn btn-danger delete"> Delete </button>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
                             </div>
 
                             <!-- <div class="table table-striped files" id="previews">

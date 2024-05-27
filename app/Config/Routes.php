@@ -32,7 +32,7 @@ $routes->add('/auth/cek_login', 'Auth::cek_login');
 //Auth
 
 
-$routes->get('/user/detail', 'UserController::detail');
+$routes->get('/user/detail/(:num)', 'UserController::detail/$1');
 $routes->get('/user/contact', 'UserController::contact');
 $routes->get('/user/checkout', 'UserController::checkout');
 $routes->get('/user/cart', 'UserController::cart');
