@@ -34,7 +34,7 @@
                         <div class="custom-file">
                             <input type="file" name="foto_iklan" class="custom-file-input" id="exampleInputFile">
                             <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                        </div>
+                       </div>
                     </div>
                 </div>
 
