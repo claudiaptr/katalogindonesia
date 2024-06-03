@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/fontawesome-free/css/all.min.css">
+    <?= $this->renderSection('link') ?>
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Tempusdominus Bootstrap 4 -->
@@ -26,6 +27,9 @@
     <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
     <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/summernote/summernote-bs4.min.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -211,15 +215,15 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
                         <li class="nav-item">
-                            <a href="<?= base_url(); ?> admin/dashboard" class="nav-link">
+                            <a  href="<?= base_url(); ?> admin/dashboard" class="nav-link <?= $menu == 'dashboard' ? 'active': ''  ?>">
                                 <i class="nav-icon  fas fa-th-large"></i>
                                 <p>
                                     Dashboard
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item menu-open">
-                            <a href="#" class="nav-link active">
+                        <li class="nav-item <?= $menu == 'iklan' ? 'menu-open': ''  ?>">
+                            <a href="#" class="nav-link  <?= $menu == 'iklan' ? 'active': ''  ?>">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Iklan
@@ -228,13 +232,13 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="<?= base_url() ?>admin/view_iklan_carausel" class="nav-link active">
+                                    <a href="<?= base_url() ?>admin/view_iklan_carausel" class="nav-link <?= $sub_menu == 'iklan_carausel' ? 'active': ''  ?>">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Iklan Carausel</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?= base_url() ?>admin/view_iklan_tetap"  class="nav-link">
+                                    <a href="<?= base_url() ?>admin/view_iklan_tetap" class="nav-link <?= $sub_menu == 'iklan_tetap' ? 'active': ''  ?>">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Iklan Tetap</p>
                                     </a>
@@ -242,11 +246,18 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="<?= base_url(); ?>admin/view_kategori" class="nav-link <?= $menu == 'ketegori' ? 'active': ''  ?>">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
-                                    Simple Link
-                                    <span class="right badge badge-danger">New</span>
+                                    Kategori
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url(); ?>admin/view_sub_kategori" class="nav-link <?= $menu == 'sub_ketegori' ? 'active': ''  ?>">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>
+                                    Sub Kategori
                                 </p>
                             </a>
                         </li>
@@ -339,12 +350,13 @@
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
-                // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
             $('#example2').DataTable({
                 "paging": true,
                 "lengthChange": false,
-                "searching": false,
+                "searching": true,
                 "ordering": true,
                 "info": true,
                 "autoWidth": false,
@@ -353,7 +365,7 @@
         });
     </script>
     <?= $this->renderSection('scripts') ?>
-   
+
 </body>
 
 </html>

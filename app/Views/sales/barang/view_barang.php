@@ -26,11 +26,11 @@
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Rendering engine</th>
-                                    <th>Browser</th>
-                                    <th>Platform(s)</th>
-                                    <th>Engine version</th>
-                                    <th>CSS grade</th>
+                                    <th>Foto Barang</th>
+                                    <th>Judul barang</th>
+                                    <th>Kategori Barang</th>
+                                    <th>Jumlah Barang</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -38,23 +38,23 @@
                                     <tr>
                                         <td><img width="70px" src="<?= base_url(); ?>barang/<?= $bk['foto_barang']; ?>" alt=""></td>
                                         <td><?= $bk['judul_barang']; ?></td>
-                                        <td><?= $bk['jenis_barang']; ?></td>
+                                        <td><?= $bk['id_kategori_barang']; ?></td>
                                         <td><?= $bk['jumlah_barang']; ?></td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <a href="<?= base_url(); ?>sales/edit_barang/<?= $bk['id']; ?>" class="btn btn-primary mr-3">Edit Data</a>
-                                                <form action="" method="post">
-                                                    <?= csrf_field(); ?>
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    <button class="btn btn-danger ">Hapus Data</button>
-                                                </form>
-                                            </div>
+                                        <td style="display: flex;">
+                                            <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/edit_barang/<?= $bk['id']; ?>" class="btn btn-primary mr-3">Edit </a>
+                                            <a style=" margin-left: 10px;" href="" class="btn btn-success mr-3">Tambah Variasi</a>
+                                            <form style=" margin-left: 10px;" action="" method="post">
+                                                <?= csrf_field(); ?>
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <button class="btn btn-danger ">Hapus </button>
+                                            </form>
+
 
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
-                          
+
                         </table>
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->

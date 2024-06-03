@@ -16,13 +16,22 @@ class IklanController extends BaseController
 
     public function view_iklan_tetap()
     {
-        $iklan = $this->iklantetap->getIklanTetap();
-        return view('admin/iklan_tetap/view_iklan_tetap', compact('iklan'));
+        $data = [
+            'menu' => 'iklan',
+            'sub_menu' => 'iklan_tetap',
+            'iklan'=> $this->iklantetap->getIklanTetap()
+        ];
+       
+        return view('admin/iklan_tetap/view_iklan_tetap',$data);
     }
 
     public function add_iklan_tetap()
     {
-        return view('admin/iklan_tetap/tambah_iklan_tetap');
+        $data = [
+            'menu' => 'iklan',
+            'sub_menu' => 'iklan_tetap'
+        ];
+        return view('admin/iklan_tetap/tambah_iklan_tetap',$data);
     }
 
     public function store_iklan_tetap()  {
@@ -52,7 +61,9 @@ class IklanController extends BaseController
         session();
         $data = [
             'validation'=>\Config\Services::validation(),
-            'iklan'=> $this->iklantetap->getIklantetap($slug)
+            'iklan'=> $this->iklantetap->getIklantetap($slug),
+            'menu' => 'iklan',
+            'sub_menu' => 'iklan_tetap'
 
         ];
         return view('admin/iklan_tetap/edit_iklan_tetap',$data);
