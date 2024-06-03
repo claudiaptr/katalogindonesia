@@ -4,20 +4,27 @@ namespace App\Controllers;
 
 use App\Models\Barang;
 use App\Models\GambarBarang;
+use App\Models\Kategori;
 
 class UserController extends BaseController
 {
     protected $barang;
     protected $fotoBarang;
+    protected $kategori;
     public function __construct()
     {
         $this->barang = new Barang();
         $this->fotoBarang = new GambarBarang();
+        $this->kategori = new Kategori();
+
     }
     public function home()
     {
+      
         $data = [
-            'barang' => $this->barang->getRandomBarang(6)
+            'barang' => $this->barang->getRandomBarang(6),
+            'barang_baru'=> $this->barang->getNewBarang(6),
+            'kategori' => $this->kategori->getSubKategori()
         ];
         return view('user/home',$data);
     }

@@ -293,7 +293,9 @@ textarea {
   overflow: auto;
   resize: vertical;
 }
-
+.crop {
+  object-fit: cover;
+}
 fieldset {
   min-width: 0;
   padding: 0;

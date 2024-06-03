@@ -1,6 +1,6 @@
 <?= $this->extend('sales/layout'); ?>
 <?= $this->section('link'); ?>
-
+<link rel="stylesheet" href="<?= base_url(); ?>sales/plugins/select2/select2.min.css">
 <?= $this->endSection() ?>
 <?= $this->section('home'); ?>
 <div class="content-wrapper">
@@ -36,8 +36,20 @@
                                 <input type="text" class="form-control" name="judul_barang" placeholder="Enter Judul Barang">
                             </div>
                             <div class="form-group col-md-6">
-                                <label>Jenis Barang</label>
-                                <input type="text" class="form-control" name="jenis_barang" placeholder="Enter Jenis Barang">
+                                <label>Kategori Barang</label>
+                                <select class="form-control" name="id_kategori_barang" id="id_kategori" data-placeholder="Select a Kategori Barang">
+                                    <option value="">Pilih Barang</option>
+
+                                    <?php foreach ($kategori as $kt) : ?>
+                                        <option value="<?= $kt['id']; ?>"> <?= $kt['nama_kategori']; ?> </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Sub Kategori Barang</label>
+                                <select class="form-control"  name="id_sub_kategori_barang" id="id_sub_kategori" data-placeholder="Select a Kategori Barang">
+
+                                </select>
                             </div>
                             <div class="form-group col-md-6">
                                 <label>Foto Barang</label>
@@ -59,7 +71,9 @@
                                 <label>Deskripsi Barang</label>
                                 <textarea class="form-control" name="deskripsi_barang" rows="3" placeholder="Enter Judul Barang"></textarea>
                             </div>
-
+                            <div class="box-footer with-border">
+                                <p style="font-style: italic;">* Ukuran Gambar Yang disarankan 500 x 500</p>
+                            </div><!-- /.box-header -->
                             <!-- tambahkan input foto lainnya -->
 
                         </div><!-- /.box-body -->
@@ -137,80 +151,13 @@
                                 </div>
                             </div> -->
                         </div>
+
                         <!-- /.card-body -->
 
                     </div>
                     <!-- /.card -->
                 </div>
-                <div class="col-md-12">
-                    <div class="box box-default">
-                        <div class="box-header">
-                            <h3 class="box-title">Tambahkan Variasi</h3>
-                        </div>
-                        <div class="box-body">
-                            <div id="actions" class="row">
-                                <div class="col-lg-6">
-                                    <div class="btn-group w-100">
-                                        <span class="btn btn-success col fileinput-button">
-                                            <i class="fa fa-plus"></i>
-                                            <span>Add Variasi</span>
-                                        </span>
 
-                                    </div>
-                                </div>
-
-
-
-                            </div>
-                            <div class="add-more-variasi">
-
-                                <div class="form-group col-md-12">
-                                    
-                                    <input type="text" class="form-control" name="judul_barang" placeholder="Masukan nama variasi">
-                                </div>
-                            </div>
-
-                            <!-- <div class="table table-striped files" id="previews">
-                                <div id="template" class="row mt-2">
-                                    <div class="col-auto">
-                                        <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
-                                    </div>
-                                    <div class="col d-flex align-items-center">
-                                        <p class="mb-0">
-                                            <span class="lead" data-dz-name></span>
-                                            (<span data-dz-size></span>)
-                                        </p>
-                                        <strong class="error text-danger" data-dz-errormessage></strong>
-                                    </div>
-                                    <div class="col-4 d-flex align-items-center">
-                                        <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                                            <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-auto d-flex align-items-center">
-                                        <div class="btn-group">
-                                            <button class="btn btn-primary start">
-                                                <i class="fas fa-upload"></i>
-                                                <span>Start</span>
-                                            </button>
-                                            <button data-dz-remove class="btn btn-warning cancel">
-                                                <i class="fas fa-times-circle"></i>
-                                                <span>Cancel</span>
-                                            </button>
-                                            <button data-dz-remove class="btn btn-danger delete">
-                                                <i class="fas fa-trash"></i>
-                                                <span>Delete</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
-                        </div>
-                        <!-- /.card-body -->
-
-                    </div>
-                    <!-- /.card -->
-                </div>
             </div>
 
             <button class="btn btn-primary">Submit</button>
@@ -221,6 +168,15 @@
 <?= $this->endSection(); ?>
 
 <?= $this->section('scripts') ?>
+<script src="<?= base_url(); ?>sales/plugins/select2/select2.full.min.js"></script>
+<script>
+    $(function() {
+        //Initialize Select2 Elements
+        $(".select2").select2({
+            tags: true
+        });
+    });
+</script>
 <script>
     $(".add-more").on("click", function() {
         var card =
@@ -236,9 +192,42 @@
             "</div>";
         $(".add-more-data").append(card);
     });
-
-    $(".add-more-data").delegate(".delete", "click", function() {
-        $(this).parent().parent().remove();
+    $(".add-variasi").on("click", function() {
+        var card =
+            '<div class="form-group col-md-12">' +
+            '<label>Nama Variasi</label>' +
+            ' <input type="" class="form-control" name="" placeholder="Enter nama variasi">' +
+            '</div>' +
+            '<div class="form-group col-md-11 col-md-offset-1">' +
+            " <label>Opsi</label>" +
+            '<select class="form-control select2" multiple="multiple" data-placeholder="Select a State"></select>' +
+            "</div>";
+        $(".add-more-variasi").append(card);
+        $(".select2").select2({
+            tags: true
+        });
     });
+
+    // $(".add-more-data").delegate(".delete", "click", function() {
+    //     $(this).parent().parent().remove();
+    // });
+</script>
+<script>
+    $(document).ready(function() {
+        $('#id_kategori').change(function(e) {
+            var id_kategori = $('#id_kategori').val();
+            $.ajax({
+                type: 'POST',
+                url: "<?= base_url('/sales/sub_kategori'); ?>",
+                data: {
+                    id_kategori: id_kategori
+                },
+
+                success: function(response) {
+                    $("#id_sub_kategori").html(response);
+                }
+            })
+        })
+    })
 </script>
 <?= $this->endSection() ?>

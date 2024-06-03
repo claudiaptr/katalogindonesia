@@ -7,7 +7,7 @@
                 <h1 class="m-0">Kategori</h1>
             </div><!-- /.col -->
             <div  class="">
-                <a href="<?= base_url() ?>admin/add_kategori" class="btn btn-primary"> Tambah Data </a>
+                <a href="<?= base_url() ?>admin/add_sub_kategori" class="btn btn-primary"> Tambah Data </a>
             </div>
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
@@ -30,10 +30,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php foreach ($kategori as $kt) : ?>
+                            <?php foreach ($sub_kategori as $kt) : ?>
                                     <tr class="text-center">
                                       
-                                        <td><?= $kt['nama_kategori']; ?></td>
+                                        <td><?= $kt['nama_sub_kategori']; ?></td>
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <a href="<?= base_url(); ?>admin/edit_iklan_tetap/<?= $kt['slug']; ?>" class="btn btn-primary mr-3">Edit Data</a>

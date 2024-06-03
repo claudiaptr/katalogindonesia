@@ -22,7 +22,12 @@ $routes->get('/admin/add_iklan_tetap', 'IklanController::add_iklan_tetap');
 $routes->delete('/admin/delete_iklan_tetap/(:num)', 'IklanController::delete_iklan_tetap/$1');
 $routes->get('/admin/edit_iklan_tetap/(:any)', 'IklanController::edit_iklan_tetap/$1');
 $routes->post('/admin/update_iklan_tetap/(:num)', 'IklanController::update_iklan_tetap/$1');
-
+$routes->get('/admin/view_kategori', 'AdminController::view_kategori');
+$routes->get('/admin/add_kategori', 'AdminController::add_kategori');
+$routes->post('/admin/store_kategori', 'AdminController::store_kategori');
+$routes->get('/admin/view_sub_kategori', 'AdminController::view_sub_kategori');
+$routes->get('/admin/add_sub_kategori', 'AdminController::add_sub_kategori');
+$routes->post('/admin/store_sub_kategori', 'AdminController::store_sub_kategori');
 
 // login dan register admin
 $routes->get('/auth/login', 'Auth::login');
@@ -54,6 +59,7 @@ $routes->get('/sales/view_barang','SalesController::view_barang');
 $routes->get('/sales/add_barang','SalesController::add_barang');
 $routes->get('/sales/edit_barang/(:num)','SalesController::edit_barang/$1');
 $routes->post('/sales/store_barang','SalesController::store_barang');
+$routes->post('/sales/sub_kategori','SalesController::sub_kategori');
 
 
 // user
