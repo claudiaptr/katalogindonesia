@@ -37,6 +37,11 @@ class Barang extends Migration
             'jumlah_barang' => [
                 'type' => 'INT',
             ],
+            'pemilik' => [
+                'type'           => 'BIGINT',
+                'constraint'     => 20,
+                'unsigned'       => true,
+            ],
             'created_at' => [
                 'type'    => 'TIMESTAMP',
                 'default' => new RawSql('CURRENT_TIMESTAMP'),
@@ -48,6 +53,7 @@ class Barang extends Migration
         ]);
         $this->forge->addKey('id', true);
         $this->forge->createTable('barang');
+        $this->db->query('ALTER TABLE `barang` ADD CONSTRAINT `my_fk_prmilik` FOREIGN KEY (`pemilik`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE');
     }
 
     public function down()

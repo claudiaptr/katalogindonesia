@@ -20,7 +20,12 @@ class SalesController extends BaseController
     }
     public function view_barang()
     {
-        return view('sales/barang/view_barang');
+        $id = session()->get('id');
+        $data = [
+            'barang' => $this->barang->where('pemilik',$id)->findAll(),
+        ];
+
+        return view('sales/barang/view_barang',$data);
     }
     public function add_barang()
     {
@@ -53,6 +58,7 @@ class SalesController extends BaseController
     
         $this->barang->save([
             'id' => $this->request->getVar('id'),
+            'pemilik' => $this->request->getVar('pemilik'),
             'judul_barang' => $this->request->getVar('judul_barang'),
             'jenis_barang' =>  $this->request->getVar('jenis_barang'),
             'foto_barang' =>  $nama_foto,
@@ -78,6 +84,14 @@ class SalesController extends BaseController
         }
     
         return redirect()->to('/sales/view_barang');
+    }
+    public function edit_barang ($id){
+        $data = [
+            'iklan'=> $this->barang->find($id),
+            'foto_detail' => $this->fotoBarang->where('id_barang', $id)->findAll(),
+        ];
+        
+        return view('sales/barang/edit_barang',$data);
     }
     
 }
