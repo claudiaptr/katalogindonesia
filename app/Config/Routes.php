@@ -39,14 +39,20 @@ $routes->add('/auth/cek_login', 'Auth::cek_login');
 
 $routes->get('/user/detail/(:num)', 'UserController::detail/$1');
 $routes->get('/user/contact', 'UserController::contact');
-$routes->get('/user/checkout', 'UserController::checkout');
-$routes->get('/user/cart', 'UserController::cart');
+$routes->get('/checkout', 'UserController::checkout');
+$routes->get('/cart', 'UserController::cart');
+$routes->post('/add_chart', 'UserController::add_chart');
 $routes->get('/sales/home', 'SalesController::home');
 
 
 //User
 $routes->get('/user/home', 'UserController::home');
 $routes->get('/user/shop', 'UserController::shop');
+$routes->get('/', 'UserController::home');
+$routes->get('/user/detail', 'UserController::detail');
+$routes->get('/user/contact', 'UserController::contact');
+$routes->get('/user/cek', 'UserController::cek');
+
 
 //Logout
 $routes->add('/logout', 'Auth::logout');
@@ -63,9 +69,7 @@ $routes->post('/sales/sub_kategori','SalesController::sub_kategori');
 
 
 // user
-$routes->get('/', 'UserController::home');
-$routes->get('/user/detail', 'UserController::detail');
-$routes->get('/user/contact', 'UserController::contact');
+
 
 
 

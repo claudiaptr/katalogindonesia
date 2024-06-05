@@ -11,7 +11,7 @@ class UserFilter implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         if (session()->get('log') != true) {
-            return redirect()->to(base_url('/'));
+            return redirect()->to(base_url('/auth/login'));
         }
     }
 

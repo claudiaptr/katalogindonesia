@@ -270,15 +270,23 @@
     <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Featured Products</span></h2>
     <div class="row px-xl-5">
         <?php foreach ($barang as $bk) : ?>
+
             <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                <?php 
+                echo form_open(base_url( 'add_chart'));
+                echo form_hidden('id', $bk['id']);
+                echo form_hidden('foto_barang', $bk['foto_barang']);
+                echo form_hidden('foto_barang', $bk['judul_barang']);
+                echo form_hidden('foto_barang', $bk['harga_barang']);
+                 ?>
                 <div class="product-item bg-light mb-4">
                     <div class="product-img position-relative overflow-hidden">
                         <img class="" style="object-fit: scale-down !important; width: 280px; height: 280px;" src="<?= base_url(); ?>barang/<?= $bk['foto_barang']; ?>" alt="">
                         <div class="product-action">
-                            <a class="btn btn-outline-dark btn-square" href="<?= base_url(); ?>user/detail/<?= $bk['id']; ?>"><i class="fa fa-shopping-cart"></i></a>
-                            <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
-                            <!-- <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
-                            <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a> -->
+                            <button class="btn btn-outline-dark btn-square" type="submit"><i class="fa fa-shopping-cart"></i></button>
+                            <!-- <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
+                            <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a> -->
+                            <a class="btn btn-outline-dark btn-square" href="<?= base_url(); ?>user/detail/<?= $bk['id']; ?>"><i class="fa fa-search"></i></a>
                         </div>
                     </div>
                     <div class="text-center py-4">
@@ -297,7 +305,9 @@
                         </div> -->
                     </div>
                 </div>
+                <?php echo form_close(); ?>
             </div>
+
         <?php endforeach; ?>
         <!-- <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
             <div class="product-item bg-light mb-4">
@@ -538,7 +548,7 @@
                     <div class="product-img position-relative overflow-hidden">
                         <img class="" style="object-fit: scale-down !important; width: 280px; height: 280px;" src="<?= base_url(); ?>barang/<?= $bk['foto_barang']; ?>" alt="">
                         <div class="product-action">
-                            <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
+                            <button class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></button>
                             <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
                         </div>
                     </div>

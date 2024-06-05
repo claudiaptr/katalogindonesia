@@ -20,13 +20,17 @@ class SalesController extends BaseController
     }
     public function home()
     {
-        return view('sales/home');
+        $data =[
+            'menu' => 'dashboard',
+        ];
+        return view('sales/home',$data);
     }
     public function view_barang()
     {
         $id = session()->get('id');
         $data = [
             'barang' => $this->barang->where('pemilik', $id)->findAll(),
+            'menu' => 'barang',
         ];
 
         return view('sales/barang/view_barang', $data);
@@ -48,8 +52,8 @@ class SalesController extends BaseController
         $data = [
             'id' => $kd,
             'kategori' => $this->kategori->findAll(),
-            'sub_ketgori' => $this->sub_kategori->findAll()
-
+            'sub_ketgori' => $this->sub_kategori->findAll(),
+            'menu' => 'barang',
         ];
 
         return view('sales/barang/add_barang', $data);
@@ -101,6 +105,7 @@ class SalesController extends BaseController
         $data = [
             'iklan' => $this->barang->find($id),
             'foto_detail' => $this->fotoBarang->where('id_barang', $id)->findAll(),
+            'menu' => 'barang',
         ];
 
         return view('sales/barang/edit_barang', $data);
@@ -112,5 +117,11 @@ class SalesController extends BaseController
         foreach ( $kat as $key ){
             echo " <option value=".$key['id'].">".$key['nama_sub_kategori']." </option>";
         }
+    }
+    public function view_tambah_variasi($id)  {
+        $data = [
+            'menu' => 'barang'
+        ];
+        return view('sales/barang/tambah_variasi', $data);
     }
 }

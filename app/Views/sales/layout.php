@@ -342,8 +342,8 @@
                 <ul class="sidebar-menu">
                     <li class="header">HEADER</li>
                     <!-- Optionally, you can add icons to the links -->
-                    <li class="active"><a href="#"><i class="fa fa-th-large"></i> <span>Dashboard</span></a></li>
-                    <li><a href="<?= base_url(); ?>sales/view_barang"><i class="fa fa-cube"></i> <span>Barang</span></a></li>
+                    <li class=" <?= $menu == 'dashboard' ? 'active': ''  ?>" ><a href="<?= base_url(); ?>sales/home"><i class="fa fa-th-large"></i> <span>Dashboard</span></a></li>
+                    <li class=" <?= $menu == 'barang' ? 'active': ''  ?>" ><a href="<?= base_url(); ?>sales/view_barang"><i class="fa fa-cube"></i> <span>Barang</span></a></li>
                     <li class="treeview">
                         <a href="#"><i class="fa fa-link"></i> <span>lainya</span> <i class="fa fa-angle-left pull-right"></i></a>
                         <ul class="treeview-menu">

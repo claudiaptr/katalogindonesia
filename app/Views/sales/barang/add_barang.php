@@ -47,7 +47,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label>Sub Kategori Barang</label>
-                                <select class="form-control"  name="id_sub_kategori_barang" id="id_sub_kategori" data-placeholder="Select a Kategori Barang">
+                                <select class="form-control" name="id_sub_kategori_barang" id="id_sub_kategori" data-placeholder="Select a Kategori Barang">
 
                                 </select>
                             </div>
@@ -155,12 +155,79 @@
                         <!-- /.card-body -->
 
                     </div>
+                    <div class="box box-default">
+                        <div class="box-header">
+                            <h3 class="box-title">Tambahkan Variasi </h3>
+                        </div>
+                        <div class="box-body">
+                            <div id="actions" class="row">
+                                <div class="col-lg-6">
+                                    <div class="btn-group w-100">
+                                        <span class="btn btn-success add-variasi col fileinput-button">
+                                            <i class="fa fa-plus"></i>
+                                            <span>Add Variasi</span>
+                                        </span>
+
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div class="add-more-variasi">
+                               
+                            </div>
+
+                            <!-- <div class="table table-striped files" id="previews">
+                                <div id="template" class="row mt-2">
+                                    <div class="col-auto">
+                                        <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
+                                    </div>
+                                    <div class="col d-flex align-items-center">
+                                        <p class="mb-0">
+                                            <span class="lead" data-dz-name></span>
+                                            (<span data-dz-size></span>)
+                                        </p>
+                                        <strong class="error text-danger" data-dz-errormessage></strong>
+                                    </div>
+                                    <div class="col-4 d-flex align-items-center">
+                                        <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                            <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto d-flex align-items-center">
+                                        <div class="btn-group">
+                                            <button class="btn btn-primary start">
+                                                <i class="fas fa-upload"></i>
+                                                <span>Start</span>
+                                            </button>
+                                            <button data-dz-remove class="btn btn-warning cancel">
+                                                <i class="fas fa-times-circle"></i>
+                                                <span>Cancel</span>
+                                            </button>
+                                            <button data-dz-remove class="btn btn-danger delete">
+                                                <i class="fas fa-trash"></i>
+                                                <span>Delete</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="box-footer">
+                            <p class="">* Untuk Menambahkan Opsi klik enter </p>
+                        </div>
+
+                        <!-- /.card-body -->
+
+                    </div>
                     <!-- /.card -->
+
                 </div>
 
             </div>
 
-            <button class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </section><!-- /.content -->
 </div>
@@ -183,11 +250,11 @@
             '<div style="margin-top: 10px;" class="row">' +
             '<div class="col-lg-10">' +
             '<div class="custom-file">' +
-            '<input type="file" accept="image/png, image/jpeg" class="form-control-file" required name="foto_detail[]"  id="foto_detail">' +
+            '<input type="file" accept="image/png, image/jpeg" class="form-control-file"  name="foto_detail[]"  id="foto_detail">' +
             "</div>" +
             "</div>" +
             '<div class="col-lg-2">' +
-            '<button class="btn btn-danger delete"> Delete </button>' +
+            '<button type="button" class="btn btn-danger delete"> Delete </button>' +
             "</div>" +
             "</div>";
         $(".add-more-data").append(card);
@@ -208,9 +275,9 @@
         });
     });
 
-    // $(".add-more-data").delegate(".delete", "click", function() {
-    //     $(this).parent().parent().remove();
-    // });
+    $(".add-more-data").delegate(".delete", "click", function() {
+        $(this).parent().parent().remove();
+    });
 </script>
 <script>
     $(document).ready(function() {
