@@ -48,7 +48,6 @@ class SalesController extends BaseController
         } else {
             $kd = "000001";
         }
-
         $data = [
             'id' => $kd,
             'kategori' => $this->kategori->findAll(),
