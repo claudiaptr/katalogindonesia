@@ -36,8 +36,8 @@
                                         <td><?= $kt['nama_sub_kategori']; ?></td>
                                         <td>
                                             <div class="d-flex justify-content-center">
-                                                <a href="<?= base_url(); ?>admin/edit_iklan_tetap/<?= $kt['slug']; ?>" class="btn btn-primary mr-3">Edit Data</a>
-                                                <form action="<?= base_url(); ?>admin/delete_iklan_tetap/<?= $kt['id']; ?>" method="post">
+                                                <a href="<?= base_url(); ?>admin/edit_sub_kategori/<?= $kt['slug']; ?>" class="btn btn-primary mr-3">Edit Data</a>
+                                                <form class="delete" action="<?= base_url(); ?>admin/delete_sub_kategori/<?= $kt['id']; ?>" method="post">
                                                     <?= csrf_field(); ?>
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     <button class="btn btn-danger ">Hapus Data</button>

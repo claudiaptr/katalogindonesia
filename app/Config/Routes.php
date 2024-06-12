@@ -20,14 +20,23 @@ $routes->get('/admin/view_iklan_tetap', 'IklanController::view_iklan_tetap');
 $routes->post('/admin/store_iklan_tetap', 'IklanController::store_iklan_tetap');
 $routes->get('/admin/add_iklan_tetap', 'IklanController::add_iklan_tetap');
 $routes->delete('/admin/delete_iklan_tetap/(:num)', 'IklanController::delete_iklan_tetap/$1');
+
 $routes->get('/admin/edit_iklan_tetap/(:any)', 'IklanController::edit_iklan_tetap/$1');
 $routes->post('/admin/update_iklan_tetap/(:num)', 'IklanController::update_iklan_tetap/$1');
 $routes->get('/admin/view_kategori', 'AdminController::view_kategori');
 $routes->get('/admin/add_kategori', 'AdminController::add_kategori');
+$routes->get('/admin/edit_kategori/(:any)', 'AdminController::edit_kategori/$1');
+$routes->post('/admin/update_kategori/(:num)', 'AdminController::update_kategori/$1');
+$routes->delete('/admin/delete_kategori/(:num)', 'AdminController::delete_kategori/$1');
+
 $routes->post('/admin/store_kategori', 'AdminController::store_kategori');
 $routes->get('/admin/view_sub_kategori', 'AdminController::view_sub_kategori');
 $routes->get('/admin/add_sub_kategori', 'AdminController::add_sub_kategori');
 $routes->post('/admin/store_sub_kategori', 'AdminController::store_sub_kategori');
+$routes->get('/admin/edit_sub_kategori/(:any)', 'AdminController::edit_sub_kategori/$1');
+$routes->post('/admin/update_sub_kategori/(:num)', 'AdminController::update_sub_kategori/$1');
+$routes->delete('/admin/delete_sub_kategori/(:num)', 'AdminController::delete_sub_kategori/$1');
+
 
 // login dan register admin
 $routes->get('/auth/login', 'Auth::login');

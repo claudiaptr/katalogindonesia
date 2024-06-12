@@ -1,4 +1,7 @@
 <?= $this->extend('admin/layout'); ?>
+<?= $this->section('link') ?>
+<link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/select2/css/select2.min.css">
+<?= $this->endSection() ?>
 <?= $this->section('content'); ?>
 <div class="container-fluid ">
     <div class="content-header">
@@ -17,13 +20,23 @@
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form id="quickForm" action=" <?= base_url() ?>admin/store_kategori" enctype="multipart/form-data" method="post">
+        <form id="quickForm" action=" <?= base_url() ?>admin/update_sub_kategori/<?= $sub_kategori['id']; ?>" enctype="multipart/form-data" method="post">
             <?= csrf_field(); ?>
             <div class="card-body">
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Nama Kategori</label>
-                    <input name="nama_kategori" type="text" class="form-control" id="exampleInputEmail1" placeholder="Masukkan Nama Kategori">
+                    <label for="exampleInputEmail1">Nama Sub Kategori</label>
+                    <input name="nama_sub_kategori" type="text" class="form-control" id="exampleInputEmail1" placeholder="Masukkan Nama Kategori" value="<?= $sub_kategori['nama_sub_kategori']; ?>">
                 </div>
+                <div class="form-group">
+                    <label>Jenis Kategori</label>
+                    <select name="id_kategori" class="form-control select2" style="width: 100%;">
+                        <option  value="">Pilih Jenis Kategori</option>
+                        <?php foreach ($kategori as $kt) : ?>
+                            <option value="<?= $kt['id']; ?>" <?= ($kt['id'] == $sub_kategori['id_kategori']) ? 'selected' : ''; ?>><?= $kt['nama_kategori']; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
             </div>
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -34,18 +47,30 @@
 <?= $this->endSection(); ?>
 <?= $this->section('scripts') ?>
 <script src="<?= base_url(); ?>asset/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+<script src="<?= base_url(); ?>asset/plugins/select2/js/select2.full.min.js"></script>
 <script>
     $(function() {
+        $('.select2').select2()
 
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
         $('#quickForm').validate({
             rules: {
-                nama_kategori: {
+                nama_sub_kategori: {
+                    required: true,
+                },
+                id_kategori: {
                     required: true,
                 },
             },
             messages: {
-                nama_kategori: {
-                    required: "Please enter Nama Kategori",
+                nama_sub_kategori: {
+                    required: "Please enter judul iklan",
+                },
+                id_kategori: {
+                    required: "Please select judul kategori",
                 },
             },
             errorElement: 'span',

@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="d-flex mb-2 justify-content-between">
                 <div class="">
-                    <h1 class="m-0">Tambah Kategori</h1>
+                    <h1 class="m-0">Edit Kategori</h1>
                 </div><!-- /.col -->
 
             </div><!-- /.row -->
@@ -13,16 +13,16 @@
     </div>
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">Tambah Kategori</h3>
+            <h3 class="card-title">Edit Kategori</h3>
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form id="quickForm" action=" <?= base_url() ?>admin/store_kategori" enctype="multipart/form-data" method="post">
+        <form id="quickForm" action=" <?= base_url() ?>admin/update_kategori/<?= $kategori['id']; ?>" method="post">
             <?= csrf_field(); ?>
             <div class="card-body">
                 <div class="form-group">
                     <label for="exampleInputEmail1">Nama Kategori</label>
-                    <input name="nama_kategori" type="text" class="form-control" id="exampleInputEmail1" placeholder="Masukkan Nama Kategori">
+                    <input name="nama_kategori" type="text" class="form-control" id="exampleInputEmail1" value="<?= $kategori['nama_kategori']; ?>" placeholder="Masukkan Nama Kategori">
                 </div>
             </div>
             <div class="card-footer">
@@ -45,7 +45,7 @@
             },
             messages: {
                 nama_kategori: {
-                    required: "Please enter Nama Kategori",
+                    required: "Please enter nama kategori",
                 },
             },
             errorElement: 'span',

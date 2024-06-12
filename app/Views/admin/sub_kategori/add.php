@@ -58,16 +58,21 @@
         })
         $('#quickForm').validate({
             rules: {
-                nama_kategori: {
+                nama_sub_kategori: {
+                    required: true,
+                },
+                id_kategori: {
                     required: true,
                 },
             },
             messages: {
-                nama_kategori: {
+                nama_sub_kategori: {
                     required: "Please enter judul iklan",
                 },
-            },
-            errorElement: 'span',
+                id_kategori: {
+                    required: "Please select judul kategori",
+                },
+            },rElement: 'span',
             errorPlacement: function(error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);

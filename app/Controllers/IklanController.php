@@ -52,6 +52,7 @@ class IklanController extends BaseController
             'slug'=> $slug,
             'judul_iklan' => $this->request->getVar('judul_iklan'),
         ]);
+        session()->setFlashdata('pesan', 'data berhasil ditambah');
         return redirect()->to('/admin/view_iklan_tetap');
     }
 
@@ -93,6 +94,7 @@ class IklanController extends BaseController
             'slug'=> $slug,
             'judul_iklan' => $this->request->getVar('judul_iklan'),
         ]);
+        session()->setFlashdata('pesan', 'data berhasil diedit');
         return redirect()->to('/admin/view_iklan_tetap');
     }
 

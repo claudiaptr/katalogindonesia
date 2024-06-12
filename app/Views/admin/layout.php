@@ -21,6 +21,9 @@
     <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url(); ?>asset/dists/css/adminlte.min.css">
+    <!-- sweat alart -->
+    <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Daterange picker -->
@@ -28,8 +31,8 @@
     <!-- summernote -->
     <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/summernote/summernote-bs4.min.css">
     <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -215,15 +218,15 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
                         <li class="nav-item">
-                            <a  href="<?= base_url(); ?> admin/dashboard" class="nav-link <?= $menu == 'dashboard' ? 'active': ''  ?>">
+                            <a href="<?= base_url(); ?> admin/dashboard" class="nav-link <?= $menu == 'dashboard' ? 'active' : ''  ?>">
                                 <i class="nav-icon  fas fa-th-large"></i>
                                 <p>
                                     Dashboard
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item <?= $menu == 'iklan' ? 'menu-open': ''  ?>">
-                            <a href="#" class="nav-link  <?= $menu == 'iklan' ? 'active': ''  ?>">
+                        <li class="nav-item <?= $menu == 'iklan' ? 'menu-open' : ''  ?>">
+                            <a href="#" class="nav-link  <?= $menu == 'iklan' ? 'active' : ''  ?>">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Iklan
@@ -232,13 +235,13 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="<?= base_url() ?>admin/view_iklan_carausel" class="nav-link <?= $sub_menu == 'iklan_carausel' ? 'active': ''  ?>">
+                                    <a href="<?= base_url() ?>admin/view_iklan_carausel" class="nav-link <?= $sub_menu == 'iklan_carausel' ? 'active' : ''  ?>">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Iklan Carausel</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?= base_url() ?>admin/view_iklan_tetap" class="nav-link <?= $sub_menu == 'iklan_tetap' ? 'active': ''  ?>">
+                                    <a href="<?= base_url() ?>admin/view_iklan_tetap" class="nav-link <?= $sub_menu == 'iklan_tetap' ? 'active' : ''  ?>">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Iklan Tetap</p>
                                     </a>
@@ -246,7 +249,7 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= base_url(); ?>admin/view_kategori" class="nav-link <?= $menu == 'ketegori' ? 'active': ''  ?>">
+                            <a href="<?= base_url(); ?>admin/view_kategori" class="nav-link <?= $menu == 'ketegori' ? 'active' : ''  ?>">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
                                     Kategori
@@ -254,7 +257,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= base_url(); ?>admin/view_sub_kategori" class="nav-link <?= $menu == 'sub_ketegori' ? 'active': ''  ?>">
+                            <a href="<?= base_url(); ?>admin/view_sub_kategori" class="nav-link <?= $menu == 'sub_ketegori' ? 'active' : ''  ?>">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
                                     Sub Kategori
@@ -278,6 +281,7 @@
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper ">
+        <div class="flash_data" data-flashdata="<?= session()->getFlashdata('pesan'); ?>"></div>
             <?= $this->renderSection('content'); ?>
         </div>
         <!-- /.content-wrapper -->
@@ -332,6 +336,7 @@
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="<?= base_url(); ?>asset/dists/js/pages/dashboard.js"></script>
     <script src="<?= base_url(); ?>asset/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="<?= base_url(); ?>asset/plugins/sweetalert2/sweetalert2.min.js"></script>
     <script src="<?= base_url(); ?>asset/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="<?= base_url(); ?>asset/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
     <script src="<?= base_url(); ?>asset/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
@@ -363,6 +368,35 @@
                 "responsive": true,
             });
         });
+    </script>
+    <script>
+        
+        const flashData = $('.flash_data').data('flashdata')
+        if (flashData) {
+            Swal.fire({
+                title: flashData,
+                icon: "success"
+            });
+        }
+
+        
+        $('.delete').on('submit', function(e) {
+            e.preventDefault();
+            const hero = this;
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    hero.submit();
+                }
+            });
+        })
     </script>
     <?= $this->renderSection('scripts') ?>
 
