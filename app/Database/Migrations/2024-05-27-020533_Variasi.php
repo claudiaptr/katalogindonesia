@@ -14,15 +14,13 @@ class Variasi extends Migration
                 'type'           => 'BIGINT',
                 'constraint'     => 20,
                 'unsigned'       => true,
-               
+                'auto_increment' => true,
             ],
             'nama_variasi' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '250',
             ],
-            'harga' => [
-                'type'       => 'INT',
-            ],
+           
             'id_barang' => [
                 'type'           => 'BIGINT',
                 'constraint'     => 20,

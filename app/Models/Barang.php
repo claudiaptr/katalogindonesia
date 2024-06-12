@@ -8,11 +8,11 @@ class Barang extends Model
 {
     protected $table            = 'barang';
     protected $primaryKey       = 'id';
-    protected $useAutoIncrement = false;
+    protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id','foto_barang','deskripsi_barang','id_kategori_barang','id_sub_kategori_barang','judul_barang','harga_barang','pemilik','jumlah_barang'];
+    protected $allowedFields    = ['foto_barang','deskripsi_barang','id_kategori_barang','id_sub_kategori_barang','judul_barang','harga_barang','pemilik','jumlah_barang'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

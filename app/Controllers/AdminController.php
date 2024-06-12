@@ -10,7 +10,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 
 class AdminController extends BaseController
 {
-    //iklan Carausel
+    //kontruktor untuk menambahkan model
     protected $iklancarausel, $kategori, $sub_kategori;
     public function __construct()
     {
@@ -18,6 +18,8 @@ class AdminController extends BaseController
         $this->iklancarausel = new IklanCarausel();
         $this->kategori = new Kategori();
     }
+
+    // view iklan carausel
     public function view_iklan_carausel()
     {
         $data = [
@@ -28,6 +30,7 @@ class AdminController extends BaseController
         ];
         return view('admin/iklan_carausel/view_iklan', $data);
     }
+    // tampilan tambah iklan carausel
     public function add_iklan_carausel()
     {
         session();
@@ -38,6 +41,7 @@ class AdminController extends BaseController
         ];
         return view('admin/iklan_carausel/tambah_iklan', $data);
     }
+    // proses tambah iklan carausel
     public function store_iklan_carausel()
     {
 
@@ -59,6 +63,7 @@ class AdminController extends BaseController
         ]);
         return redirect()->to('/admin/view_iklan_carausel');
     }
+    // tampilan edit iklan carausel
     public function edit_iklan_carausel($slug)
     {
         session();
@@ -71,6 +76,7 @@ class AdminController extends BaseController
         ];
         return view('admin/iklan_carausel/edit_iklan', $data);
     }
+    // proses update iklan carausel
     public function update_iklan_carausel($id)
     {
         $foto = $this->request->getFile('foto_iklan');
@@ -96,7 +102,7 @@ class AdminController extends BaseController
         ]);
         return redirect()->to('/admin/view_iklan_carausel');
     }
-
+    // proses hapus data iklan carausel
     public function delete_iklan_carusel($id)
     {
         $foto = $this->iklancarausel->find($id);
@@ -104,6 +110,8 @@ class AdminController extends BaseController
         $this->iklancarausel->delete($id);
         return redirect()->to('/admin/view_iklan_carausel');
     }
+
+    // tampilan view kategri
     public function view_kategori()
     {
         $data = [
@@ -113,6 +121,8 @@ class AdminController extends BaseController
         ];
         return view('admin/kategori/view_kategori', $data);
     }
+
+    // tampilan tambah kategori
     public function add_kategori()
     {
         $data = [
@@ -121,6 +131,8 @@ class AdminController extends BaseController
         ];
         return view('admin/kategori/tambah_kategori', $data);
     }
+
+    // proses tambah kategori
     public function store_kategori()
     {
         $slug = url_title($this->request->getVar('nama_kategori'), '-', true);
@@ -130,6 +142,9 @@ class AdminController extends BaseController
         ]);
         return redirect()->to('admin/view_kategori');
     }
+
+    // tampilan edit kategori
+    
     public function view_sub_kategori()
     {
         $data = [

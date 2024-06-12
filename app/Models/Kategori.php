@@ -58,4 +58,11 @@ class Kategori extends Model
     public function SubKategori($id_kategori) {
         return $this->db->table('sub_kategori')->where('id_kategori',$id_kategori)->get()->getResultArray();
     }
+
+    public function getKategori($slug = false)  {
+        if ($slug == false) {
+           return $this->findAll();
+        }
+        return $this->where(['slug'=>$slug])->first();
+    }
 }

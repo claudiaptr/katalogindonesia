@@ -14,6 +14,7 @@ class Barang extends Migration
                 'type'           => 'BIGINT',
                 'constraint'     => 20,
                 'unsigned'       => true,
+                'auto_increment' => true,
             ],
             'foto_barang' => [
                 'type'       => 'VARCHAR',

@@ -26,30 +26,25 @@
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Nama</th>
+                                    
                                     <th>Nama variasi</th>
-                                    <th>Jenis Variasi</th>
-                                    <th>Harga</th>
+                                   
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($barang as $bk) : ?>
+                                <?php foreach ($variasi as $vi) : ?>
                                     <tr>
-                                        <td><img width="70px" src="<?= base_url(); ?>barang/<?= $bk['foto_barang']; ?>" alt=""></td>
-                                        <td><?= $bk['judul_barang']; ?></td>
-                                        <td><?= $bk['id_kategori_barang']; ?></td>
-                                        <td><?= $bk['jumlah_barang']; ?></td>
+                                        <td><?= $vi['nama_variasi']; ?></td>
+                                      
                                         <td style="display: flex;">
-                                            <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/edit_barang/<?= $bk['id']; ?>" class="btn btn-primary mr-3">Edit </a>
-                                            <a style=" margin-left: 10px;" href="" class="btn btn-success mr-3">Tambah Variasi</a>
+                                            <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/edit_barang/<?= $vi['id']; ?>" class="btn btn-primary mr-3">Edit Opsi</a>
+                                            <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/tambah_opsi/<?= $vi['id']; ?>" class="btn btn-success mr-3">Tambah Opsi</a>
                                             <form style=" margin-left: 10px;" action="" method="post">
                                                 <?= csrf_field(); ?>
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <button class="btn btn-danger ">Hapus </button>
                                             </form>
-
-
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

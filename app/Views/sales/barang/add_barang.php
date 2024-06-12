@@ -19,7 +19,6 @@
     <!-- Main content -->
     <section class="content">
         <form role="form" id="demoform" method="post" enctype="multipart/form-data" action="<?= base_url('sales/store_barang'); ?>">
-            <input type="hidden" class="userid" name="userid" id="userid" value="">
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box box-warning">
@@ -29,7 +28,6 @@
                         <div class="box-body">
 
                             <!-- text input -->
-                            <input type="hidden" name="id" value="<?= $id; ?>">
                             <input type="hidden" name="pemilik" value="<?= session()->get('id'); ?>">
                             <div class="form-group col-md-6">
                                 <label>Judul Barang</label>
@@ -259,16 +257,15 @@
             "</div>";
         $(".add-more-data").append(card);
     });
+
+   
     $(".add-variasi").on("click", function() {
+        // uniqueId++;
         var card =
             '<div class="form-group col-md-12">' +
             '<label>Nama Variasi</label>' +
-            ' <input type="" class="form-control" name="" placeholder="Enter nama variasi">' +
-            '</div>' +
-            '<div class="form-group col-md-11 col-md-offset-1">' +
-            " <label>Opsi</label>" +
-            '<select class="form-control select2" multiple="multiple" data-placeholder="Select a State"></select>' +
-            "</div>";
+            ' <input type="text" class="form-control" name="nama_variasi[]" placeholder="Enter nama variasi">' +
+            '</div>' ;
         $(".add-more-variasi").append(card);
         $(".select2").select2({
             tags: true

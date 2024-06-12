@@ -16,7 +16,7 @@ class Opsi extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'nama_variasi' => [
+            'nama_opsi' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '250',
             ],

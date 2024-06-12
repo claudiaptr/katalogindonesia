@@ -81,8 +81,8 @@ class Filters extends BaseFilters
             // 'invalidchars',
         ],
         'after' => [
-            'userfilter' =>['except' => [ '/','user/*','daftar/penjual']],
-            'penjualfilter' =>['except' => [ '/','user/*','penjual/*','sales/*']],
+            'userfilter' =>['except' => [ '/*','user/*','daftar/penjual']],
+            'penjualfilter' =>['except' => [ '/*','user/*','penjual/*','sales/*']],
             // 'honeypot',
             // 'secureheaders',
         ],

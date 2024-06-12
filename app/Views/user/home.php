@@ -272,13 +272,7 @@
         <?php foreach ($barang as $bk) : ?>
 
             <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                <?php 
-                echo form_open(base_url( 'add_chart'));
-                echo form_hidden('id', $bk['id']);
-                echo form_hidden('foto_barang', $bk['foto_barang']);
-                echo form_hidden('foto_barang', $bk['judul_barang']);
-                echo form_hidden('foto_barang', $bk['harga_barang']);
-                 ?>
+             
                 <div class="product-item bg-light mb-4">
                     <div class="product-img position-relative overflow-hidden">
                         <img class="" style="object-fit: scale-down !important; width: 280px; height: 280px;" src="<?= base_url(); ?>barang/<?= $bk['foto_barang']; ?>" alt="">
@@ -305,7 +299,7 @@
                         </div> -->
                     </div>
                 </div>
-                <?php echo form_close(); ?>
+               
             </div>
 
         <?php endforeach; ?>
