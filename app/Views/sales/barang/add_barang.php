@@ -3,11 +3,18 @@
 <link rel="stylesheet" href="<?= base_url(); ?>sales/plugins/select2/select2.min.css">
 <?= $this->endSection() ?>
 <?= $this->section('home'); ?>
+<?php if (session()->has('validation')) : ?>
+    <?php $validation = session('validation'); ?>
+
+<?php endif; ?>
+
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
             Tambah Barang Katalog
+
+
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -29,49 +36,67 @@
 
                             <!-- text input -->
                             <input type="hidden" name="pemilik" value="<?= session()->get('id'); ?>">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-6  <?= ($validation->hasError('judul_barang')) ? 'has-error' : ''; ?>">
                                 <label>Judul Barang</label>
-                                <input type="text" class="form-control" name="judul_barang" placeholder="Enter Judul Barang">
+                                <input type="text" class="form-control " name="judul_barang" placeholder="Enter Judul Barang">
+                                <?php if ($validation->hasError('judul_barang')) : ?>
+                                    <label id="judul_barang-error" class="error invalid-feedback" for="judul_barang"><?= $validation->getError('judul_barang'); ?></label>
+                                <?php endif; ?>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-6 <?= ($validation->hasError('id_kategori_barang')) ? 'has-error' : ''; ?>">
                                 <label>Kategori Barang</label>
                                 <select class="form-control" name="id_kategori_barang" id="id_kategori" data-placeholder="Select a Kategori Barang">
                                     <option value="">Pilih Barang</option>
-
                                     <?php foreach ($kategori as $kt) : ?>
                                         <option value="<?= $kt['id']; ?>"> <?= $kt['nama_kategori']; ?> </option>
                                     <?php endforeach; ?>
                                 </select>
+                                <?php if ($validation->hasError('id_kategori_barang')) : ?>
+                                    <label id="id_kategori_barang-error" class="error invalid-feedback" for="id_kategori_barang"><?= $validation->getError('id_kategori_barang'); ?></label>
+                                <?php endif; ?>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-6 <?= ($validation->hasError('id_sub_kategori_barang')) ? 'has-error' : ''; ?>">
                                 <label>Sub Kategori Barang</label>
                                 <select class="form-control" name="id_sub_kategori_barang" id="id_sub_kategori" data-placeholder="Select a Kategori Barang">
 
                                 </select>
+                                <?php if ($validation->hasError('id_sub_kategori_barang')) : ?>
+                                    <label id="id_sub_kategori_barang-error" class="error invalid-feedback" for="id_sub_kategori_barang"><?= $validation->getError('id_sub_kategori_barang'); ?></label>
+                                <?php endif; ?>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-6 <?= ($validation->hasError('foto_barang')) ? 'has-error' : ''; ?>">
                                 <label>Foto Barang</label>
-                                <input type="file" class="form-control" name="foto_barang" placeholder="Enter Judul Barang">
+                                <input type="file" class="form-control" name="foto_barang" placeholder="Enter Judul Barang" accept="image/*">
+                                <?php if ($validation->hasError('foto_barang')) : ?>
+                                    <label id="foto_barang-error" class="error invalid-feedback" for="foto_barang"><?= $validation->getError('foto_barang'); ?></label>
+                                <?php endif; ?>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-6 <?= ($validation->hasError('harga_barang')) ? 'has-error' : ''; ?>">
                                 <label>Harga Barang</label>
                                 <input type="number" class="form-control" name="harga_barang" placeholder="Enter Harga Barang">
+                                <?php if ($validation->hasError('harga_barang')) : ?>
+                                    <label id="harga_barang-error" class="error invalid-feedback" for="harga_barang"><?= $validation->getError('harga_barang'); ?></label>
+                                <?php endif; ?>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-6 <?= ($validation->hasError('jumlah_barang')) ? 'has-error' : ''; ?>">
                                 <label>Jumlah Barang</label>
                                 <input type="number" class="form-control" name="jumlah_barang" placeholder="Enter Judul Barang">
+                                <?php if ($validation->hasError('jumlah_barang')) : ?>
+                                    <label id="jumlah_barang-error" class="error invalid-feedback" for="jumlah_barang"><?= $validation->getError('jumlah_barang'); ?></label>
+                                <?php endif; ?>
                             </div>
                             <!-- tambahkan input lainnya -->
 
 
                             <!-- textarea -->
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-12 <?= ($validation->hasError('deskripsi_barang')) ? 'has-error' : ''; ?>">
                                 <label>Deskripsi Barang</label>
                                 <textarea class="form-control" name="deskripsi_barang" rows="3" placeholder="Enter Judul Barang"></textarea>
+                                <?php if ($validation->hasError('deskripsi_barang')) : ?>
+                                    <label id="deskripsi_barang-error" class="error invalid-feedback" for="deskripsi_barang"><?= $validation->getError('deskripsi_barang'); ?></label>
+                                <?php endif; ?>
                             </div>
-                            <div class="box-footer with-border">
-                                <p style="font-style: italic;">* Ukuran Gambar Yang disarankan 500 x 500</p>
-                            </div><!-- /.box-header -->
+                            <!-- /.box-header -->
                             <!-- tambahkan input foto lainnya -->
 
                         </div><!-- /.box-body -->
@@ -173,7 +198,7 @@
 
                             </div>
                             <div class="add-more-variasi">
-                               
+
                             </div>
 
                             <!-- <div class="table table-striped files" id="previews">
@@ -258,14 +283,14 @@
         $(".add-more-data").append(card);
     });
 
-   
+
     $(".add-variasi").on("click", function() {
         // uniqueId++;
         var card =
             '<div class="form-group col-md-12">' +
             '<label>Nama Variasi</label>' +
             ' <input type="text" class="form-control" name="nama_variasi[]" placeholder="Enter nama variasi">' +
-            '</div>' ;
+            '</div>';
         $(".add-more-variasi").append(card);
         $(".select2").select2({
             tags: true
@@ -293,5 +318,61 @@
             })
         })
     })
+</script>
+<script>
+    $(function() {
+        $('#demoform').validate({
+            rules: {
+                judul_barang: {
+                    required: true,
+                },
+                id_kategori_barang: {
+                    required: true,
+                },
+                id_sub_kategori_barang: {
+                    required: true,
+                },
+                foto_barang: {
+                    required: true,
+                    accept: "image/*"
+                },
+                harga_barang: {
+                    required: true,
+                    numeric: true,
+                },
+                jumlah_barang: {
+                    required: true,
+                    numeric: true,
+                },
+                deskripsi_barang: {
+                    required: true,
+                },
+            },
+            messages: {
+                foto_barang: {
+                    accept: "Only image files are allowed."
+                },
+                id_kategori: {
+                    required: "Please select judul kategori",
+                },
+            },
+            rElement: 'span',
+            errorPlacement: function(error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+                error.appendTo(element.parent());
+            },
+            highlight: function(element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            },
+          
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
+    });
 </script>
 <?= $this->endSection() ?>

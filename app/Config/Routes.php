@@ -77,6 +77,8 @@ $routes->get('/sales/home', 'SalesController::home');
 $routes->get('/sales/view_barang','SalesController::view_barang');
 $routes->get('/sales/add_barang','SalesController::add_barang');
 $routes->get('/sales/edit_barang/(:num)','SalesController::edit_barang/$1');
+$routes->post('/sales/update_barang/(:num)','SalesController::update_barang/$1');
+$routes->get('/sales/delete_foto_lain/(:num)', 'SalesController::delete_foto_lain/$1');
 $routes->get('/sales/view_tambah_variasi/(:num)','SalesController::view_tambah_variasi/$1');
 $routes->get('/sales/tambah_opsi/(:num)','SalesController::tambah_opsi/$1');
 $routes->post('/sales/store_opsi','SalesController::store_opsi');

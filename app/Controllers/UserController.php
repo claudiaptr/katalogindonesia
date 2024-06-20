@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Barang;
 use App\Models\GambarBarang;
+use App\Models\IklanCarausel;
 use App\Models\Kategori;
 use App\Models\Opsi;
 use App\Models\Variasi;
@@ -12,7 +13,7 @@ class UserController extends BaseController
 {
     protected $barang;
     protected $fotoBarang;
-    protected $kategori, $variasi, $opsi;
+    protected $kategori, $variasi, $opsi, $iklancarausel;
 
     public function __construct()
     {
@@ -21,14 +22,17 @@ class UserController extends BaseController
         $this->kategori = new Kategori();
         $this->variasi = new Variasi();
         $this->opsi = new Opsi();
+        $this->iklancarausel = new IklanCarausel();
+        
     }
     public function home()
     {
         helper('form');
         $data = [
-            'barang' => $this->barang->getRandomBarang(6),
-            'barang_baru' => $this->barang->getNewBarang(6),
-            'kategori' => $this->kategori->getSubKategori()
+            'barang' => $this->barang->getRandomBarang(8),
+            'barang_baru' => $this->barang->getNewBarang(8),
+            'kategori' => $this->kategori->getSubKategori(),
+            'iklan_carausel'=>$this->iklancarausel->findAll()
         ];
         return view('user/home', $data);
     }
@@ -105,12 +109,12 @@ class UserController extends BaseController
             'name'    => $this->request->getPost('judul_barang'),
             'options' => $options
         ));
-        return redirect()->to('user/cek');
+        return redirect()->to('user/cart');
     }
     public function delete_chart()
     {
         $cart = \Config\Services::cart();
         $cart->destroy();
-        return redirect()->to('user/cek');
+        return redirect()->to('user/cart');
     }
 }

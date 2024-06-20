@@ -12,7 +12,7 @@ use App\Models\Variasi;
 class SalesController extends BaseController
 {
     protected $barang;
-    protected $fotoBarang, $kategori, $sub_kategori, $variasi,$opsi;
+    protected $fotoBarang, $kategori, $sub_kategori, $variasi, $opsi;
     public function __construct()
     {
         $this->barang = new Barang();
@@ -64,9 +64,11 @@ class SalesController extends BaseController
         // } else {
         //     $idv = "000001";
         // }
+
         $data = [
             // 'id' => $kd,
             // 'id_variasi' => $idv,
+            'validation' => \Config\Services::validation(),
             'kategori' => $this->kategori->findAll(),
             'sub_ketgori' => $this->sub_kategori->findAll(),
             'menu' => 'barang',
@@ -77,11 +79,58 @@ class SalesController extends BaseController
     public function store_barang()
     {
 
+
+        $validate = $this->validate([
+            'judul_barang' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must input a Nama Barang.',
+                ],
+            ],
+            'id_kategori_barang' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must choose a kategori.',
+                ],
+            ],
+            'id_sub_kategori_barang' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must choose a sub kategoi.',
+                ],
+            ],
+            'foto_barang' => [
+                'rules'  => 'uploaded[foto_barang]|mime_in[foto_barang,image/jpg,image/jpeg,image/png]  ',
+                'errors' => [
+                    'uploaded' => 'You must choose a foto barang.',
+                    'mime_in' => 'Only image files are allowed (jpg, jpeg, png).',
+                ],
+            ],
+            'harga_barang' => [
+                'rules'  => 'required|numeric',
+                'errors' => [
+                    'required' => 'You must input a harga barang.',
+                ],
+            ],
+            'jumlah_barang' => [
+                'rules'  => 'required|numeric',
+                'errors' => [
+                    'required' => 'You must input a jumlah barang.',
+                ],
+            ],
+            'deskripsi_barang' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must input a deskripsi.',
+                ],
+            ],
+        ]);
+        if (!$validate) {
+            $validation = \Config\Services::validation();
+            return redirect()->back()->with('validation', $validation);
+        }
         $foto_barang = $this->request->getFile('foto_barang');
 
-        // if (!$foto_barang->isValid()) {
-        //     return redirect()->back()->with('error', $foto_barang->getErrorString().'('.$foto_barang->getError().')');
-        // }
 
         $nama_foto = $foto_barang->getRandomName();
         $foto_barang->move('barang', $nama_foto);
@@ -99,7 +148,7 @@ class SalesController extends BaseController
 
         $files = $this->request->getFileMultiple('foto_detail');
         $idBarang = $this->barang->getInsertID();
-       
+
         if ($files) {
             foreach ($files as $file) {
                 if ($file->isValid() && !$file->hasMoved()) {
@@ -107,14 +156,14 @@ class SalesController extends BaseController
 
                     $this->fotoBarang->save([
                         'foto_barang_lain' => $file->getName(),
-                         'id_barang' => $idBarang,
+                        'id_barang' => $idBarang,
                     ]);
                 } else {
                     return redirect()->back()->with('error', 'One or more detail images failed to upload.');
                 }
             }
         }
-      
+
 
         $namaVariasi = $this->request->getVar('nama_variasi');
         if ($idBarang && is_array($namaVariasi)) {
@@ -126,8 +175,6 @@ class SalesController extends BaseController
                 ];
             }
             $this->variasi->insertBatch($data);
-        } else {
-            return redirect()->back()->with('error', 'No data to insert.');
         }
 
 
@@ -135,13 +182,140 @@ class SalesController extends BaseController
     }
     public function edit_barang($id)
     {
+        $barang = $this->barang->find($id);
         $data = [
-            'iklan' => $this->barang->find($id),
+            'barang' => $this->barang->find($id),
+            'kategori' => $this->kategori->findAll(),
+            'sub_ketgori' =>$this->sub_kategori->where('id_kategori', $barang['id_kategori_barang'])->findAll(),
             'foto_detail' => $this->fotoBarang->where('id_barang', $id)->findAll(),
+            'variasi' => $this->variasi->where('id_barang', $id)->findAll(),
             'menu' => 'barang',
+            'validation' => \Config\Services::validation(),
         ];
 
         return view('sales/barang/edit_barang', $data);
+    }
+    public function update_barang($id)
+    {
+        // Validasi input
+        $validate = $this->validate([
+            'judul_barang' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must input a Nama Barang.',
+                ],
+            ],
+            'id_kategori_barang' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must choose a kategori.',
+                ],
+            ],
+            'id_sub_kategori_barang' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must choose a sub kategori.',
+                ],
+            ],
+            'foto_barang' => [
+                'rules'  => 'is_image[foto_barang]|mime_in[foto_barang,image/jpg,image/jpeg,image/png]',
+                'errors' => [
+                    'is_image' => 'The file must be an image.',
+                    'mime_in' => 'Only image files are allowed (jpg, jpeg, png).',
+                ],
+            ],
+            'harga_barang' => [
+                'rules'  => 'required|numeric',
+                'errors' => [
+                    'required' => 'You must input a harga barang.',
+                ],
+            ],
+            'jumlah_barang' => [
+                'rules'  => 'required|numeric',
+                'errors' => [
+                    'required' => 'You must input a jumlah barang.',
+                ],
+            ],
+            'deskripsi_barang' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must input a deskripsi.',
+                ],
+            ],
+        ]);
+
+        if (!$validate) {
+            $validation = \Config\Services::validation();
+            return redirect()->back()->with('validation', $validation)->withInput();
+        }
+
+        // Mengunggah gambar utama jika ada
+        $foto_barang = $this->request->getFile('foto_barang');
+        if ($foto_barang && $foto_barang->isValid() && !$foto_barang->hasMoved()) {
+            $nama_foto = $foto_barang->getRandomName();
+            $foto_barang->move('barang', $nama_foto);
+        } else {
+            $nama_foto = $this->request->getVar('existing_foto_barang'); // Gambar sebelumnya
+        }
+
+        // Memperbarui data barang
+        $this->barang->update($id, [
+            'pemilik' => $this->request->getVar('pemilik'),
+            'judul_barang' => $this->request->getVar('judul_barang'),
+            'harga_barang' => $this->request->getVar('harga_barang'),
+            'id_kategori_barang' =>  $this->request->getVar('id_kategori_barang'),
+            'id_sub_kategori_barang' =>  $this->request->getVar('id_sub_kategori_barang'),
+            'foto_barang' =>  $nama_foto,
+            'jumlah_barang' =>  $this->request->getVar('jumlah_barang'),
+            'deskripsi_barang' =>  $this->request->getVar('deskripsi_barang'),
+        ]);
+
+        // Mengunggah dan memperbarui gambar detail
+        $fotoDetails = $this->request->getFiles();
+        if (isset($fotoDetails['foto_detail'])) {
+            foreach ($fotoDetails['foto_detail'] as $index => $fotoDetail) {
+                if ($fotoDetail && $fotoDetail->isValid() && !$fotoDetail->hasMoved()) {
+                    $newName = $fotoDetail->getRandomName();
+                    $fotoDetail->move('fotobarang', $newName);
+    
+                    // Check if this is an existing photo or a new one
+                    $foto_detail_id = $this->request->getPost('foto_detail_id')[$index] ?? null;
+                    if ($foto_detail_id) {
+                        $this->fotoBarang->update($foto_detail_id, ['foto_barang_lain' => $newName]);
+                    } else {
+                        $this->fotoBarang->insert([
+                            'id_barang' => $id,
+                            'foto_barang_lain' => $newName,
+                        ]);
+                    }
+                }
+            }
+        }
+    
+        // Handle variasi update
+        $variasiNames = $this->request->getPost('nama_variasi');
+        $variasiIds = $this->request->getPost('variasi_id');
+        foreach ($variasiNames as $index => $nama_variasi) {
+            $variasi_id = $variasiIds[$index] ?? null;
+            if ($variasi_id) {
+                $this->variasi->update($variasi_id, ['nama_variasi' => $nama_variasi]);
+            } else {
+                $this->variasi->insert([
+                    'id_barang' => $id,
+                    'nama_variasi' => $nama_variasi,
+                ]);
+            }
+        }
+    
+
+        return redirect()->to('/sales/view_barang')->with('success', 'Data barang berhasil diperbarui.');
+    }
+    public function delete_foto_lain($id)
+    {
+        $foto = $this->fotoBarang->find($id);
+        unlink('fotobarang/' . $foto['foto_barang_lain']);
+        $this->fotoBarang->delete($id);
+        return redirect()->back();
     }
     public function sub_kategori()
     {
@@ -158,7 +332,7 @@ class SalesController extends BaseController
             'menu' => 'barang',
             'variasi' => $this->variasi->where('id_barang', $id)->findAll(),
         ];
-       
+
         return view('sales/barang/view_variasi', $data);
     }
     public function tambah_opsi($id)
@@ -172,12 +346,14 @@ class SalesController extends BaseController
     public function store_opsi()
     {
         $nama_opsi = $this->request->getVar('nama_opsi');
-        
+
         $harga = $this->request->getVar('harga');
         $idVariasi = $this->request->getVar('id_variasi');
-    
-        if (is_array($nama_opsi) && is_array($harga)   &&
-        count($nama_opsi) === count($harga) && count($harga) ) {
+
+        if (
+            is_array($nama_opsi) && is_array($harga)   &&
+            count($nama_opsi) === count($harga) && count($harga)
+        ) {
             $data = [];
             foreach ($nama_opsi as $index => $nama) {
                 $data[] = [
@@ -186,13 +362,12 @@ class SalesController extends BaseController
                     'id_variasi' => $idVariasi,
                 ];
             }
-    
+
             $this->opsi->insertBatch($data);
         } else {
             return redirect()->back()->with('error', 'No data to insert.');
         }
-    
+
         return redirect()->to('sales/view_barang');
     }
-    
 }
