@@ -60,7 +60,7 @@ class Barang extends Migration
         ]);
         $this->forge->addKey('id', true);
         $this->forge->createTable('barang');
-        $this->db->query('ALTER TABLE `barang` ADD CONSTRAINT `my_fk_prmilik` FOREIGN KEY (`pemilik`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE');
+        $this->db->query('ALTER TABLE `barang` ADD CONSTRAINT `my_fk_pmilik` FOREIGN KEY (`pemilik`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE');
         $this->db->query('ALTER TABLE `barang` ADD CONSTRAINT `my_fk_barang_ketegori` FOREIGN KEY (`id_kategori_barang`) REFERENCES `kategori`(`id`) ON DELETE CASCADE ON UPDATE CASCADE');
         $this->db->query('ALTER TABLE `barang` ADD CONSTRAINT `my_fk_barang_sub_ketegori` FOREIGN KEY (`id_sub_kategori_barang`) REFERENCES `sub_kategori`(`id`) ON DELETE CASCADE ON UPDATE CASCADE');
     }
