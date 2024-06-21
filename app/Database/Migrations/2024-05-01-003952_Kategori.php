@@ -5,7 +5,7 @@ namespace App\Database\Migrations;
 use CodeIgniter\Database\Migration;
 use CodeIgniter\Database\RawSql;
 
-class SubKategori extends Migration
+class Kategori extends Migration
 {
     public function up()
     {
@@ -14,16 +14,11 @@ class SubKategori extends Migration
                 'type'           => 'BIGINT',
                 'constraint'     => 20,
                 'unsigned'       => true,
+                'auto_increment' => true,
             ],
-            'nama' => [
+            'kategori' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '100',
-            ],
-            'kode_sub' => [
-                'type'           => 'BIGINT',
-                'constraint'     => 20,
-                'unsigned'       => true,
-
             ],
             'created_at' => [
                 'type'    => 'TIMESTAMP',
@@ -35,12 +30,13 @@ class SubKategori extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->createTable('sub_kategori');
-        $this->db->query('ALTER TABLE `sub_kategori` ADD CONSTRAINT `my_fk_kode_jenis` FOREIGN KEY (`kode_sub`) REFERENCES `kategori`(`kode_jenis`) ON DELETE CASCADE ON UPDATE CASCADE');
+        $this->forge->createTable('kategori');
+       
+
     }
 
     public function down()
     {
-        $this->forge->dropTable('sub_kategori');
+        $this->forge->dropTable('kategori');
     }
 }
