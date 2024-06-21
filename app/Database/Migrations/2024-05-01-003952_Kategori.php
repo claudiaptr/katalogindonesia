@@ -16,7 +16,11 @@ class Kategori extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'kategori' => [
+            'nama_kategori' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '100',
+            ],
+            'slug' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '100',
             ],

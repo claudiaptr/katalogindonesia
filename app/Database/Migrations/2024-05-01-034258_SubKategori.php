@@ -16,7 +16,11 @@ class SubKategori extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'nama' => [
+            'nama_sub_ketegori' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '100',
+            ],
+            'slug' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '100',
             ],
