@@ -10,14 +10,19 @@ class Kategori extends Migration
     public function up()
     {
         $this->forge->addField([
-            'kategori' => [
-                'type'       => 'VARCHAR',
-                'constraint' => '100',
-            ],
-            'kode_jenis' => [
+            'id' => [
                 'type'           => 'BIGINT',
                 'constraint'     => 20,
                 'unsigned'       => true,
+                'auto_increment' => true,
+            ],
+            'nama_kategori' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '100',
+            ],
+            'slug' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '100',
             ],
             'created_at' => [
                 'type'    => 'TIMESTAMP',
@@ -28,10 +33,9 @@ class Kategori extends Migration
                 'default' => new RawSql('CURRENT_TIMESTAMP'),
             ],
         ]);
-        $this->forge->addKey('kode_jenis', true);
+        $this->forge->addKey('id', true);
         $this->forge->createTable('kategori');
-        // $this->forge->addForeignKey('kode_jenis', 'kategori', 'kode_jenis', 'CASCADE', 'CASCADE');
-        // $this->db->query('ALTER TABLE `kategori` ADD CONSTRAINT `` FOREIGN KEY (``) REFERENCES ``(``) ON DELETE CASCADE ON UPDATE CASCADE');
+       
 
     }
 

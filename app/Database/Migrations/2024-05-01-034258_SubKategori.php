@@ -14,16 +14,20 @@ class SubKategori extends Migration
                 'type'           => 'BIGINT',
                 'constraint'     => 20,
                 'unsigned'       => true,
+                'auto_increment' => true,
             ],
-            'nama' => [
+            'nama_sub_ketegori' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '100',
             ],
-            'kode_sub' => [
+            'slug' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '100',
+            ],
+            'id_kategori' => [
                 'type'           => 'BIGINT',
                 'constraint'     => 20,
                 'unsigned'       => true,
-
             ],
             'created_at' => [
                 'type'    => 'TIMESTAMP',
@@ -36,7 +40,7 @@ class SubKategori extends Migration
         ]);
         $this->forge->addKey('id', true);
         $this->forge->createTable('sub_kategori');
-        $this->db->query('ALTER TABLE `sub_kategori` ADD CONSTRAINT `my_fk_kode_jenis` FOREIGN KEY (`kode_sub`) REFERENCES `kategori`(`kode_jenis`) ON DELETE CASCADE ON UPDATE CASCADE');
+        $this->db->query('ALTER TABLE `sub_kategori` ADD CONSTRAINT `my_fk_kode_jenis` FOREIGN KEY (`id_kategori`) REFERENCES `kategori`(`id`) ON DELETE CASCADE ON UPDATE CASCADE');
     }
 
     public function down()
