@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url(); ?>sales/dists/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -558,6 +559,7 @@
     <script src="<?= base_url(); ?>sales/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
     <!-- jQuery Knob Chart -->
     <script src="<?= base_url(); ?>sales/plugins/knob/jquery.knob.js"></script>
+    <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
     <!-- daterangepicker -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
     <script src="<?= base_url(); ?>sales/plugins/daterangepicker/daterangepicker.js"></script>
@@ -576,6 +578,35 @@
 
     <!-- AdminLTE for demo purposes -->
     <script src="<?= base_url(); ?>sales/dists/js/demo.js"></script>
+    <script>
+        
+        const flashData = $('.flash_data').data('flashdata')
+        if (flashData) {
+            Swal.fire({
+                title: flashData,
+                icon: "success"
+            });
+        }
+
+        
+        $('.delete').on('submit', function(e) {
+            e.preventDefault();
+            const hero = this;
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    hero.submit();
+                }
+            });
+        })
+    </script>
 
     <?= $this->renderSection('scripts'); ?>
 </body>

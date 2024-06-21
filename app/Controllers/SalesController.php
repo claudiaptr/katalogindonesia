@@ -186,7 +186,7 @@ class SalesController extends BaseController
         $data = [
             'barang' => $this->barang->find($id),
             'kategori' => $this->kategori->findAll(),
-            'sub_ketgori' =>$this->sub_kategori->where('id_kategori', $barang['id_kategori_barang'])->findAll(),
+            'sub_ketgori' => $this->sub_kategori->where('id_kategori', $barang['id_kategori_barang'])->findAll(),
             'foto_detail' => $this->fotoBarang->where('id_barang', $id)->findAll(),
             'variasi' => $this->variasi->where('id_barang', $id)->findAll(),
             'menu' => 'barang',
@@ -277,7 +277,7 @@ class SalesController extends BaseController
                 if ($fotoDetail && $fotoDetail->isValid() && !$fotoDetail->hasMoved()) {
                     $newName = $fotoDetail->getRandomName();
                     $fotoDetail->move('fotobarang', $newName);
-    
+
                     // Check if this is an existing photo or a new one
                     $foto_detail_id = $this->request->getPost('foto_detail_id')[$index] ?? null;
                     if ($foto_detail_id) {
@@ -291,7 +291,7 @@ class SalesController extends BaseController
                 }
             }
         }
-    
+
         // Handle variasi update
         $variasiNames = $this->request->getPost('nama_variasi');
         $variasiIds = $this->request->getPost('variasi_id');
@@ -306,7 +306,7 @@ class SalesController extends BaseController
                 ]);
             }
         }
-    
+
 
         return redirect()->to('/sales/view_barang')->with('success', 'Data barang berhasil diperbarui.');
     }
@@ -317,6 +317,38 @@ class SalesController extends BaseController
         $this->fotoBarang->delete($id);
         return redirect()->back();
     }
+    public function delete_barang($id)
+    {
+        // Mengambil data barang
+        $barang = $this->barang->find($id);
+
+        if ($barang) {
+            // Menghapus foto utama barang jika ada
+            if ($barang['foto_barang'] && file_exists('barang/' . $barang['foto_barang'])) {
+                unlink('barang/' . $barang['foto_barang']);
+            }
+
+            // Mengambil dan menghapus semua foto detail barang
+            $fotoDetails = $this->fotoBarang->where('id_barang', $id)->findAll();
+            foreach ($fotoDetails as $fotoDetail) {
+                if ($fotoDetail['foto_barang_lain'] && file_exists('fotobarang/' . $fotoDetail['foto_barang_lain'])) {
+                    unlink('fotobarang/' . $fotoDetail['foto_barang_lain']);
+                }
+                $this->fotoBarang->delete($fotoDetail['id']);
+            }
+
+            // Menghapus semua variasi barang
+            $this->variasi->where('id_barang', $id)->delete();
+
+            // Menghapus barang
+            $this->barang->delete($id);
+
+            return redirect()->to('/sales/view_barang')->with('message', 'Barang berhasil dihapus');
+        } else {
+            return redirect()->to('/sales/view_barang')->with('error', 'Barang tidak ditemukan');
+        }
+    }
+
     public function sub_kategori()
     {
         $id_kategori = $this->request->getPost('id_kategori');

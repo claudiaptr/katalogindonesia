@@ -84,6 +84,7 @@ $routes->get('/sales/tambah_opsi/(:num)','SalesController::tambah_opsi/$1');
 $routes->post('/sales/store_opsi','SalesController::store_opsi');
 $routes->post('/sales/store_barang','SalesController::store_barang');
 $routes->post('/sales/sub_kategori','SalesController::sub_kategori');
+$routes->delete('/sales/delete_barang/(:num)','SalesController::delete_barang/$1');
 
 
 // user

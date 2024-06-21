@@ -19,9 +19,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
-                    <div class="box-header">
-                        <a href="<?= base_url(); ?>sales/add_barang" class="btn btn-primary">Tambah</a>
-                    </div><!-- /.box-header -->
+                   
                     <div class="box-body">
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
