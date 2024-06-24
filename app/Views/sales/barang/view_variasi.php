@@ -19,14 +19,14 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
-                   
+
                     <div class="box-body">
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    
+
                                     <th>Nama variasi</th>
-                                   
+
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -34,18 +34,18 @@
                                 <?php foreach ($variasi as $vi) : ?>
                                     <tr>
                                         <td><?= $vi['nama_variasi']; ?></td>
-                                      
+
                                         <td style="display: flex;">
                                             <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/edit_opsi/<?= $vi['id']; ?>" class="btn btn-primary mr-3">Edit Opsi</a>
                                             <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/tambah_opsi/<?= $vi['id']; ?>" class="btn btn-success mr-3">Tambah Opsi</a>
-                                            <form style=" margin-left: 10px;" action="" method="post">
+                                            <form style=" margin-left: 10px;" action="<?= base_url(); ?>/sales/delete_variasi/<?= $vi['id']; ?>" method="post">
                                                 <?= csrf_field(); ?>
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <button class="btn btn-danger ">Hapus </button>
                                             </form>
                                         </td>
                                     </tr>
-                                <?php endforeach;    ?>
+                                <?php endforeach; ?>
                             </tbody>
 
                         </table>

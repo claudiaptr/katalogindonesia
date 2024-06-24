@@ -367,6 +367,21 @@ class SalesController extends BaseController
 
         return view('sales/barang/view_variasi', $data);
     }
+    public function delete_variasi($id)
+    {
+        // Cek apakah variasi ada berdasarkan ID
+        $variasi = $this->variasi->find($id);
+
+        if (!$variasi) {
+            return redirect()->to('/sales/view_tambah_variasi')->with('error', 'Variasi tidak ditemukan.');
+        }
+
+        // Hapus variasi berdasarkan ID
+        $this->variasi->delete($id);
+
+        return redirect()->to('/sales/view_tambah_variasi')->with('success', 'Variasi berhasil dihapus.');
+    }
+
     public function tambah_opsi($id)
     {
         $variasi = $this->variasi->find($id);
