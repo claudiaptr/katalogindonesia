@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
                 'no_hp'    => '087616162',
                 'nama_toko' => 'Toko Pembeli',
                 'alamat'   => 'Jakarta',
-                'level'    => '1',
+                'level'    => '3',
             ],
             [
                 'username' => 'admin',
@@ -34,7 +34,7 @@ class UserSeeder extends Seeder
                 'no_hp'    => '087616163',
                 'nama_toko' => 'Toko Admin',
                 'alamat'   => 'Surabaya',
-                'level'    => '0',
+                'level'    => '1',
             ],
         ];
 
