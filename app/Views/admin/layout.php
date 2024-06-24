@@ -281,7 +281,7 @@
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper ">
-        <div class="flash_data" data-flashdata="<?= session()->getFlashdata('pesan'); ?>"></div>
+            <div class="flash_data" data-flashdata="<?= session()->getFlashdata('pesan'); ?>"></div>
             <?= $this->renderSection('content'); ?>
         </div>
         <!-- /.content-wrapper -->
@@ -370,7 +370,6 @@
         });
     </script>
     <script>
-        
         const flashData = $('.flash_data').data('flashdata')
         if (flashData) {
             Swal.fire({
@@ -379,7 +378,7 @@
             });
         }
 
-        
+
         $('.delete').on('submit', function(e) {
             e.preventDefault();
             const hero = this;

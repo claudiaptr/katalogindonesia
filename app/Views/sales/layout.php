@@ -9,13 +9,13 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
     <link rel="stylesheet" href="<?= base_url(); ?>sales/bootstrap/css/bootstrap.min.css">
-    
+
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+   
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url(); ?>sales/dists/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -35,21 +35,38 @@
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="<?= base_url(); ?>sales/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
     <link rel="stylesheet" href="<?= base_url(); ?>sales/plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.css">
     <style>
-    	.dropzoneDragArea {
-		    background-color: #fbfdff;
-		    border: 1px dashed #c0ccda;
-		    border-radius: 6px;
-		    padding: 60px;
-		    text-align: center;
-		    margin-bottom: 15px;
-		    cursor: pointer;
-		}
-		.dropzone{
-			box-shadow: 0px 2px 20px 0px #f2f2f2;
-			border-radius: 10px;
-		}
+        .dropzoneDragArea {
+            background-color: #fbfdff;
+            border: 1px dashed #c0ccda;
+            border-radius: 6px;
+            padding: 60px;
+            text-align: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .dropzone {
+            box-shadow: 0px 2px 20px 0px #f2f2f2;
+            border-radius: 10px;
+        }
+
+        .example-modal .modal {
+            position: relative;
+            top: auto;
+            bottom: auto;
+            right: auto;
+            left: auto;
+            display: block;
+            z-index: 1;
+        }
+
+        .example-modal .modal {
+            background: transparent !important;
+        }
     </style>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -299,7 +316,7 @@
                                     <div class="pull-right">
                                         <a href="  <?= base_url(); ?>logout" class="btn btn-default btn-flat">Sign out</a>
                                     </div>
-                                  
+
                                 </li>
                             </ul>
                         </li>
@@ -344,8 +361,8 @@
                 <ul class="sidebar-menu">
                     <li class="header">HEADER</li>
                     <!-- Optionally, you can add icons to the links -->
-                    <li class=" <?= $menu == 'dashboard' ? 'active': ''  ?>" ><a href="<?= base_url(); ?>sales/home"><i class="fa fa-th-large"></i> <span>Dashboard</span></a></li>
-                    <li class=" <?= $menu == 'barang' ? 'active': ''  ?>" ><a href="<?= base_url(); ?>sales/view_barang"><i class="fa fa-cube"></i> <span>Barang</span></a></li>
+                    <li class=" <?= $menu == 'dashboard' ? 'active' : ''  ?>"><a href="<?= base_url(); ?>sales/home"><i class="fa fa-th-large"></i> <span>Dashboard</span></a></li>
+                    <li class=" <?= $menu == 'barang' ? 'active' : ''  ?>"><a href="<?= base_url(); ?>sales/view_barang"><i class="fa fa-cube"></i> <span>Barang</span></a></li>
                     <li class="treeview">
                         <a href="#"><i class="fa fa-link"></i> <span>lainya</span> <i class="fa fa-angle-left pull-right"></i></a>
                         <ul class="treeview-menu">
@@ -359,6 +376,8 @@
         </aside>
 
         <!-- Content Wrapper. Contains page content -->
+
+        <div class="flash_data" data-flashdata="<?= session()->getFlashdata('pesan'); ?>"></div>
 
 
         <?= $this->renderSection('home'); ?>
@@ -559,7 +578,7 @@
     <script src="<?= base_url(); ?>sales/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
     <!-- jQuery Knob Chart -->
     <script src="<?= base_url(); ?>sales/plugins/knob/jquery.knob.js"></script>
-    <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    
     <!-- daterangepicker -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
     <script src="<?= base_url(); ?>sales/plugins/daterangepicker/daterangepicker.js"></script>
@@ -578,34 +597,57 @@
 
     <!-- AdminLTE for demo purposes -->
     <script src="<?= base_url(); ?>sales/dists/js/demo.js"></script>
+    <script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
     <script>
-        
         const flashData = $('.flash_data').data('flashdata')
         if (flashData) {
-            Swal.fire({
-                title: flashData,
-                icon: "success"
-            });
+            swal("Success",flashData,"success")
         }
 
-        
+
         $('.delete').on('submit', function(e) {
             e.preventDefault();
             const hero = this;
-            Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    hero.submit();
-                }
-            });
-        })
+            swal({
+                    title: "Are you sure?",
+                    text: "You will not be able to recover this imaginary file!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, delete it!",
+                    cancelButtonText: "No, cancel!",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                function(isConfirm) {
+                    if (isConfirm) {
+                        hero.submit();
+                        swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                    } else {
+                        swal("Cancelled", "Your imaginary file is safe :)", "error");
+                    }
+                });
+        });
+        function formatRupiah(input) {
+            let angka = input.value.replace(/[^,\d]/g, '').toString();
+            let split = angka.split(',');
+            let sisa = split[0].length % 3;
+            let rupiah = split[0].substr(0, sisa);
+            let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                let separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+            input.value = 'Rp ' + rupiah;
+        }
+
+        document.getElementById('demoform').addEventListener('submit', function(e) {
+            let input = document.getElementById('rupiah-input');
+            input.value = input.value.replace(/[^,\d]/g, '').replace(',', '.');
+        });
     </script>
 
     <?= $this->renderSection('scripts'); ?>

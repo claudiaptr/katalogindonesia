@@ -21,6 +21,7 @@
                 <div class="box">
                     <div class="box-header">
                         <a href="<?= base_url(); ?>sales/add_barang" class="btn btn-primary">Tambah Barang</a>
+                       
                     </div><!-- /.box-header -->
                     <div class="box-body">
                         <table id="example1" class="table table-bordered table-striped">
@@ -40,10 +41,10 @@
                                         <td><?= $bk['judul_barang']; ?></td>
                                         <td><?= $bk['id_kategori_barang']; ?></td>
                                         <td><?= $bk['jumlah_barang']; ?></td>
-                                        <td style="display: flex;">
+                                        <td  style="display: flex;">
                                             <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/edit_barang/<?= $bk['id']; ?>" class="btn btn-primary mr-3">Edit </a>
                                             <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/view_tambah_variasi/<?= $bk['id']; ?>" class="btn btn-success mr-3"> Variasi</a>
-                                            <form  style=" margin-left: 10px;" action="<?= base_url(); ?>/sales/delete_barang/<?= $bk['id']; ?>" method="post">
+                                            <form class="delete" style=" margin-left: 10px;" action="<?= base_url(); ?>/sales/delete_barang/<?= $bk['id']; ?>" method="post">
                                                 <?= csrf_field(); ?>
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <button class="btn btn-danger ">Hapus </button>

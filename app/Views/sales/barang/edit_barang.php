@@ -79,7 +79,7 @@
                             </div>
                             <div class="form-group col-md-6 <?= ($validation->hasError('harga_barang')) ? 'has-error' : ''; ?>">
                                 <label>Harga Barang</label>
-                                <input value="<?= $barang['harga_barang']; ?>" type="number" class="form-control" name="harga_barang" placeholder="Enter Harga Barang">
+                                <input id="rupiah-input" oninput="formatRupiah(this)" value="<?= $barang['harga_barang']; ?>" type="text" class="form-control" name="harga_barang" placeholder="Enter Harga Barang">
                                 <?php if ($validation->hasError('harga_barang')) : ?>
                                     <label id="harga_barang-error" class="error invalid-feedback" for="harga_barang"><?= $validation->getError('harga_barang'); ?></label>
                                 <?php endif; ?>

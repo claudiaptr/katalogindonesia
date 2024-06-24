@@ -177,14 +177,15 @@ class SalesController extends BaseController
             $this->variasi->insertBatch($data);
         }
 
-
+        session()->setFlashdata('pesan', 'data berhasil ditambahkan');
         return redirect()->to('/sales/view_barang');
     }
     public function edit_barang($id)
     {
         $barang = $this->barang->find($id);
+        $barang['harga_barang'] = number_format($barang['harga_barang'], 0, ',', '.');
         $data = [
-            'barang' => $this->barang->find($id),
+            'barang' => $barang,
             'kategori' => $this->kategori->findAll(),
             'sub_ketgori' => $this->sub_kategori->where('id_kategori', $barang['id_kategori_barang'])->findAll(),
             'foto_detail' => $this->fotoBarang->where('id_barang', $id)->findAll(),
@@ -306,7 +307,7 @@ class SalesController extends BaseController
                 ]);
             }
         }
-
+        session()->setFlashdata('pesan', 'data berhasil diupdate');
 
         return redirect()->to('/sales/view_barang')->with('success', 'Data barang berhasil diperbarui.');
     }
@@ -373,6 +374,7 @@ class SalesController extends BaseController
             'menu' => 'barang',
             'variasi' => $this->variasi->find($id),
         ];
+        session()->setFlashdata('pesan', 'data berhasil ditambah');
         return view('sales/barang/add_opsi', $data);
     }
     public function store_opsi()
