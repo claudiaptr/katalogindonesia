@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Models\Model_Auth;
-use App\Models\ModelPenjual;
 
 class Auth extends BaseController
 {
@@ -63,7 +62,7 @@ class Auth extends BaseController
                 'username' => $this->request->getPost('username'),
                 'email' => $this->request->getPost('email'),
                 'no_hp' => $this->request->getPost('no_hp'),
-                'password' => $this->request->getPost('password'),
+                'password' => password_hash($this->request->getVar('password'),PASSWORD_DEFAULT),
                 'level' => 3
             );
             $this->Model_Auth->save_register($data);
@@ -82,46 +81,50 @@ class Auth extends BaseController
     public function cek_login()
     {
         if ($this->validate([
-
             'email' => [
                 'label' => 'Email',
-                'rules' => 'required',
+                'rules' => 'required|valid_email',
                 'errors' => [
-                    'required' => 'You must choose a Email.',
+                    'required' => 'You must enter an Email.',
+                    'valid_email' => 'Please enter a valid Email address.',
                 ],
             ],
             'password' => [
-                'label' => 'password',
+                'label' => 'Password',
                 'rules' => 'required',
                 'errors' => [
-                    'required' => 'You must choose a password.',
+                    'required' => 'You must enter a Password.',
                 ],
             ],
         ])) {
-
             $email = $this->request->getPost('email');
-            $password = $this->request->getPost('password');
-            $cek = $this->Model_Auth->Ceklogin($email, $password);
-            if ($cek) {
-                session()->set('log', true);
-                session()->set('username', $cek['username']);
-                session()->set('email', $cek['email']);
-                session()->set('level', $cek['level']);
-                session()->set('id', $cek['id']);
-                if (session()->get('level') == 1) {
-                    return redirect()->to(base_url('admin/dashboard'));
-                } else {
-                    return redirect()->to(base_url('/'));
-                }
+            $password = $this->request->getVar('password');
+            $authModel = new Model_Auth();
+            $user = $authModel->Ceklogin($email);
+
+            if ($user && password_verify($password, $user['password'])) {
+                $this->setUserSession($user);
+                return redirect()->to(session()->get('level') == 1 ? base_url('admin/dashboard') : base_url('/'));
             } else {
-                session()->setFlashdata('error', 'Login Gagal, Username dan Password Tidak Cocok !!!');
+                session()->setFlashdata('error', 'Login Failed, Email and Password do not match!');
                 return redirect()->to(base_url('auth/login'));
             }
         } else {
-
             session()->setFlashdata('errors', \Config\Services::validation()->getErrors());
-            return redirect()->to(base_url('auth/login'));
+            return redirect()->to(base_url('auth/login'))->withInput();
         }
+    }
+
+    private function setUserSession($user)
+    {
+        $data = [
+            'log' => true,
+            'username' => $user['username'],
+            'email' => $user['email'],
+            'level' => $user['level'],
+            'id' => $user['id'],
+        ];
+        session()->set($data);
     }
     public function logout()
     {
