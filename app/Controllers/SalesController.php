@@ -370,38 +370,107 @@ class SalesController extends BaseController
     }
     public function tambah_opsi($id)
     {
+        $variasi = $this->variasi->find($id);
         $data = [
             'menu' => 'barang',
-            'variasi' => $this->variasi->find($id),
+            'variasi' => $variasi,
         ];
         session()->setFlashdata('pesan', 'data berhasil ditambah');
         return view('sales/barang/add_opsi', $data);
     }
-    public function store_opsi()
+
+    public function edit_opsi($id)
     {
-        $nama_opsi = $this->request->getVar('nama_opsi');
+        
+        $variasi = $this->variasi->find($id);
+        $opsi = $this->opsi->where('id_variasi', $variasi['id'])->findAll();
 
-        $harga = $this->request->getVar('harga');
-        $idVariasi = $this->request->getVar('id_variasi');
+        $data = [
+            'opsi' => $opsi,
+            'variasi' => $variasi,
+            'menu' => 'barang',
+            'validation' => \Config\Services::validation(),
+        ];
 
-        if (
-            is_array($nama_opsi) && is_array($harga)   &&
-            count($nama_opsi) === count($harga) && count($harga)
-        ) {
-            $data = [];
-            foreach ($nama_opsi as $index => $nama) {
-                $data[] = [
-                    'nama_opsi' => $nama,
-                    'harga' => $harga[$index],
-                    'id_variasi' => $idVariasi,
-                ];
-            }
+        return view('sales/barang/edit_opsi', $data);
+    }
 
-            $this->opsi->insertBatch($data);
-        } else {
-            return redirect()->back()->with('error', 'No data to insert.');
+    public function update_opsi($id)
+    {
+        // Tambahkan debugging
+        $requestData = $this->request->getPost();
+        log_message('debug', 'Request Data: ' . json_encode($requestData));
+
+        // Validasi input
+        $validate = $this->validate([
+            'nama_opsi' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must input a Nama Opsi.',
+                ],
+            ],
+            'harga' => [
+                'rules'  => 'required|numeric',
+                'errors' => [
+                    'required' => 'You must input a Harga Opsi.',
+                    'numeric' => 'Harga Opsi must be a number.',
+                ],
+            ],
+        ]);
+
+        if (!$validate) {
+            $validation = \Config\Services::validation();
+            return redirect()->back()->with('validation', $validation)->withInput();
         }
 
-        return redirect()->to('sales/view_barang');
+        // Memperbarui data opsi
+        $this->opsi->update($id, [
+            'nama_opsi' => $this->request->getVar('nama_opsi'),
+            'harga' => $this->request->getVar('harga'),
+        ]);
+
+        return redirect()->to('/sales/view_barang')->with('success', 'Opsi berhasil diperbarui.');
+    }
+
+
+
+    public function store_opsi()
+    {
+        // Validasi input
+        $validate = $this->validate([
+            'nama_opsi' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must input a Nama Opsi.',
+                ],
+            ],
+            'harga' => [
+                'rules'  => 'required|numeric',
+                'errors' => [
+                    'required' => 'You must input a Harga Opsi.',
+                    'numeric' => 'Harga Opsi must be a number.',
+                ],
+            ],
+        ]);
+
+        if (!$validate) {
+            $validation = \Config\Services::validation();
+            return redirect()->back()->with('validation', $validation)->withInput();
+        }
+
+        // Menyimpan data opsi baru
+        $nama_opsi = $this->request->getVar('nama_opsi');
+        $harga = $this->request->getVar('harga');
+        $id_variasi = $this->request->getVar('id_variasi');
+
+        for ($i = 0; $i < count($nama_opsi); $i++) {
+            $this->opsi->insert([
+                'id_variasi' => $id_variasi,
+                'nama_opsi' => $nama_opsi[$i],
+                'harga' => $harga[$i],
+            ]);
+        }
+
+        return redirect()->to('/sales/view_barang')->with('success', 'Opsi baru berhasil ditambahkan.');
     }
 }
