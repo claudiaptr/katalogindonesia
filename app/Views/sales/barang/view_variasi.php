@@ -36,7 +36,7 @@
                                         <td><?= $vi['nama_variasi']; ?></td>
                                       
                                         <td style="display: flex;">
-                                            <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/edit_barang/<?= $vi['id']; ?>" class="btn btn-primary mr-3">Edit Opsi</a>
+                                            <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/edit_opsi/<?= $vi['id']; ?>" class="btn btn-primary mr-3">Edit Opsi</a>
                                             <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/tambah_opsi/<?= $vi['id']; ?>" class="btn btn-success mr-3">Tambah Opsi</a>
                                             <form style=" margin-left: 10px;" action="" method="post">
                                                 <?= csrf_field(); ?>
@@ -45,7 +45,7 @@
                                             </form>
                                         </td>
                                     </tr>
-                                <?php endforeach; ?>
+                                <?php endforeach;    ?>
                             </tbody>
 
                         </table>

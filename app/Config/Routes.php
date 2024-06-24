@@ -81,6 +81,9 @@ $routes->post('/sales/update_barang/(:num)','SalesController::update_barang/$1')
 $routes->get('/sales/delete_foto_lain/(:num)', 'SalesController::delete_foto_lain/$1');
 $routes->get('/sales/view_tambah_variasi/(:num)','SalesController::view_tambah_variasi/$1');
 $routes->get('/sales/tambah_opsi/(:num)','SalesController::tambah_opsi/$1');
+$routes->get('/sales/edit_opsi/(:num)', 'SalesController::edit_opsi/$1');
+$routes->post('/sales/update_opsi/(:num)', 'SalesController::update_opsi/$1');
+$routes->post('sales/store_opsi', 'Barang::store_opsi');
 $routes->post('/sales/store_opsi','SalesController::store_opsi');
 $routes->post('/sales/store_barang','SalesController::store_barang');
 $routes->post('/sales/sub_kategori','SalesController::sub_kategori');
