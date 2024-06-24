@@ -15,12 +15,12 @@ class Model_Auth extends Model
    {
       $this->db->table('user')->where('id',$id)->update($data);
    }
-   public function Ceklogin($email, $password)
+   public function Ceklogin($email)
    {
-      return $this->db->table('user')->where([
-         'email' => $email,
-         'password' => $password,
-      ])->get()->getRowArray();
+       return $this->db->table('user')
+                       ->where('email', $email)
+                       ->get()
+                       ->getRowArray();   
    }
    public function getLogin($data)
    {
