@@ -248,7 +248,6 @@ class SalesController extends BaseController
             $validation = \Config\Services::validation();
             return redirect()->back()->with('validation', $validation)->withInput();
         }
-
         // Mengunggah gambar utama jika ada
         $foto_barang = $this->request->getFile('foto_barang');
         if ($foto_barang && $foto_barang->isValid() && !$foto_barang->hasMoved()) {
