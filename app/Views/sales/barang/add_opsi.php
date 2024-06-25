@@ -29,31 +29,30 @@
                             <div id="actions" class="row">
                                 <div class="col-lg-6">
                                     <div class="btn-group w-100">
-                                        <span class="btn btn-success add-variasi col fileinput-button">
-                                            <i class="fa fa-plus"></i>
-                                            <span>Add Variasi</span>
-                                        </span>
+                                        <span class="btn btn-success add-variasi col fileinput-button"><i class="fa fa-plus"></i><span>Add Variasi</span></span>
 
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group col-md-12">
                                 <label>Opsi</label>
-                                <input type="text" class="form-control" name="nama_opsi[]" placeholder="Enter nama variasi">
+                                <input type="text" required class="form-control " name="nama_opsi[]" placeholder="Enter nama variasi">
                             </div>
                             <div class="form-group col-md-12">
-                                <input type="hidden" class="form-control" name="id_variasi" value="<?= $variasi['id']; ?>">
+                                <input type="hidden" required class="form-control" name="id_variasi" value="<?= $variasi['id']; ?>">
+                                <input type="hidden" required class="form-control" name="id_barang" value="<?= $variasi['id_barang']; ?>">
                             </div>
+
                             <div class="form-group col-md-12">
                                 <label>Harga</label>
-                                <input type="text" class="form-control" name="harga[]" placeholder="Enter nama variasi">
+                                <input type="text" required class="form-control" name="harga[]" placeholder="Enter nama variasi">
                             </div>
                         </div>
                         <!-- /.card-body -->
 
                     </div>
                     <div class="add-more-variasi">
-                       
+
                     </div>
                 </div>
 
@@ -72,44 +71,34 @@
     $(".add-variasi").on("click", function() {
         // uniqueId++;
         var card =
-            '<div class="box box-default">' +
+            '<div class="box box-default hapus">' +
             '<div class="box-body">' +
-            ' <div class="form-group col-md-12">' +
+            ' <div id="actions" class="row">' +
+            ' <div class="col-lg-6">' +
+            ' <div class="btn-group w-100">' +
+            '<span class="btn btn-danger delete col "><i class="fa fa-plus"></i><span>Hapus Variasi</span></span>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '<div class="form-group col-md-12">' +
             '<label>Opsi</label>' +
-            '<input type="text" class="form-control" name="nama_opsi[]" placeholder="Enter nama variasi">' +
-            " </div>" +
+            '<input required type="text" class="form-control" name="nama_opsi[]" placeholder="Enter nama variasi">' +
+            "</div>" +
             '<div class="form-group col-md-12">' +
             " <label>Harga</label>" +
-            ' <input type="text" class="form-control" name="harga[]" placeholder="Enter nama variasi">' +
-            '  </div>' +
-            '  </div>' +
-            '  </div>' ;
-            $(".add-more-variasi").append(card);
+            ' <input required type="text" class="form-control" name="harga[]" placeholder="Enter nama variasi">' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+        $(".add-more-variasi").append(card);
         $(".select2").select2({
             tags: true
         });
     });
 
-    $(".add-more-data").delegate(".delete", "click", function() {
+    $(".add-more-variasi").delegate(".delete", "click", function() {
         $(this).parent().parent().remove();
     });
 </script>
-<script>
-    $(document).ready(function() {
-        $('#id_kategori').change(function(e) {
-            var id_kategori = $('#id_kategori').val();
-            $.ajax({
-                type: 'POST',
-                url: "<?= base_url('/sales/sub_kategori'); ?>",
-                data: {
-                    id_kategori: id_kategori
-                },
 
-                success: function(response) {
-                    $("#id_sub_kategori").html(response);
-                }
-            })
-        })
-    })
-</script>
 <?= $this->endSection() ?>

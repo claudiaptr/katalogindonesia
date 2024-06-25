@@ -375,13 +375,13 @@ class SalesController extends BaseController
             'menu' => 'barang',
             'variasi' => $variasi,
         ];
-        session()->setFlashdata('pesan', 'data berhasil ditambah');
+
         return view('sales/barang/add_opsi', $data);
     }
 
     public function edit_opsi($id)
     {
-        
+
         $variasi = $this->variasi->find($id);
         $opsi = $this->opsi->where('id_variasi', $variasi['id'])->findAll();
 
@@ -437,6 +437,7 @@ class SalesController extends BaseController
     public function store_opsi()
     {
         // Validasi input
+        
         $validate = $this->validate([
             'nama_opsi' => [
                 'rules'  => 'required',
@@ -445,14 +446,13 @@ class SalesController extends BaseController
                 ],
             ],
             'harga' => [
-                'rules'  => 'required|numeric',
+                'rules'  => 'required',
                 'errors' => [
                     'required' => 'You must input a Harga Opsi.',
                     'numeric' => 'Harga Opsi must be a number.',
                 ],
             ],
         ]);
-
         if (!$validate) {
             $validation = \Config\Services::validation();
             return redirect()->back()->with('validation', $validation)->withInput();
@@ -462,6 +462,7 @@ class SalesController extends BaseController
         $nama_opsi = $this->request->getVar('nama_opsi');
         $harga = $this->request->getVar('harga');
         $id_variasi = $this->request->getVar('id_variasi');
+        $id_barang = $this->request->getVar('id_barang');
 
         for ($i = 0; $i < count($nama_opsi); $i++) {
             $this->opsi->insert([
@@ -470,7 +471,7 @@ class SalesController extends BaseController
                 'harga' => $harga[$i],
             ]);
         }
-
-        return redirect()->to('/sales/view_barang')->with('success', 'Opsi baru berhasil ditambahkan.');
+        session()->setFlashdata('pesan', 'data berhasil ditambah');
+        return redirect()->to('/sales/view_tambah_variasi/'.$id_barang);
     }
 }
