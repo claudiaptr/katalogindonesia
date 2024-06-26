@@ -132,6 +132,7 @@ class Auth extends BaseController
         session()->remove('username');
         session()->remove('level');
         session()->remove('foto_user');
+        session()->remove('id');
         session()->setFlashdata('pesan', 'Logout Sukses !!!');
         return redirect()->to(base_url('/'));
     }

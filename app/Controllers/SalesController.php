@@ -21,6 +21,7 @@ class SalesController extends BaseController
         $this->sub_kategori = new SubKategori();
         $this->variasi = new Variasi();
         $this->opsi = new Opsi();
+        session();
     }
     public function home()
     {
@@ -80,55 +81,55 @@ class SalesController extends BaseController
     {
 
 
-        $validate = $this->validate([
-            'judul_barang' => [
-                'rules'  => 'required',
-                'errors' => [
-                    'required' => 'You must input a Nama Barang.',
-                ],
-            ],
-            'id_kategori_barang' => [
-                'rules'  => 'required',
-                'errors' => [
-                    'required' => 'You must choose a kategori.',
-                ],
-            ],
-            'id_sub_kategori_barang' => [
-                'rules'  => 'required',
-                'errors' => [
-                    'required' => 'You must choose a sub kategoi.',
-                ],
-            ],
-            'foto_barang' => [
-                'rules'  => 'uploaded[foto_barang]|mime_in[foto_barang,image/jpg,image/jpeg,image/png]  ',
-                'errors' => [
-                    'uploaded' => 'You must choose a foto barang.',
-                    'mime_in' => 'Only image files are allowed (jpg, jpeg, png).',
-                ],
-            ],
-            'harga_barang' => [
-                'rules'  => 'required|numeric',
-                'errors' => [
-                    'required' => 'You must input a harga barang.',
-                ],
-            ],
-            'jumlah_barang' => [
-                'rules'  => 'required|numeric',
-                'errors' => [
-                    'required' => 'You must input a jumlah barang.',
-                ],
-            ],
-            'deskripsi_barang' => [
-                'rules'  => 'required',
-                'errors' => [
-                    'required' => 'You must input a deskripsi.',
-                ],
-            ],
-        ]);
-        if (!$validate) {
-            $validation = \Config\Services::validation();
-            return redirect()->back()->with('validation', $validation);
-        }
+        // $validate = $this->validate([
+        //     'judul_barang' => [
+        //         'rules'  => 'required',
+        //         'errors' => [
+        //             'required' => 'You must input a Nama Barang.',
+        //         ],
+        //     ],
+        //     'id_kategori_barang' => [
+        //         'rules'  => 'required',
+        //         'errors' => [
+        //             'required' => 'You must choose a kategori.',
+        //         ],
+        //     ],
+        //     'id_sub_kategori_barang' => [
+        //         'rules'  => 'required',
+        //         'errors' => [
+        //             'required' => 'You must choose a sub kategoi.',
+        //         ],
+        //     ],
+        //     'foto_barang' => [
+        //         'rules'  => 'uploaded[foto_barang]|mime_in[foto_barang,image/jpg,image/jpeg,image/png]  ',
+        //         'errors' => [
+        //             'uploaded' => 'You must choose a foto barang.',
+        //             'mime_in' => 'Only image files are allowed (jpg, jpeg, png).',
+        //         ],
+        //     ],
+        //     'harga_barang' => [
+        //         'rules'  => 'required',
+        //         'errors' => [
+        //             'required' => 'You must input a harga barang.',
+        //         ],
+        //     ],
+        //     'jumlah_barang' => [
+        //         'rules'  => 'required',
+        //         'errors' => [
+        //             'required' => 'You must input a jumlah barang.',
+        //         ],
+        //     ],
+        //     'deskripsi_barang' => [
+        //         'rules'  => 'required',
+        //         'errors' => [
+        //             'required' => 'You must input a deskripsi.',
+        //         ],
+        //     ],
+        // ]);
+        // if (!$validate) {
+        //     $validation = \Config\Services::validation();
+        //     return redirect()->back()->with('validation', $validation);
+        // }
         $foto_barang = $this->request->getFile('foto_barang');
 
 

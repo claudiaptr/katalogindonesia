@@ -33,9 +33,8 @@
                             <h3 class="box-title">Form Tambah Barang</h3>
                         </div><!-- /.box-header -->
                         <div class="box-body">
-
                             <!-- text input -->
-                            <input type="hidden" name="pemilik" value="<?= session()->get('id'); ?>">
+                            <input type="hidden"  name="pemilik" value="<?= session()->get('id'); ?>">
                             <div class="form-group col-md-6  <?= ($validation->hasError('judul_barang')) ? 'has-error' : ''; ?>">
                                 <label>Judul Barang</label>
                                 <input type="text" class="form-control " name="judul_barang" placeholder="Enter Judul Barang">
