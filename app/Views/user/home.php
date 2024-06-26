@@ -29,19 +29,18 @@
         </div>
         <div class="col-lg-4">
             <div class="product-offer mb-30" style="height: 200px;">
-                <img class="img-fluid" src="<?= base_url(); ?>user/img/offer-1.jpg" alt="">
+                <img class="img-fluid" src="<?= base_url('img/' . $iklan_tetap_1['foto_iklan']); ?>" alt="<?= $iklan_tetap_1['judul_iklan']; ?>">
                 <div class="offer-text">
-                    <h6 class="text-white text-uppercase">Save 20%</h6>
-                    <h3 class="text-white mb-3">Special Offer</h3>
-                    <a href="" class="btn btn-primary">Shop Now</a>
+                    <h6 class="text-white text-uppercase"><?= $iklan_tetap_1['judul_iklan']; ?></h6>
+                    <h3 class="text-white mb-3"><?= $iklan_tetap_1['isi_iklan']; ?></h3>
                 </div>
             </div>
             <div class="product-offer mb-30" style="height: 200px;">
-                <img class="img-fluid" src="<?= base_url(); ?>user/img/offer-2.jpg" alt="">
+                <img class="img-fluid" src="<?= base_url('img/' . $iklan_tetap_2['foto_iklan']); ?>" alt="<?= $iklan_tetap_2['judul_iklan']; ?>">
                 <div class="offer-text">
-                    <h6 class="text-white text-uppercase">Save 20%</h6>
-                    <h3 class="text-white mb-3">Special Offer</h3>
-                    <a href="" class="btn btn-primary">Shop Now</a>
+                    <h6 class="text-white text-uppercase"><?= $iklan_tetap_2['judul_iklan']; ?></h6>
+                    <h3 class="text-white mb-3"><?= $iklan_tetap_2['isi_iklan']; ?></h3>
+
                 </div>
             </div>
         </div>
@@ -247,7 +246,7 @@
 <!-- Categories End -->
 
 
-<!-- Produk Dimulai -->
+<!-- Produk start -->
 <div class="container-fluid pt-5 pb-3">
     <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Produk Unggulan</span></h2>
     <div class="row px-xl-5">
@@ -270,7 +269,7 @@
         <?php endforeach; ?>
     </div>
 </div>
-<!-- Produk Selesai -->
+<!-- Produk end -->
 
 
 
@@ -280,21 +279,20 @@
     <div class="row px-xl-5">
         <div class="col-md-6">
             <div class="product-offer mb-30" style="height: 300px;">
-                <img class="img-fluid" src="<?= base_url(); ?>user/img/offer-1.jpg" alt="">
+                <img class="img-fluid" src="<?= base_url('img/' . $iklan_tetap_3['foto_iklan']); ?>" alt="<?= $iklan_tetap_3['judul_iklan']; ?>">
                 <div class="offer-text">
-                    <h6 class="text-white text-uppercase">Save 20%</h6>
-                    <h3 class="text-white mb-3">Special Offer</h3>
-                    <a href="" class="btn btn-primary">Shop Now</a>
+                    <h6 class="text-white text-uppercase"><?= $iklan_tetap_3['judul_iklan']; ?></h6>
+                    <h3 class="text-white mb-3"><?= $iklan_tetap_3['isi_iklan']; ?></h3>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="product-offer mb-30" style="height: 300px;">
-                <img class="img-fluid" src="<?= base_url(); ?>user/img/offer-2.jpg" alt="">
+                <img class="img-fluid" src="<?= base_url('img/' . $iklan_tetap_4['foto_iklan']); ?>" alt="<?= $iklan_tetap_4['judul_iklan']; ?>">
                 <div class="offer-text">
-                    <h6 class="text-white text-uppercase">Save 20%</h6>
-                    <h3 class="text-white mb-3">Special Offer</h3>
-                    <a href="" class="btn btn-primary">Shop Now</a>
+                    <h6 class="text-white text-uppercase"><?= $iklan_tetap_4['judul_iklan']; ?></h6>
+                    <h3 class="text-white mb-3"><?= $iklan_tetap_4['isi_iklan']; ?></h3>
+
                 </div>
             </div>
         </div>

@@ -8,12 +8,14 @@ use App\Models\IklanCarausel;
 use App\Models\Kategori;
 use App\Models\Opsi;
 use App\Models\Variasi;
+use App\Models\IklanTetap;
 
 class UserController extends BaseController
 {
     protected $barang;
     protected $fotoBarang;
     protected $kategori, $variasi, $opsi, $iklancarausel;
+    protected $iklantetap;
 
     public function __construct()
     {
@@ -23,7 +25,7 @@ class UserController extends BaseController
         $this->variasi = new Variasi();
         $this->opsi = new Opsi();
         $this->iklancarausel = new IklanCarausel();
-        
+        $this->iklantetap = new IklanTetap();
     }
     public function home()
     {
@@ -32,6 +34,10 @@ class UserController extends BaseController
             'barang' => $this->barang->getRandomBarang(8),
             'barang_baru' => $this->barang->getNewBarang(8),
             'kategori' => $this->kategori->getSubKategori(),
+            'iklan_tetap_1' => $this->iklantetap->find(1),
+            'iklan_tetap_2' => $this->iklantetap->find(2),
+            'iklan_tetap_3' => $this->iklantetap->find(3),
+            'iklan_tetap_4' => $this->iklantetap->find(4),
             'iklan_carausel'=>$this->iklancarausel->findAll()
         ];
         return view('user/home', $data);
