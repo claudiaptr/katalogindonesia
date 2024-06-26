@@ -40,6 +40,7 @@
                             </div>
                             <div class="form-group col-md-12">
                                 <input type="hidden" class="form-control" name="id_variasi" value="<?= $variasi['id']; ?>">
+                                <input type="hidden" class="form-control" name="id_barang" value="<?= $variasi['id_barang']; ?>">
                                 
                             </div>
                             <div class="form-group col-md-12">

@@ -355,7 +355,7 @@ class SalesController extends BaseController
     {
         // Cek apakah variasi ada berdasarkan ID
         $variasi = $this->variasi->find($id);
-
+        
         if (!$variasi) {
             return redirect()->to('/sales/view_tambah_variasi')->with('error', 'Variasi tidak ditemukan.');
         }
@@ -396,7 +396,7 @@ class SalesController extends BaseController
     {
         // Tambahkan debugging
         $requestData = $this->request->getPost();
-        log_message('debug', 'Request Data: ' . json_encode($requestData));
+        
 
         // Validasi input
         $validate = $this->validate([
@@ -429,7 +429,7 @@ class SalesController extends BaseController
             'harga' => $this->request->getVar('harga'),
         ]);
         session()->setFlashdata('pesan', 'data berhasil diupdate');
-        return redirect()->to('/sales/view_barang')->with('success', 'Opsi berhasil diperbarui.');
+        return redirect()->to('/sales/view_tambah_variasi/')->with('success', 'Opsi berhasil diperbarui.');
     }
     public function store_opsi()
     {
@@ -437,6 +437,7 @@ class SalesController extends BaseController
         $nama_opsi = $this->request->getVar('nama_opsi');
         $harga = $this->request->getVar('harga');
         $id_variasi = $this->request->getVar('id_variasi');
+        $id_barang = $this->request->getVar('id_barang');
 
         // Validation rules for array elements
         $rules = [];
@@ -471,9 +472,10 @@ class SalesController extends BaseController
                 'harga' => $harga[$i],
             ]);
         }
+
         session()->setFlashdata('pesan', 'data berhasil ditambah');
         
-        return redirect()->to('/sales/view_barang')->with('success', 'Opsi baru berhasil ditambahkan.');
+        return redirect()->to('/sales/view_tambah_variasi/'.$id_barang)->with('success', 'Opsi baru berhasil ditambahkan.');
     }
     public function deleteOpsi($id)
     {
