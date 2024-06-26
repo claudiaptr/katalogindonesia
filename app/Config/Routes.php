@@ -50,7 +50,6 @@ $routes->get('/user/detail/(:num)', 'UserController::detail/$1');
 $routes->get('/user/contact', 'UserController::contact');
 $routes->get('/checkout', 'UserController::checkout');
 $routes->get('/cart', 'UserController::cart');
-
 $routes->post('/add_chart', 'UserController::add_chart');
 $routes->get('/delete_chart', 'UserController::delete_chart');
 
@@ -88,7 +87,7 @@ $routes->post('/sales/store_opsi','SalesController::store_opsi');
 $routes->post('/sales/store_barang','SalesController::store_barang');
 $routes->post('/sales/sub_kategori','SalesController::sub_kategori');
 $routes->delete('/sales/delete_barang/(:num)','SalesController::delete_barang/$1');
-
+$routes->post('sales/delete_opsi/(:num)', 'SalesController::deleteOpsi/$1');
 
 // user
 

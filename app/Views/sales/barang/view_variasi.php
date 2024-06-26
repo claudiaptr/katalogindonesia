@@ -38,7 +38,7 @@
                                         <td style="display: flex;">
                                             <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/edit_opsi/<?= $vi['id']; ?>" class="btn btn-primary mr-3">Edit Opsi</a>
                                             <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/tambah_opsi/<?= $vi['id']; ?>" class="btn btn-success mr-3">Tambah Opsi</a>
-                                            <form style=" margin-left: 10px;" action="<?= base_url(); ?>/sales/delete_variasi/<?= $vi['id']; ?>" method="post">
+                                            <form class="delete" style=" margin-left: 10px;" action="<?= base_url(); ?>/sales/delete_variasi/<?= $vi['id']; ?>" method="post">
                                                 <?= csrf_field(); ?>
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <button class="btn btn-danger ">Hapus </button>
