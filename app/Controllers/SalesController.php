@@ -81,55 +81,56 @@ class SalesController extends BaseController
     {
 
 
-        // $validate = $this->validate([
-        //     'judul_barang' => [
-        //         'rules'  => 'required',
-        //         'errors' => [
-        //             'required' => 'You must input a Nama Barang.',
-        //         ],
-        //     ],
-        //     'id_kategori_barang' => [
-        //         'rules'  => 'required',
-        //         'errors' => [
-        //             'required' => 'You must choose a kategori.',
-        //         ],
-        //     ],
-        //     'id_sub_kategori_barang' => [
-        //         'rules'  => 'required',
-        //         'errors' => [
-        //             'required' => 'You must choose a sub kategoi.',
-        //         ],
-        //     ],
-        //     'foto_barang' => [
-        //         'rules'  => 'uploaded[foto_barang]|mime_in[foto_barang,image/jpg,image/jpeg,image/png]  ',
-        //         'errors' => [
-        //             'uploaded' => 'You must choose a foto barang.',
-        //             'mime_in' => 'Only image files are allowed (jpg, jpeg, png).',
-        //         ],
-        //     ],
-        //     'harga_barang' => [
-        //         'rules'  => 'required',
-        //         'errors' => [
-        //             'required' => 'You must input a harga barang.',
-        //         ],
-        //     ],
-        //     'jumlah_barang' => [
-        //         'rules'  => 'required',
-        //         'errors' => [
-        //             'required' => 'You must input a jumlah barang.',
-        //         ],
-        //     ],
-        //     'deskripsi_barang' => [
-        //         'rules'  => 'required',
-        //         'errors' => [
-        //             'required' => 'You must input a deskripsi.',
-        //         ],
-        //     ],
-        // ]);
-        // if (!$validate) {
-        //     $validation = \Config\Services::validation();
-        //     return redirect()->back()->with('validation', $validation);
-        // }
+        $validate = $this->validate([
+            'judul_barang' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'You must choose a Username.',
+                ],
+            ],
+            'id_kategori_barang' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must choose a kategori.',
+                ],
+            ],
+            'id_sub_kategori_barang' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must choose a sub kategoi.',
+                ],
+            ],
+            'foto_barang' => [
+                'rules'  => 'uploaded[foto_barang]|mime_in[foto_barang,image/jpg,image/jpeg,image/png]  ',
+                'errors' => [
+                    'uploaded' => 'You must choose a foto barang.',
+                    'mime_in' => 'Only image files are allowed (jpg, jpeg, png).',
+                ],
+            ],
+            'harga_barang' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must input a harga barang.',
+                ],
+            ],
+            'jumlah_barang' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must input a jumlah barang.',
+                ],
+            ],
+            'deskripsi_barang' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must input a deskripsi.',
+                ],
+            ],
+        ]);
+        dd($validate);
+        if (!$validate) {
+            $validation = \Config\Services::validation();
+            return redirect()->back()->with('validation', $validation);
+        }
         $foto_barang = $this->request->getFile('foto_barang');
 
 
@@ -178,7 +179,7 @@ class SalesController extends BaseController
             $this->variasi->insertBatch($data);
         }
 
-
+        session()->setFlashdata('pesan', 'data berhasil ditambah');
         return redirect()->to('/sales/view_barang');
     }
     public function edit_barang($id)
@@ -388,13 +389,14 @@ class SalesController extends BaseController
         $data = [
             'menu' => 'barang',
             'variasi' => $variasi,
+            'validation'=> \Config\Services::validation(),
         ];
         return view('sales/barang/add_opsi', $data);
     }
 
     public function edit_opsi($id)
     {
-        
+
         $variasi = $this->variasi->find($id);
         $opsi = $this->opsi->where('id_variasi', $variasi['id'])->findAll();
 
@@ -423,7 +425,7 @@ class SalesController extends BaseController
                 ],
             ],
             'harga' => [
-                'rules'  => 'required|numeric',
+                'rules'  => 'required',
                 'errors' => [
                     'required' => 'You must input a Harga Opsi.',
                     'numeric' => 'Harga Opsi must be a number.',
@@ -449,33 +451,37 @@ class SalesController extends BaseController
 
     public function store_opsi()
     {
-        // Validasi input
-        $validate = $this->validate([
-            'nama_opsi' => [
-                'rules'  => 'required',
-                'errors' => [
-                    'required' => 'You must input a Nama Opsi.',
-                ],
-            ],
-            'harga' => [
-                'rules'  => 'required|numeric',
-                'errors' => [
-                    'required' => 'You must input a Harga Opsi.',
-                    'numeric' => 'Harga Opsi must be a number.',
-                ],
-            ],
-        ]);
-
-        if (!$validate) {
-            $validation = \Config\Services::validation();
-            return redirect()->back()->with('validation', $validation)->withInput();
-        }
-
-        // Menyimpan data opsi baru
+        // Retrieve input values
         $nama_opsi = $this->request->getVar('nama_opsi');
         $harga = $this->request->getVar('harga');
         $id_variasi = $this->request->getVar('id_variasi');
 
+        // Validation rules for array elements
+        $rules = [];
+        foreach ($nama_opsi as $key => $value) {
+            $rules["nama_opsi.$key"] = [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => "You must choose a Username for option " . ($key + 1) . ".",
+                ],
+            ];
+            $rules["harga.$key"] = [
+                'rules' => 'required|numeric',
+                'errors' => [
+                    'required' => "You must choose a Harga for option " . ($key + 1) . ".",
+                    'numeric' => "The Harga for option " . ($key + 1) . " must be a number.",
+                ],
+            ];
+        }
+        // Validate input
+        if (!$this->validate($rules)) {
+            $validation = \Config\Services::validation();
+            $error = \Config\Services::validation()->getErrors();
+            $errorString = implode(' ', $error);
+            session()->setFlashdata('error', $errorString);
+            return redirect()->back()->with('validation', $validation)->withInput();
+        }
+        // Insert each option into the database
         for ($i = 0; $i < count($nama_opsi); $i++) {
             $this->opsi->insert([
                 'id_variasi' => $id_variasi,
@@ -483,7 +489,8 @@ class SalesController extends BaseController
                 'harga' => $harga[$i],
             ]);
         }
-
+        session()->setFlashdata('pesan', 'data berhasil ditambah');
+        
         return redirect()->to('/sales/view_barang')->with('success', 'Opsi baru berhasil ditambahkan.');
     }
 }

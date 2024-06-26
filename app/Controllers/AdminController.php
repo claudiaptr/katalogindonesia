@@ -210,7 +210,6 @@ class AdminController extends BaseController
     public function edit_sub_kategori($slug)  {
         $data = [
             'menu' => 'sub_ketegori',
-            
             'sub_menu' => '',
             'kategori' => $this->kategori->findAll(),
             'sub_kategori' => $this->sub_kategori->getSubKategori($slug),

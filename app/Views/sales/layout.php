@@ -9,13 +9,13 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
     <link rel="stylesheet" href="<?= base_url(); ?>sales/bootstrap/css/bootstrap.min.css">
-    
+
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <link rel="stylesheet" type="text/css" href="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url(); ?>sales/dists/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -36,19 +36,20 @@
     <link rel="stylesheet" href="<?= base_url(); ?>sales/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
     <link rel="stylesheet" href="<?= base_url(); ?>sales/plugins/datatables/dataTables.bootstrap.css">
     <style>
-    	.dropzoneDragArea {
-		    background-color: #fbfdff;
-		    border: 1px dashed #c0ccda;
-		    border-radius: 6px;
-		    padding: 60px;
-		    text-align: center;
-		    margin-bottom: 15px;
-		    cursor: pointer;
-		}
-		.dropzone{
-			box-shadow: 0px 2px 20px 0px #f2f2f2;
-			border-radius: 10px;
-		}
+        .dropzoneDragArea {
+            background-color: #fbfdff;
+            border: 1px dashed #c0ccda;
+            border-radius: 6px;
+            padding: 60px;
+            text-align: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .dropzone {
+            box-shadow: 0px 2px 20px 0px #f2f2f2;
+            border-radius: 10px;
+        }
     </style>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -299,7 +300,7 @@
                                     <div class="pull-right">
                                         <a href="  <?= base_url(); ?>logout" class="btn btn-default btn-flat">Sign out</a>
                                     </div>
-                                  
+
                                 </li>
                             </ul>
                         </li>
@@ -344,8 +345,8 @@
                 <ul class="sidebar-menu">
                     <li class="header">HEADER</li>
                     <!-- Optionally, you can add icons to the links -->
-                    <li class=" <?= $menu == 'dashboard' ? 'active': ''  ?>" ><a href="<?= base_url(); ?>sales/home"><i class="fa fa-th-large"></i> <span>Dashboard</span></a></li>
-                    <li class=" <?= $menu == 'barang' ? 'active': ''  ?>" ><a href="<?= base_url(); ?>sales/view_barang"><i class="fa fa-cube"></i> <span>Barang</span></a></li>
+                    <li class=" <?= $menu == 'dashboard' ? 'active' : ''  ?>"><a href="<?= base_url(); ?>sales/home"><i class="fa fa-th-large"></i> <span>Dashboard</span></a></li>
+                    <li class=" <?= $menu == 'barang' ? 'active' : ''  ?>"><a href="<?= base_url(); ?>sales/view_barang"><i class="fa fa-cube"></i> <span>Barang</span></a></li>
                     <li class="treeview">
                         <a href="#"><i class="fa fa-link"></i> <span>lainya</span> <i class="fa fa-angle-left pull-right"></i></a>
                         <ul class="treeview-menu">
@@ -359,10 +360,10 @@
         </aside>
 
         <!-- Content Wrapper. Contains page content -->
+        <div class="flash_data" data-flashdata="<?= session()->getFlashdata('pesan'); ?>"></div>
 
-
+        <div class="error_flash" data-flashdata="<?= session()->getFlashdata('error'); ?>"></div>
         <?= $this->renderSection('home'); ?>
-
         <footer class="main-footer">
             <div class="pull-right hidden-xs">
                 <b>Version</b> 2.3.0
@@ -505,23 +506,19 @@
                                 Allow the user to show his name in blog posts
                             </p>
                         </div><!-- /.form-group -->
-
                         <h3 class="control-sidebar-heading">Chat Settings</h3>
-
                         <div class="form-group">
                             <label class="control-sidebar-subheading">
                                 Show me as online
                                 <input type="checkbox" class="pull-right" checked>
                             </label>
                         </div><!-- /.form-group -->
-
                         <div class="form-group">
                             <label class="control-sidebar-subheading">
                                 Turn off notifications
                                 <input type="checkbox" class="pull-right">
                             </label>
                         </div><!-- /.form-group -->
-
                         <div class="form-group">
                             <label class="control-sidebar-subheading">
                                 Delete chat history
@@ -559,7 +556,7 @@
     <script src="<?= base_url(); ?>sales/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
     <!-- jQuery Knob Chart -->
     <script src="<?= base_url(); ?>sales/plugins/knob/jquery.knob.js"></script>
-    <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
     <!-- daterangepicker -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
     <script src="<?= base_url(); ?>sales/plugins/daterangepicker/daterangepicker.js"></script>
@@ -579,33 +576,40 @@
     <!-- AdminLTE for demo purposes -->
     <script src="<?= base_url(); ?>sales/dists/js/demo.js"></script>
     <script>
-        
         const flashData = $('.flash_data').data('flashdata')
+        const errorflashData = $('.error_flash').data('flashdata')
+        console.log(errorflashData);
         if (flashData) {
-            Swal.fire({
-                title: flashData,
-                icon: "success"
-            });
+            swal("Success!", flashData, "success")
         }
 
-        
+        if (errorflashData) {
+            swal("Terjadi Kesalahan", errorflashData, "error")
+        }
+
         $('.delete').on('submit', function(e) {
             e.preventDefault();
             const hero = this;
-            Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    hero.submit();
-                }
-            });
-        })
+            swal({
+                    title: "Are you sure?",
+                    text: "You will not be able to recover this imaginary file!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, delete it!",
+                    cancelButtonText: "No, cancel!",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                function(isConfirm) {
+                    if (isConfirm) {
+                        hero.submit();
+                        swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                    } else {
+                        swal("Cancelled", "Your imaginary file is safe :)", "error");
+                    }
+                });
+        });
     </script>
 
     <?= $this->renderSection('scripts'); ?>

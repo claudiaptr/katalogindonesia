@@ -79,7 +79,7 @@
                             </div>
                             <div class="form-group col-md-6 <?= ($validation->hasError('jumlah_barang')) ? 'has-error' : ''; ?>">
                                 <label>Jumlah Barang</label>
-                                <input required type="number" class="form-control" name="jumlah_barang" placeholder="Enter Judul Barang">
+                                <input  type="number" class="form-control" name="jumlah_barang" placeholder="Enter Judul Barang">
                                 <?php if ($validation->hasError('jumlah_barang')) : ?>
                                     <label id="jumlah_barang-error" class="error invalid-feedback" for="jumlah_barang"><?= $validation->getError('jumlah_barang'); ?></label>
                                 <?php endif; ?>

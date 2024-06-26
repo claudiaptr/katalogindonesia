@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="<?= base_url(); ?>sales/plugins/select2/select2.min.css">
 <?= $this->endSection() ?>
 <?= $this->section('home'); ?>
+
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -38,11 +39,13 @@
                                 </div>
                             </div>
                             <div class="form-group col-md-12">
-                                <label>Opsi</label>
-                                <input type="text" class="form-control" name="nama_opsi[]" placeholder="Enter nama variasi">
+                                <input type="hidden" class="form-control" name="id_variasi" value="<?= $variasi['id']; ?>">
+                                
                             </div>
                             <div class="form-group col-md-12">
-                                <input type="hidden" class="form-control" name="id_variasi" value="<?= $variasi['id']; ?>">
+                                <label>Opsi</label>
+                                <input type="text" class="form-control" name="nama_opsi[]" placeholder="Enter nama variasi">
+                               
                             </div>
                             <div class="form-group col-md-12">
                                 <label>Harga</label>
@@ -61,6 +64,7 @@
 
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+        
     </section><!-- /.content -->
 </div>
 
