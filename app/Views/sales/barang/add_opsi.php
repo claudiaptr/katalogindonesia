@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="<?= base_url(); ?>sales/plugins/select2/select2.min.css">
 <?= $this->endSection() ?>
 <?= $this->section('home'); ?>
+
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -35,12 +36,14 @@
                                 </div>
                             </div>
                             <div class="form-group col-md-12">
-                                <label>Opsi</label>
-                                <input type="text" required class="form-control " name="nama_opsi[]" placeholder="Enter nama variasi">
+                                <input type="hidden" class="form-control" name="id_variasi" value="<?= $variasi['id']; ?>">
+                                <input type="hidden" class="form-control" name="id_barang" value="<?= $variasi['id_barang']; ?>">
+
                             </div>
                             <div class="form-group col-md-12">
-                                <input type="hidden" required class="form-control" name="id_variasi" value="<?= $variasi['id']; ?>">
-                                <input type="hidden" required class="form-control" name="id_barang" value="<?= $variasi['id_barang']; ?>">
+                                <label>Opsi</label>
+                                <input type="text" class="form-control" name="nama_opsi[]" placeholder="Enter nama variasi">
+
                             </div>
 
                             <div class="form-group col-md-12">
@@ -60,6 +63,7 @@
 
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+
     </section><!-- /.content -->
 </div>
 
@@ -68,36 +72,32 @@
 <?= $this->section('scripts') ?>
 
 <script>
-    $(".add-variasi").on("click", function() {
-        // uniqueId++;
-        var card =
-            '<div class="box box-default hapus">' +
-            '<div class="box-body">' +
-            ' <div id="actions" class="row">' +
-            ' <div class="col-lg-6">' +
-            ' <div class="btn-group w-100">' +
-            '<span class="btn btn-danger delete col "><i class="fa fa-plus"></i><span>Hapus Variasi</span></span>' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '<div class="form-group col-md-12">' +
-            '<label>Opsi</label>' +
-            '<input required type="text" class="form-control" name="nama_opsi[]" placeholder="Enter nama variasi">' +
-            "</div>" +
-            '<div class="form-group col-md-12">' +
-            " <label>Harga</label>" +
-            ' <input required type="text" class="form-control" name="harga[]" placeholder="Enter nama variasi">' +
-            '</div>' +
-            '</div>' +
-            '</div>';
-        $(".add-more-variasi").append(card);
-        $(".select2").select2({
-            tags: true
+    $(document).ready(function() {
+        // Function to add new variation fields
+        $(".add-variasi").on("click", function() {
+            var card =
+                '<div class="box box-default hapus">' +
+                '<div class="box-body">' +
+                '<div class="form-group col-md-12">' +
+                '<label>Nama Opsi</label>' +
+                '<input type="text" class="form-control" name="nama_opsi[]" placeholder="Enter nama opsi">' +
+                '</div>' +
+                '<div class="form-group col-md-12">' +
+                '<label>Harga</label>' +
+                '<input type="text" class="form-control" name="harga_opsi[]" placeholder="Enter harga opsi">' +
+                '</div>' +
+                '<div class="form-group col-md-12">' +
+                '<button type="button" class="btn btn-danger delete">Delete</button>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+            $(".add-more-variasi").append(card);
         });
-    });
 
-    $(".add-more-variasi").delegate(".delete", "click", function() {
-        $(this).parent().parent().remove();
+        // Function to remove variation fields
+        $(".add-more-variasi").on("click", ".delete", function() {
+            $(this).closest('.box-default').remove();
+        });
     });
 </script>
 

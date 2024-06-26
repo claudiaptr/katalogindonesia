@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-   
+    <link rel="stylesheet" type="text/css" href="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url(); ?>sales/dists/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -50,20 +50,6 @@
         .dropzone {
             box-shadow: 0px 2px 20px 0px #f2f2f2;
             border-radius: 10px;
-        }
-
-        .example-modal .modal {
-            position: relative;
-            top: auto;
-            bottom: auto;
-            right: auto;
-            left: auto;
-            display: block;
-            z-index: 1;
-        }
-
-        .example-modal .modal {
-            background: transparent !important;
         }
     </style>
 
@@ -376,12 +362,10 @@
         </aside>
 
         <!-- Content Wrapper. Contains page content -->
-
         <div class="flash_data" data-flashdata="<?= session()->getFlashdata('pesan'); ?>"></div>
 
-
+        <div class="error_flash" data-flashdata="<?= session()->getFlashdata('error'); ?>"></div>
         <?= $this->renderSection('home'); ?>
-
         <footer class="main-footer">
             <div class="pull-right hidden-xs">
                 <b>Version</b> 2.3.0
@@ -524,23 +508,19 @@
                                 Allow the user to show his name in blog posts
                             </p>
                         </div><!-- /.form-group -->
-
                         <h3 class="control-sidebar-heading">Chat Settings</h3>
-
                         <div class="form-group">
                             <label class="control-sidebar-subheading">
                                 Show me as online
                                 <input type="checkbox" class="pull-right" checked>
                             </label>
                         </div><!-- /.form-group -->
-
                         <div class="form-group">
                             <label class="control-sidebar-subheading">
                                 Turn off notifications
                                 <input type="checkbox" class="pull-right">
                             </label>
                         </div><!-- /.form-group -->
-
                         <div class="form-group">
                             <label class="control-sidebar-subheading">
                                 Delete chat history
@@ -578,7 +558,7 @@
     <script src="<?= base_url(); ?>sales/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
     <!-- jQuery Knob Chart -->
     <script src="<?= base_url(); ?>sales/plugins/knob/jquery.knob.js"></script>
-    
+    <script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
     <!-- daterangepicker -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
     <script src="<?= base_url(); ?>sales/plugins/daterangepicker/daterangepicker.js"></script>
@@ -600,10 +580,15 @@
     <script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
     <script>
         const flashData = $('.flash_data').data('flashdata')
+        const errorflashData = $('.error_flash').data('flashdata')
+        console.log(errorflashData);
         if (flashData) {
-            swal("Success",flashData,"success")
+            swal("Success!", flashData, "success")
         }
 
+        if (errorflashData) {
+            swal("Terjadi Kesalahan", errorflashData, "error")
+        }
 
         $('.delete').on('submit', function(e) {
             e.preventDefault();
@@ -627,26 +612,6 @@
                         swal("Cancelled", "Your imaginary file is safe :)", "error");
                     }
                 });
-        });
-        function formatRupiah(input) {
-            let angka = input.value.replace(/[^,\d]/g, '').toString();
-            let split = angka.split(',');
-            let sisa = split[0].length % 3;
-            let rupiah = split[0].substr(0, sisa);
-            let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-            if (ribuan) {
-                let separator = sisa ? '.' : '';
-                rupiah += separator + ribuan.join('.');
-            }
-
-            rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
-            input.value = 'Rp ' + rupiah;
-        }
-
-        document.getElementById('demoform').addEventListener('submit', function(e) {
-            let input = document.getElementById('rupiah-input');
-            input.value = input.value.replace(/[^,\d]/g, '').replace(',', '.');
         });
     </script>
 

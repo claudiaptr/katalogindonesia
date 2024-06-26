@@ -21,6 +21,7 @@ class SalesController extends BaseController
         $this->sub_kategori = new SubKategori();
         $this->variasi = new Variasi();
         $this->opsi = new Opsi();
+        session();
     }
     public function home()
     {
@@ -41,33 +42,7 @@ class SalesController extends BaseController
     }
     public function add_barang()
     {
-        // $db = \Config\Database::connect();
-        // $query = $db->query("SELECT MAX(RIGHT(id, 6)) as kode FROM barang");
-        // $result = $query->getRow();
-
-        // $kd = "";
-        // if ($result && $result->kode !== null) {
-        //     $tmp = ((int)$result->kode) + 1;
-        //     $kd = sprintf("%06s", $tmp);
-        // } else {
-        //     $kd = "000001";
-        // }
-
-
-        // $query_variasi = $db->query("SELECT MAX(RIGHT(id, 6)) as kode_variasi FROM variasi");
-        // $result_variasi = $query_variasi->getRow();
-
-        // $idv = "";
-        // if ($result_variasi && $result_variasi->kode_variasi !== null) {
-        //     $tmp = ((int)$result_variasi->kode_variasi) + 1;
-        //     $idv = sprintf("%06s", $tmp);
-        // } else {
-        //     $idv = "000001";
-        // }
-
         $data = [
-            // 'id' => $kd,
-            // 'id_variasi' => $idv,
             'validation' => \Config\Services::validation(),
             'kategori' => $this->kategori->findAll(),
             'sub_ketgori' => $this->sub_kategori->findAll(),
@@ -78,13 +53,11 @@ class SalesController extends BaseController
     }
     public function store_barang()
     {
-
-
         $validate = $this->validate([
             'judul_barang' => [
-                'rules'  => 'required',
+                'rules' => 'required',
                 'errors' => [
-                    'required' => 'You must input a Nama Barang.',
+                    'required' => 'You must choose a Username.',
                 ],
             ],
             'id_kategori_barang' => [
@@ -125,9 +98,13 @@ class SalesController extends BaseController
                 ],
             ],
         ]);
+       
         if (!$validate) {
             $validation = \Config\Services::validation();
-            return redirect()->back()->with('validation', $validation);
+            $error = $validation->getErrors();
+            $errorString = implode(' + ', $error);
+            session()->setFlashdata('error', $errorString);
+            return redirect()->back();
         }
         $foto_barang = $this->request->getFile('foto_barang');
 
@@ -148,7 +125,15 @@ class SalesController extends BaseController
 
         $files = $this->request->getFileMultiple('foto_detail');
         $idBarang = $this->barang->getInsertID();
-
+        $rules = [];
+        // Validate input
+        if (!$this->validate($rules)) {
+            $validation = \Config\Services::validation();
+            $error = \Config\Services::validation()->getErrors();
+            $errorString = implode(' ', $error);
+            session()->setFlashdata('error', $errorString);
+            return redirect()->back()->with('validation', $validation)->withInput();
+        }
         if ($files) {
             foreach ($files as $file) {
                 if ($file->isValid() && !$file->hasMoved()) {
@@ -177,7 +162,7 @@ class SalesController extends BaseController
             $this->variasi->insertBatch($data);
         }
 
-        session()->setFlashdata('pesan', 'data berhasil ditambahkan');
+        session()->setFlashdata('pesan', 'data berhasil ditambah');
         return redirect()->to('/sales/view_barang');
     }
     public function edit_barang($id)
@@ -249,7 +234,6 @@ class SalesController extends BaseController
             $validation = \Config\Services::validation();
             return redirect()->back()->with('validation', $validation)->withInput();
         }
-
         // Mengunggah gambar utama jika ada
         $foto_barang = $this->request->getFile('foto_barang');
         if ($foto_barang && $foto_barang->isValid() && !$foto_barang->hasMoved()) {
@@ -368,12 +352,28 @@ class SalesController extends BaseController
 
         return view('sales/barang/view_variasi', $data);
     }
+    public function delete_variasi($id)
+    {
+        // Cek apakah variasi ada berdasarkan ID
+        $variasi = $this->variasi->find($id);
+        
+        if (!$variasi) {
+            return redirect()->to('/sales/view_tambah_variasi')->with('error', 'Variasi tidak ditemukan.');
+        }
+
+        // Hapus variasi berdasarkan ID
+        $this->variasi->delete($id);
+
+        return redirect()->to('/sales/view_tambah_variasi')->with('success', 'Variasi berhasil dihapus.');
+    }
+
     public function tambah_opsi($id)
     {
         $variasi = $this->variasi->find($id);
         $data = [
             'menu' => 'barang',
             'variasi' => $variasi,
+            'validation'=> \Config\Services::validation(),
         ];
 
         return view('sales/barang/add_opsi', $data);
@@ -381,7 +381,6 @@ class SalesController extends BaseController
 
     public function edit_opsi($id)
     {
-
         $variasi = $this->variasi->find($id);
         $opsi = $this->opsi->where('id_variasi', $variasi['id'])->findAll();
 
@@ -399,7 +398,7 @@ class SalesController extends BaseController
     {
         // Tambahkan debugging
         $requestData = $this->request->getPost();
-        log_message('debug', 'Request Data: ' . json_encode($requestData));
+        
 
         // Validasi input
         $validate = $this->validate([
@@ -410,7 +409,7 @@ class SalesController extends BaseController
                 ],
             ],
             'harga' => [
-                'rules'  => 'required|numeric',
+                'rules'  => 'required',
                 'errors' => [
                     'required' => 'You must input a Harga Opsi.',
                     'numeric' => 'Harga Opsi must be a number.',
@@ -420,6 +419,9 @@ class SalesController extends BaseController
 
         if (!$validate) {
             $validation = \Config\Services::validation();
+            $error = \Config\Services::validation()->getErrors();
+            $errorString = implode(' ', $error);
+            session()->setFlashdata('error', $errorString);
             return redirect()->back()->with('validation', $validation)->withInput();
         }
 
@@ -428,42 +430,43 @@ class SalesController extends BaseController
             'nama_opsi' => $this->request->getVar('nama_opsi'),
             'harga' => $this->request->getVar('harga'),
         ]);
-
-        return redirect()->to('/sales/view_barang')->with('success', 'Opsi berhasil diperbarui.');
+        session()->setFlashdata('pesan', 'data berhasil diupdate');
+        return redirect()->to('/sales/view_tambah_variasi/')->with('success', 'Opsi berhasil diperbarui.');
     }
-
-
-
     public function store_opsi()
     {
-        // Validasi input
-        
-        $validate = $this->validate([
-            'nama_opsi' => [
-                'rules'  => 'required',
-                'errors' => [
-                    'required' => 'You must input a Nama Opsi.',
-                ],
-            ],
-            'harga' => [
-                'rules'  => 'required',
-                'errors' => [
-                    'required' => 'You must input a Harga Opsi.',
-                    'numeric' => 'Harga Opsi must be a number.',
-                ],
-            ],
-        ]);
-        if (!$validate) {
-            $validation = \Config\Services::validation();
-            return redirect()->back()->with('validation', $validation)->withInput();
-        }
-
-        // Menyimpan data opsi baru
+        // Retrieve input values
         $nama_opsi = $this->request->getVar('nama_opsi');
         $harga = $this->request->getVar('harga');
         $id_variasi = $this->request->getVar('id_variasi');
         $id_barang = $this->request->getVar('id_barang');
 
+        // Validation rules for array elements
+        $rules = [];
+        foreach ($nama_opsi as $key => $value) {
+            $rules["nama_opsi.$key"] = [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => "You must choose a Username for option " . ($key + 1) . ".",
+                ],
+            ];
+            $rules["harga.$key"] = [
+                'rules' => 'required|numeric',
+                'errors' => [
+                    'required' => "You must choose a Harga for option " . ($key + 1) . ".",
+                    'numeric' => "The Harga for option " . ($key + 1) . " must be a number.",
+                ],
+            ];
+        }
+        // Validate input
+        if (!$this->validate($rules)) {
+            $validation = \Config\Services::validation();
+            $error = \Config\Services::validation()->getErrors();
+            $errorString = implode(' ', $error);
+            session()->setFlashdata('error', $errorString);
+            return redirect()->back()->with('validation', $validation)->withInput();
+        }
+        // Insert each option into the database
         for ($i = 0; $i < count($nama_opsi); $i++) {
             $this->opsi->insert([
                 'id_variasi' => $id_variasi,
@@ -471,7 +474,17 @@ class SalesController extends BaseController
                 'harga' => $harga[$i],
             ]);
         }
+
         session()->setFlashdata('pesan', 'data berhasil ditambah');
-        return redirect()->to('/sales/view_tambah_variasi/'.$id_barang);
+        
+        return redirect()->to('/sales/view_tambah_variasi/'.$id_barang)->with('success', 'Opsi baru berhasil ditambahkan.');
+    }
+    public function deleteOpsi($id)
+    {
+        if ($this->opsi->delete($id)) {
+            return $this->response->setJSON(['status' => 'success', 'message' => 'Data berhasil dihapus']);
+        } else {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Gagal menghapus data']);
+        }
     }
 }
