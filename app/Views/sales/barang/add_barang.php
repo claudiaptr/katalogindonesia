@@ -34,7 +34,7 @@
                         </div><!-- /.box-header -->
                         <div class="box-body">
                             <!-- text input -->
-                            <input type="hidden"  name="pemilik" value="<?= session()->get('id'); ?>">
+                            <input type="hidden" name="pemilik" value="<?= session()->get('id'); ?>">
                             <div class="form-group col-md-6  <?= ($validation->hasError('judul_barang')) ? 'has-error' : ''; ?>">
                                 <label>Judul Barang</label>
                                 <input type="text" class="form-control " name="judul_barang" placeholder="Enter Judul Barang">
@@ -79,7 +79,7 @@
                             </div>
                             <div class="form-group col-md-6 <?= ($validation->hasError('jumlah_barang')) ? 'has-error' : ''; ?>">
                                 <label>Jumlah Barang</label>
-                                <input  type="number" class="form-control" name="jumlah_barang" placeholder="Enter Judul Barang">
+                                <input type="number" class="form-control" name="jumlah_barang" placeholder="Enter Judul Barang">
                                 <?php if ($validation->hasError('jumlah_barang')) : ?>
                                     <label id="jumlah_barang-error" class="error invalid-feedback" for="jumlah_barang"><?= $validation->getError('jumlah_barang'); ?></label>
                                 <?php endif; ?>
@@ -272,7 +272,7 @@
             '<div style="margin-top: 10px;" class="row">' +
             '<div class="col-lg-10">' +
             '<div class="custom-file">' +
-            '<input type="file" accept="image/png, image/jpeg" class="form-control-file"  name="foto_detail[]"  id="foto_detail">' +
+            '<input  required type="file" accept="image/png, image/jpeg" class="form-control-file"  name="foto_detail[]"  id="foto_detail">' +
             "</div>" +
             "</div>" +
             '<div class="col-lg-2">' +
@@ -286,10 +286,15 @@
     $(".add-variasi").on("click", function() {
         // uniqueId++;
         var card =
+            '<div style="margin-top: 10px;" class="row">' +
             '<div class="form-group col-md-12">' +
             '<label>Nama Variasi</label>' +
-            ' <input type="text" class="form-control" name="nama_variasi[]" placeholder="Enter nama variasi">' +
-            '</div>';
+            ' <input required type="text" class="form-control" name="nama_variasi[]" placeholder="Enter nama variasi">' +
+            '</div>' +
+            '<div class="col-lg-2">' +
+            '<button type="button" class="btn btn-danger hapus"> Delete </button>' +
+            "</div>" +
+            "</div>";
         $(".add-more-variasi").append(card);
         $(".select2").select2({
             tags: true
@@ -297,6 +302,10 @@
     });
 
     $(".add-more-data").delegate(".delete", "click", function() {
+        $(this).parent().parent().remove();
+    });
+
+    $(".add-more-variasi").delegate(".hapus", "click", function() {
         $(this).parent().parent().remove();
     });
 </script>
