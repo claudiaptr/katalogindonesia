@@ -62,8 +62,12 @@ $routes->get('/user/home', 'UserController::home');
 $routes->get('/user/shop', 'UserController::shop');
 $routes->get('/', 'UserController::home');
 $routes->get('/user/detail', 'UserController::detail');
-$routes->get('/user/contact', 'UserController::contact');
+$routes->get('/user/contact', 'EmailController::index');
 $routes->get('/user/cek', 'UserController::cek');
+$routes->match(['get', 'post'], 'email', 'SendEmail::index');
+// $routes->get('/user/email/send', 'EmailController::send');
+
+
 
 
 
@@ -71,28 +75,22 @@ $routes->get('/user/cek', 'UserController::cek');
 $routes->add('/logout', 'Auth::logout');
 
 // penjual
-$routes->get('/daftar/penjual','Auth::daftar_penjual');
-$routes->add('/store/penjual','Auth::add_penjual');
+$routes->get('/daftar/penjual', 'Auth::daftar_penjual');
+$routes->add('/store/penjual', 'Auth::add_penjual');
 $routes->get('/sales/home', 'SalesController::home');
-$routes->get('/sales/view_barang','SalesController::view_barang');
-$routes->get('/sales/add_barang','SalesController::add_barang');
-$routes->get('/sales/edit_barang/(:num)','SalesController::edit_barang/$1');
-$routes->post('/sales/update_barang/(:num)','SalesController::update_barang/$1');
+$routes->get('/sales/view_barang', 'SalesController::view_barang');
+$routes->get('/sales/add_barang', 'SalesController::add_barang');
+$routes->get('/sales/edit_barang/(:num)', 'SalesController::edit_barang/$1');
+$routes->post('/sales/update_barang/(:num)', 'SalesController::update_barang/$1');
 $routes->get('/sales/delete_foto_lain/(:num)', 'SalesController::delete_foto_lain/$1');
-$routes->get('/sales/view_tambah_variasi/(:num)','SalesController::view_tambah_variasi/$1');
-$routes->get('/sales/tambah_opsi/(:num)','SalesController::tambah_opsi/$1');
+$routes->get('/sales/view_tambah_variasi/(:num)', 'SalesController::view_tambah_variasi/$1');
+$routes->get('/sales/tambah_opsi/(:num)', 'SalesController::tambah_opsi/$1');
 $routes->get('/sales/edit_opsi/(:num)', 'SalesController::edit_opsi/$1');
 $routes->post('/sales/update_opsi/(:num)', 'SalesController::update_opsi/$1');
-$routes->post('/sales/store_opsi','SalesController::store_opsi');
-$routes->post('/sales/store_barang','SalesController::store_barang');
-$routes->post('/sales/sub_kategori','SalesController::sub_kategori');
-$routes->delete('/sales/delete_barang/(:num)','SalesController::delete_barang/$1');
+$routes->post('/sales/store_opsi', 'SalesController::store_opsi');
+$routes->post('/sales/store_barang', 'SalesController::store_barang');
+$routes->post('/sales/sub_kategori', 'SalesController::sub_kategori');
+$routes->delete('/sales/delete_barang/(:num)', 'SalesController::delete_barang/$1');
 
 
 // user
-
-
-
-
-
-

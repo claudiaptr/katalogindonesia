@@ -23,7 +23,6 @@ class UserController extends BaseController
         $this->variasi = new Variasi();
         $this->opsi = new Opsi();
         $this->iklancarausel = new IklanCarausel();
-        
     }
     public function home()
     {
@@ -32,7 +31,7 @@ class UserController extends BaseController
             'barang' => $this->barang->getRandomBarang(8),
             'barang_baru' => $this->barang->getNewBarang(8),
             'kategori' => $this->kategori->getSubKategori(),
-            'iklan_carausel'=>$this->iklancarausel->findAll()
+            'iklan_carausel' => $this->iklancarausel->findAll()
         ];
         return view('user/home', $data);
     }
@@ -97,7 +96,7 @@ class UserController extends BaseController
         $variasi = $this->request->getVar('variasi');
         $options = [];
         if ($variasi && is_array($variasi)) {
-           
+
             foreach ($variasi as $variation) {
                 $options[$variation] = $this->request->getVar($variation); // Get the selected option for this variation
             }

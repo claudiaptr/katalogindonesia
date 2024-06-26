@@ -6,49 +6,49 @@ use CodeIgniter\Config\BaseConfig;
 
 class Email extends BaseConfig
 {
-    public string $fromEmail  = 'konkiti.pt@gmail.com'; // Ganti dengan email Anda
-    public string $fromName   = 'KONKITI'; // Ganti dengan nama Anda
+    public string $fromEmail  = '';
+    public string $fromName   = '';
     public string $recipients = '';
 
     /**
      * The "user agent"
      */
-    public string $userAgent = 'CodeIgniter';
+    public string $userAgent = "CodeIgniter";
 
     /**
      * The mail sending protocol: mail, sendmail, smtp
      */
-    public string $protocol = 'smtp';
+    public string $protocol = "smtp";
 
     /**
      * The server path to Sendmail.
      */
-    public string $mailPath = '/usr/sbin/sendmail';
+    public string $mailPath = "/usr/sbin/sendmail";
 
     /**
      * SMTP Server Hostname
      */
-    public string $SMTPHost = 'smtp.gmail.com';
+    public string $SMTPHost = "smpt.googlemail.com";
 
     /**
      * SMTP Username
      */
-    public string $SMTPUser = 'konkiti.pt@gmail.com'; // Ganti dengan email Anda
+    public string $SMTPUser = "erdifirnanto@gmail.com";
 
     /**
      * SMTP Password
      */
-    public string $SMTPPass = 'sukses369'; // Ganti dengan password email Anda
+    public string $SMTPPass = "prbv ncoz olxt fzot";
 
     /**
      * SMTP Port
      */
-    public int $SMTPPort = 587;
+    public int $SMTPPort = 465;
 
     /**
      * SMTP Timeout (in seconds)
      */
-    public int $SMTPTimeout = 10;
+    public int $SMTPTimeout = 7;
 
     /**
      * Enable persistent SMTP connections
@@ -62,7 +62,7 @@ class Email extends BaseConfig
      *             to the server. 'ssl' means implicit SSL. Connection on port
      *             465 should set this to ''.
      */
-    public string $SMTPCrypto = 'tls';
+    public string $SMTPCrypto = "ssl";
 
     /**
      * Enable word-wrap
@@ -77,17 +77,17 @@ class Email extends BaseConfig
     /**
      * Type of mail, either 'text' or 'html'
      */
-    public string $mailType = 'html';
+    public string $mailType = "html";
 
     /**
      * Character set (utf-8, iso-8859-1, etc.)
      */
-    public string $charset = 'UTF-8';
+    public string $charset = "UTF-8";
 
     /**
      * Whether to validate the email address
      */
-    public bool $validate = true;
+    public bool $validate = false;
 
     /**
      * Email Priority. 1 = highest. 5 = lowest. 3 = normal
