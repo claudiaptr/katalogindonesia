@@ -125,15 +125,6 @@ class SalesController extends BaseController
 
         $files = $this->request->getFileMultiple('foto_detail');
         $idBarang = $this->barang->getInsertID();
-        $rules = [];
-        // Validate input
-        if (!$this->validate($rules)) {
-            $validation = \Config\Services::validation();
-            $error = \Config\Services::validation()->getErrors();
-            $errorString = implode(' ', $error);
-            session()->setFlashdata('error', $errorString);
-            return redirect()->back()->with('validation', $validation)->withInput();
-        }
         if ($files) {
             foreach ($files as $file) {
                 if ($file->isValid() && !$file->hasMoved()) {

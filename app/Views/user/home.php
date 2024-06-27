@@ -300,7 +300,6 @@
                     <div class="offer-text">
                         <h6 class="text-white text-uppercase"><?= $iklan_tetap_4['judul_iklan']; ?></h6>
                         <h3 class="text-white mb-3"><?= $iklan_tetap_4['isi_iklan']; ?></h3>
-
                     </div>
                 </div>
             <?php endif ?>
