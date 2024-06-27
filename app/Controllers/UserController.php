@@ -9,6 +9,7 @@ use App\Models\Kategori;
 use App\Models\Opsi;
 use App\Models\Variasi;
 use App\Models\IklanTetap;
+use Google_Client;
 
 class UserController extends BaseController
 {
@@ -16,6 +17,7 @@ class UserController extends BaseController
     protected $fotoBarang;
     protected $kategori, $variasi, $opsi, $iklancarausel;
     protected $iklantetap;
+    
 
     public function __construct()
     {
@@ -26,6 +28,7 @@ class UserController extends BaseController
         $this->opsi = new Opsi();
         $this->iklancarausel = new IklanCarausel();
         $this->iklantetap = new IklanTetap();
+      
     }
     public function home()
     {

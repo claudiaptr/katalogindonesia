@@ -46,7 +46,7 @@
                       <input type="hidden" name="foto_barang" value="<?= $barang['foto_barang']; ?>">
                       <input type="hidden" name="id_user" value="<?= session()->get('id'); ?>">
 
-                      <h3 class="font-weight-semi-bold mb-4">Rp. <?= $barang['harga_barang']; ?></h3>
+                      <h3 class="font-weight-semi-bold mb-4">Rp. <?= number_format($barang['harga_barang'],0, ',', '.'); ?></h3>
                       <p class="mb-4"><?= $barang['deskripsi_barang']; ?></p>
                       <?php foreach ($variasi as $vsi) : ?>
                           <div class="d-flex mb-3">

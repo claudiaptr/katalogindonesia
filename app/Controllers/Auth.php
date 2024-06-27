@@ -3,14 +3,17 @@
 namespace App\Controllers;
 
 use App\Models\Model_Auth;
+use Google_Client;
 
 class Auth extends BaseController
 {
     protected $Model_Auth;
+    protected $googleClient;
     public function __construct()
     {
         helper('form');
         $this->Model_Auth = new Model_Auth();
+        $this->googleClient = new Google_Client();
     }
     public function register()
     {
