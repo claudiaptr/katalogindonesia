@@ -51,4 +51,9 @@ class Barang extends Model
     {
         return $this->orderBy('created_at', 'DESC')->findAll($limit);
     }
+    public function get_product($id) {
+        $query = $this->db->table('barang')->where('id', $id);
+        return $query->get();
+    }
+    
 }

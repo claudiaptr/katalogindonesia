@@ -72,7 +72,7 @@
                             </div>
                             <div class="form-group col-md-6 <?= ($validation->hasError('harga_barang')) ? 'has-error' : ''; ?>">
                                 <label>Harga Barang</label>
-                                <input type="number" class="form-control" name="harga_barang" placeholder="Enter Harga Barang">
+                                <input type="text" class="form-control" name="harga_barang" placeholder="Enter Harga Barang" id="rupiah-input" oninput="formatRupiah(this)">
                                 <?php if ($validation->hasError('harga_barang')) : ?>
                                     <label id="harga_barang-error" class="error invalid-feedback" for="harga_barang"><?= $validation->getError('harga_barang'); ?></label>
                                 <?php endif; ?>
@@ -327,6 +327,27 @@
         })
     })
 </script>
+<script>
+    function formatRupiah(input) {
+        let angka = input.value.replace(/[^,\d]/g, '').toString();
+        let split = angka.split(',');
+        let sisa = split[0].length % 3;
+        let rupiah = split[0].substr(0, sisa);
+        let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+        if (ribuan) {
+            let separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+        rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+        input.value = 'Rp ' + rupiah;
+    }
+
+    document.getElementById('demoform').addEventListener('submit', function(e) {
+        let input = document.getElementById('rupiah-input');
+        input.value = input.value.replace(/[^,\d]/g, '').replace(',', '.');
+    });
+</script>
+
 <!-- <script>
     $(function() {
         $('#demoform').validate({
