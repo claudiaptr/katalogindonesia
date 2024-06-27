@@ -14,9 +14,9 @@ class Auth extends BaseController
         helper('form');
         $this->Model_Auth = new Model_Auth();
         $this->googleClient = new Google_Client();
-        $this->googleClient->setClientId('517671778438-rokaifaj0scbak5ckqcej2jlvrr79sts.apps.googleusercontent.com');
-        $this->googleClient->setClientSecret('YOUR_GOOGLE_CLIENT_SECRET');
-        $this->googleClient->setRedirectUri('YOUR_REDIRECT_URI');
+        $this->googleClient->setClientId(env('GOOGLE_CLIENT_ID'));
+        $this->googleClient->setClientSecret(env('GOOGLE_CLIENT_SECRET'));
+        $this->googleClient->setRedirectUri(env('GOOGLE_REDIRECT_URI'));
         $this->googleClient->addScope('email');
         $this->googleClient->addScope('profile');
     }
@@ -84,7 +84,46 @@ class Auth extends BaseController
     }
     public function login()
     {
-        return view('login');
+        $data['link']= $this->googleClient->createAuthUrl();
+        return view('login',$data);
+    }
+    public function register_google()
+    {
+        $token = $this->googleClient->fetchAccessTokenWithAuthCode($this->request->getVar('code'));
+        if (!isset($token['error'])) {
+            $this->googleClient->setAccessToken($token['access_token']);
+            $googleService = new \Google_Service_Oauth2($this->googleClient);
+            $data = $googleService->userinfo->get();
+            $row = [
+                'username' => $data['name'],
+                'email' => $data['email'],
+                'foto_profil' => $data['picture'],
+                'level' => 3
+            ];
+
+            $authModel = new Model_Auth();
+
+            // Check if user already exists
+            $existingUser = $authModel->where('email', $data['email'])->first();
+            if ($existingUser) {
+                $row['id'] = $existingUser['id'];
+            }
+
+            $authModel->save($row);
+
+            // Set the session data
+            $session = [
+                'log' => true,
+                'username' => $data['name'],
+                'email' => $data['email'],
+                'level' => $row['level'],
+                'id' => $existingUser ? $existingUser['id'] : $authModel->insertID(),
+            ];
+            session()->set($session);
+            return redirect()->to(base_url('/'));
+        } else {
+            return redirect()->to(base_url('/'))->with('error', 'Authentication failed');
+        }
     }
     public function cek_login()
     {

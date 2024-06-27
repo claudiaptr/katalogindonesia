@@ -6,6 +6,13 @@ use CodeIgniter\Model;
 
 class Model_Auth extends Model
 {
+   protected $table            = 'user';
+   protected $primaryKey       = 'id';
+   protected $useAutoIncrement = true;
+   protected $returnType       = 'array';
+   protected $useSoftDeletes   = false;
+   protected $protectFields    = false;
+   protected $allowedFields    = [];
 
    public function save_register($data)
    {
