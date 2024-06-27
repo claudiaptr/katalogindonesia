@@ -29,7 +29,9 @@
                                     <th>Foto Barang</th>
                                     <th>Judul barang</th>
                                     <th>Kategori Barang</th>
+                                    <th>Sub Katgori Barang</th>
                                     <th>Jumlah Barang</th>
+                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -38,8 +40,18 @@
                                     <tr>
                                         <td><img width="70px" src="<?= base_url(); ?>barang/<?= $bk['foto_barang']; ?>" alt=""></td>
                                         <td><?= $bk['judul_barang']; ?></td>
-                                        <td><?= $bk['id_kategori_barang']; ?></td>
+                                        <td><?= $bk['kategori_name']; ?></td>
+                                        <td><?= $bk['sub_kategori_name']; ?></td>
                                         <td><?= $bk['jumlah_barang']; ?></td>
+                                        <td>
+                                            <?php if ($bk['verifikasi']==1) : ?>
+                                                <span class="label label-warning">Pending</span>
+                                            <?php elseif($bk['verifikasi']==2) : ?>
+                                                <span class="label label-danger">Ditolak</span>
+                                            <?php elseif($bk['verifikasi']==3) : ?>
+                                                <span class="label label-success">Diterima</span>
+                                            <?php endif ?>
+                                        </td>
                                         <td style="display: flex;">
                                             <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/edit_barang/<?= $bk['id']; ?>" class="btn btn-primary mr-3">Edit </a>
                                             <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/view_tambah_variasi/<?= $bk['id']; ?>" class="btn btn-success mr-3"> Variasi</a>
