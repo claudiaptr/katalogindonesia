@@ -14,6 +14,11 @@ class Auth extends BaseController
         helper('form');
         $this->Model_Auth = new Model_Auth();
         $this->googleClient = new Google_Client();
+        $this->googleClient->setClientId('YOUR_GOOGLE_CLIENT_ID');
+        $this->googleClient->setClientSecret('YOUR_GOOGLE_CLIENT_SECRET');
+        $this->googleClient->setRedirectUri('YOUR_REDIRECT_URI');
+        $this->googleClient->addScope('email');
+        $this->googleClient->addScope('profile');
     }
     public function register()
     {
