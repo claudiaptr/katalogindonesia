@@ -125,15 +125,6 @@ class SalesController extends BaseController
 
         $files = $this->request->getFileMultiple('foto_detail');
         $idBarang = $this->barang->getInsertID();
-        $rules = [];
-        // Validate input
-        if (!$this->validate($rules)) {
-            $validation = \Config\Services::validation();
-            $error = \Config\Services::validation()->getErrors();
-            $errorString = implode(' ', $error);
-            session()->setFlashdata('error', $errorString);
-            return redirect()->back()->with('validation', $validation)->withInput();
-        }
         if ($files) {
             foreach ($files as $file) {
                 if ($file->isValid() && !$file->hasMoved()) {
@@ -167,6 +158,7 @@ class SalesController extends BaseController
     }
     public function edit_barang($id)
     {
+
         $barang = $this->barang->find($id);
         $barang['harga_barang'] = number_format($barang['harga_barang'], 0, ',', '.');
         $data = [
@@ -184,56 +176,7 @@ class SalesController extends BaseController
     public function update_barang($id)
     {
         // Validasi input
-        $validate = $this->validate([
-            'judul_barang' => [
-                'rules'  => 'required',
-                'errors' => [
-                    'required' => 'You must input a Nama Barang.',
-                ],
-            ],
-            'id_kategori_barang' => [
-                'rules'  => 'required',
-                'errors' => [
-                    'required' => 'You must choose a kategori.',
-                ],
-            ],
-            'id_sub_kategori_barang' => [
-                'rules'  => 'required',
-                'errors' => [
-                    'required' => 'You must choose a sub kategori.',
-                ],
-            ],
-            'foto_barang' => [
-                'rules'  => 'is_image[foto_barang]|mime_in[foto_barang,image/jpg,image/jpeg,image/png]',
-                'errors' => [
-                    'is_image' => 'The file must be an image.',
-                    'mime_in' => 'Only image files are allowed (jpg, jpeg, png).',
-                ],
-            ],
-            'harga_barang' => [
-                'rules'  => 'required|numeric',
-                'errors' => [
-                    'required' => 'You must input a harga barang.',
-                ],
-            ],
-            'jumlah_barang' => [
-                'rules'  => 'required|numeric',
-                'errors' => [
-                    'required' => 'You must input a jumlah barang.',
-                ],
-            ],
-            'deskripsi_barang' => [
-                'rules'  => 'required',
-                'errors' => [
-                    'required' => 'You must input a deskripsi.',
-                ],
-            ],
-        ]);
-
-        if (!$validate) {
-            $validation = \Config\Services::validation();
-            return redirect()->back()->with('validation', $validation)->withInput();
-        }
+        
         // Mengunggah gambar utama jika ada
         $foto_barang = $this->request->getFile('foto_barang');
         if ($foto_barang && $foto_barang->isValid() && !$foto_barang->hasMoved()) {
@@ -242,7 +185,6 @@ class SalesController extends BaseController
         } else {
             $nama_foto = $this->request->getVar('existing_foto_barang'); // Gambar sebelumnya
         }
-
         // Memperbarui data barang
         $this->barang->update($id, [
             'pemilik' => $this->request->getVar('pemilik'),

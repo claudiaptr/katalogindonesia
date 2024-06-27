@@ -264,7 +264,7 @@
                         <div class="text-center py-4 ">
                             <p class="h6 text-decoration-none text-truncate"><?= $bk['judul_barang']; ?></p>
                             <div class="justify-content-center mt-2">
-                                <h5 class="mb-0 ">Rp. <?= $bk['harga_barang']; ?></h5>
+                                <h5 class="mb-0 ">Rp. <?= number_format($bk['harga_barang'],0, ',', '.'); ?></h5>
                             </div>
                         </div>
                     </a>
@@ -300,7 +300,6 @@
                     <div class="offer-text">
                         <h6 class="text-white text-uppercase"><?= $iklan_tetap_4['judul_iklan']; ?></h6>
                         <h3 class="text-white mb-3"><?= $iklan_tetap_4['isi_iklan']; ?></h3>
-
                     </div>
                 </div>
             <?php endif ?>
@@ -328,7 +327,7 @@
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href=""><?= $bb['judul_barang']; ?></a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5><?= $bb['harga_barang']; ?></h5>
+                            <h5>Rp. <?= number_format($bb['harga_barang'],0, ',', '.'); ?></h5>
                             <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-1">
