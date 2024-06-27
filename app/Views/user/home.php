@@ -28,21 +28,25 @@
             </div>
         </div>
         <div class="col-lg-4">
-            <div class="product-offer mb-30" style="height: 200px;">
-                <img class="img-fluid" src="<?= base_url('img/' . $iklan_tetap_1['foto_iklan']); ?>" alt="<?= $iklan_tetap_1['judul_iklan']; ?>">
-                <div class="offer-text">
-                    <h6 class="text-white text-uppercase"><?= $iklan_tetap_1['judul_iklan']; ?></h6>
-                    <h3 class="text-white mb-3"><?= $iklan_tetap_1['isi_iklan']; ?></h3>
+            <?php if ($iklan_tetap_1) : ?>
+                <div class="product-offer mb-30" style="height: 200px;">
+                    <img class="img-fluid" src="<?= base_url('img/' . $iklan_tetap_1['foto_iklan']); ?>" alt="<?= $iklan_tetap_1['judul_iklan']; ?>">
+                    <div class="offer-text">
+                        <h6 class="text-white text-uppercase"><?= $iklan_tetap_1['judul_iklan']; ?></h6>
+                        <h3 class="text-white mb-3"><?= $iklan_tetap_1['isi_iklan']; ?></h3>
+                    </div>
                 </div>
-            </div>
-            <div class="product-offer mb-30" style="height: 200px;">
-                <img class="img-fluid" src="<?= base_url('img/' . $iklan_tetap_2['foto_iklan']); ?>" alt="<?= $iklan_tetap_2['judul_iklan']; ?>">
-                <div class="offer-text">
-                    <h6 class="text-white text-uppercase"><?= $iklan_tetap_2['judul_iklan']; ?></h6>
-                    <h3 class="text-white mb-3"><?= $iklan_tetap_2['isi_iklan']; ?></h3>
+            <?php endif ?>
+            <?php if ($iklan_tetap_2) : ?>
+                <div class="product-offer mb-30" style="height: 200px;">
+                    <img class="img-fluid" src="<?= base_url('img/' . $iklan_tetap_2['foto_iklan']); ?>" alt="<?= $iklan_tetap_2['judul_iklan']; ?>">
+                    <div class="offer-text">
+                        <h6 class="text-white text-uppercase"><?= $iklan_tetap_2['judul_iklan']; ?></h6>
+                        <h3 class="text-white mb-3"><?= $iklan_tetap_2['isi_iklan']; ?></h3>
 
+                    </div>
                 </div>
-            </div>
+            <?php endif ?>
         </div>
     </div>
 </div>
@@ -278,23 +282,28 @@
 <div class="container-fluid pt-5 pb-3">
     <div class="row px-xl-5">
         <div class="col-md-6">
-            <div class="product-offer mb-30" style="height: 300px;">
-                <img class="img-fluid" src="<?= base_url('img/' . $iklan_tetap_3['foto_iklan']); ?>" alt="<?= $iklan_tetap_3['judul_iklan']; ?>">
-                <div class="offer-text">
-                    <h6 class="text-white text-uppercase"><?= $iklan_tetap_3['judul_iklan']; ?></h6>
-                    <h3 class="text-white mb-3"><?= $iklan_tetap_3['isi_iklan']; ?></h3>
+            <?php if ($iklan_tetap_3) : ?>
+                <div class="product-offer mb-30" style="height: 300px;">
+
+                    <img class="img-fluid" src="<?= base_url('img/' . $iklan_tetap_3['foto_iklan']); ?>" alt="<?= $iklan_tetap_3['judul_iklan']; ?>">
+                    <div class="offer-text">
+                        <h6 class="text-white text-uppercase"><?= $iklan_tetap_3['judul_iklan']; ?></h6>
+                        <h3 class="text-white mb-3"><?= $iklan_tetap_3['isi_iklan']; ?></h3>
+                    </div>
                 </div>
-            </div>
+            <?php endif ?>
         </div>
         <div class="col-md-6">
-            <div class="product-offer mb-30" style="height: 300px;">
-                <img class="img-fluid" src="<?= base_url('img/' . $iklan_tetap_4['foto_iklan']); ?>" alt="<?= $iklan_tetap_4['judul_iklan']; ?>">
-                <div class="offer-text">
-                    <h6 class="text-white text-uppercase"><?= $iklan_tetap_4['judul_iklan']; ?></h6>
-                    <h3 class="text-white mb-3"><?= $iklan_tetap_4['isi_iklan']; ?></h3>
+            <?php if ($iklan_tetap_4) : ?>
+                <div class="product-offer mb-30" style="height: 300px;">
+                    <img class="img-fluid" src="<?= base_url('img/' . $iklan_tetap_4['foto_iklan']); ?>" alt="<?= $iklan_tetap_4['judul_iklan']; ?>">
+                    <div class="offer-text">
+                        <h6 class="text-white text-uppercase"><?= $iklan_tetap_4['judul_iklan']; ?></h6>
+                        <h3 class="text-white mb-3"><?= $iklan_tetap_4['isi_iklan']; ?></h3>
 
+                    </div>
                 </div>
-            </div>
+            <?php endif ?>
         </div>
     </div>
 </div>
