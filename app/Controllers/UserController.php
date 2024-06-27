@@ -27,6 +27,7 @@ class UserController extends BaseController
         $this->iklancarausel = new IklanCarausel();
         $this->iklantetap = new IklanTetap();
     }
+
     public function home()
     {
         helper('form');
@@ -38,7 +39,7 @@ class UserController extends BaseController
             'iklan_tetap_2' => $this->iklantetap->find(2),
             'iklan_tetap_3' => $this->iklantetap->find(3),
             'iklan_tetap_4' => $this->iklantetap->find(4),
-            'iklan_carausel'=>$this->iklancarausel->findAll()
+            'iklan_carausel' => $this->iklancarausel->findAll()
         ];
         return view('user/home', $data);
     }
@@ -54,6 +55,24 @@ class UserController extends BaseController
 
         return view('user/detail', $data);
     }
+
+    // Jasa
+    public function jasa()
+    {
+        helper('form');
+        $data = [
+            'barang' => $this->barang->getRandomBarang(8),
+            'barang_baru' => $this->barang->getNewBarang(8),
+            'kategori' => $this->kategori->getSubKategori(),
+            'iklan_tetap_1' => $this->iklantetap->find(1),
+            'iklan_tetap_2' => $this->iklantetap->find(2),
+            'iklan_tetap_3' => $this->iklantetap->find(3),
+            'iklan_tetap_4' => $this->iklantetap->find(4),
+            'iklan_carausel' => $this->iklancarausel->findAll()
+        ];
+        return view('user/jasa', $data);
+    }
+
     public function contact()
     {
         $data = [

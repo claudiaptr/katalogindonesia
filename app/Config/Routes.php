@@ -61,6 +61,7 @@ $routes->get('/user/home', 'UserController::home');
 $routes->get('/user/shop', 'UserController::shop');
 $routes->get('/', 'UserController::home');
 $routes->get('/user/detail', 'UserController::detail');
+$routes->get('/user/jasa', 'UserController::jasa');
 $routes->get('/user/contact', 'EmailController::index');
 $routes->get('/user/cek', 'UserController::cek');
 $routes->match(['get', 'post'], 'email', 'SendEmail::index');
