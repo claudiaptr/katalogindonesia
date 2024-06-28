@@ -270,6 +270,9 @@
                                 <p>
                                     Verifikasi Barang
                                     <i class="right fas fa-angle-left"></i>
+                                    <?php if ($jumlah_verifikasi > 0) : ?>
+                                        <span class="badge badge-info right"><?= $jumlah_verifikasi; ?></span>
+                                    <?php endif ?>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
@@ -282,6 +285,9 @@
                                 <li class="nav-item">
                                     <a href="<?= base_url(); ?>admin/belum_verifikasi" class="nav-link <?= $sub_menu == 'belum_verifikasi' ? 'active' : ''  ?>">
                                         <i class="far fa-circle nav-icon"></i>
+                                        <?php if ($jumlah_verifikasi > 0) : ?>
+                                            <span class="badge badge-info right"><?= $jumlah_verifikasi; ?></span>
+                                        <?php endif ?>
                                         <p>Belum Verifikasi</p>
                                     </a>
                                 </li>
@@ -419,6 +425,40 @@
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    hero.submit();
+                }
+            });
+        })
+        $('.verifikasi').on('submit', function(e) {
+            e.preventDefault();
+            const hero = this;
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, verifikaasi it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    hero.submit();
+                }
+            });
+        })
+        $('.tolak').on('submit', function(e) {
+            e.preventDefault();
+            const hero = this;
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, tolak it!"
             }).then((result) => {
                 if (result.isConfirmed) {
                     hero.submit();

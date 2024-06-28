@@ -51,9 +51,7 @@
                       <?php foreach ($variasi as $vsi) : ?>
                           <div class="d-flex mb-3">
                               <strong class="text-dark mr-3"><?= $vsi['variasi_nama']; ?>:</strong>
-
                               <input type="hidden" name="variasi[]" value="<?= $vsi['variasi_nama']; ?>">
-
                               <?php foreach ($vsi['opsi'] as $ops) : ?>
                                   <div class="custom-control custom-radio custom-control-inline">
                                       <input type="radio" class="custom-control-input" id="<?= $ops['nama_opsi']; ?>" name="<?= $vsi['variasi_nama']; ?>" value="<?= $ops['nama_opsi']; ?>">

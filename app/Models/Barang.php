@@ -11,7 +11,7 @@ class Barang extends Model
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
-    protected $protectFields    = true;
+    protected $protectFields    = false;
     protected $allowedFields    = ['foto_barang','deskripsi_barang','id_kategori_barang','id_sub_kategori_barang','judul_barang','harga_barang','pemilik','jumlah_barang'];
 
     protected bool $allowEmptyInserts = false;
@@ -45,11 +45,11 @@ class Barang extends Model
     // protected $afterDelete    = [];
     public function getRandomBarang($limit = 6)
     {
-        return $this->orderBy('RAND()')->findAll($limit);
+        return $this->orderBy('RAND()')->where('verifikasi',3)->findAll($limit);
     }
     public function getNewBarang($limit = 6)
     {
-        return $this->orderBy('created_at', 'DESC')->findAll($limit);
+        return $this->orderBy('created_at', 'DESC')->where('verifikasi',3)->findAll($limit);
     }
     public function get_product($id) {
         $query = $this->db->table('barang')->where('id', $id);
