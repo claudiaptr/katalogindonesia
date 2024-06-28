@@ -39,6 +39,7 @@ $routes->delete('/admin/delete_sub_kategori/(:num)', 'AdminController::delete_su
 
 $routes->get('/admin/belum_verifikasi','AdminController::view_belum_verifikasi');
 $routes->put('/admin/verifikasi_barang/(:num)','AdminController::verifikasi_barang/$1');
+$routes->put('/admin/tolak_verifikasi_barang/(:num)','AdminController::tolak_verifikasi_barang/$1');
 $routes->get('/admin/detail_barang/(:num)','AdminController::detail_barang/$1');
 
 

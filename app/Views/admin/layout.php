@@ -420,6 +420,40 @@
                 }
             });
         })
+        $('.verifikasi').on('submit', function(e) {
+            e.preventDefault();
+            const hero = this;
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, verifikaasi it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    hero.submit();
+                }
+            });
+        })
+        $('.tolak').on('submit', function(e) {
+            e.preventDefault();
+            const hero = this;
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, tolak it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    hero.submit();
+                }
+            });
+        })
     </script>
     <?= $this->renderSection('scripts') ?>
 

@@ -54,19 +54,20 @@
                         </div>
                         <div class="mt-4 row ">
                             <div class="col">
-                                <form class="delete" action="<?= base_url(); ?>admin/verifikasi_barang/<?= $barang['id']; ?>" method="post">
+                                <form class="verifikasi" action="<?= base_url(); ?>admin/verifikasi_barang/<?= $barang['id']; ?>" method="post">
                                     <?= csrf_field(); ?>
                                     <input type="hidden" name="_method" value="PUT">
                                     <button class="btn btn-success btn-lg btn-flat "> <i class="fas fa-check fa-lg mr-2"></i>Verifikasi</button>
                                 </form>
                             </div>
                             <div class="col">
-                                <form class="delete" action="<?= base_url(); ?>admin/delete_iklan_carausel/<?= $barang['id']; ?>" method="post">
+                                <form class="tolak" action="<?= base_url(); ?>admin/tolak_verifikasi_barang/<?= $barang['id']; ?>" method="post">
                                     <?= csrf_field(); ?>
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <button class="col btn btn-danger btn-lg btn-flat "> <i class="fas fa-ban fa-lg mr-2"></i>Tolak</button>
+                                    <input type="hidden" name="_method" value="PUT">
+                                    <button class="btn btn-danger btn-lg btn-flat "> <i class="fas fa-ban fa-lg mr-2"></i>Tolak</button>
                                 </form>
                             </div>
+                            
                           
                         </div>
                     </div>

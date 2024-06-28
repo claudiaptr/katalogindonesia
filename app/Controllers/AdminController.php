@@ -276,4 +276,12 @@ class AdminController extends BaseController
         session()->setFlashdata('pesan', 'data berhasil diverifikasi');
         return redirect()->to('/admin/belum_verifikasi');
     }
+    public function tolak_verifikasi_barang($id)  {
+        $this->barang->save([
+            'id' => $id,
+            'verifikasi' => 2,
+        ]);
+        session()->setFlashdata('pesan', 'data berhasil ditolak');
+        return redirect()->to('/admin/belum_verifikasi');
+    }
 }
