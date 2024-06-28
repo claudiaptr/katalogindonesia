@@ -274,7 +274,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link <?= $sub_menu == 'sudah_verifikasi' ? 'active' : ''  ?>">
+                                    <a href="<?= base_url(); ?>admin/sudah_verifikasi" class="nav-link <?= $sub_menu == 'sudah_verifikasi' ? 'active' : ''  ?>">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Sudah Verifikasi</p>
                                     </a>
@@ -283,6 +283,12 @@
                                     <a href="<?= base_url(); ?>admin/belum_verifikasi" class="nav-link <?= $sub_menu == 'belum_verifikasi' ? 'active' : ''  ?>">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Belum Verifikasi</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= base_url(); ?>admin/tolak_verifikasi" class="nav-link <?= $sub_menu == 'tolak_verifikasi' ? 'active' : ''  ?>">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Tolak Verifikasi</p>
                                     </a>
                                 </li>
                             </ul>
@@ -304,7 +310,7 @@
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper ">
-        <div class="flash_data" data-flashdata="<?= session()->getFlashdata('pesan'); ?>"></div>
+            <div class="flash_data" data-flashdata="<?= session()->getFlashdata('pesan'); ?>"></div>
             <?= $this->renderSection('content'); ?>
         </div>
         <!-- /.content-wrapper -->
@@ -393,7 +399,6 @@
         });
     </script>
     <script>
-        
         const flashData = $('.flash_data').data('flashdata')
         if (flashData) {
             Swal.fire({
@@ -402,7 +407,7 @@
             });
         }
 
-        
+
         $('.delete').on('submit', function(e) {
             e.preventDefault();
             const hero = this;
@@ -414,6 +419,40 @@
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    hero.submit();
+                }
+            });
+        })
+        $('.verifikasi').on('submit', function(e) {
+            e.preventDefault();
+            const hero = this;
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, verifikaasi it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    hero.submit();
+                }
+            });
+        })
+        $('.tolak').on('submit', function(e) {
+            e.preventDefault();
+            const hero = this;
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, tolak it!"
             }).then((result) => {
                 if (result.isConfirmed) {
                     hero.submit();
