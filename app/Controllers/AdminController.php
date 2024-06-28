@@ -253,4 +253,11 @@ class AdminController extends BaseController
         ];
         return view('admin/belum_verifikasi/view_blm_verifikasi', $data);
     }
+    public function detail_barang($id)  {
+        $data = [
+            'menu' => 'verifikasi',
+            'sub_menu' => 'belum_verifikasi',
+        ];
+        return view('admin/belum_verifikasi/detail_blm_verifikasi', $data);
+    }
 }

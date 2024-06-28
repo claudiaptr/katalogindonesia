@@ -47,10 +47,9 @@
                                                 <span class="btn btn-success">Diterima</span>
                                             <?php endif ?>
                                         </td>
-
                                         <td>
                                             <div class="d-flex justify-content-center">
-                                                <a href="" class="btn btn-primary mr-3">Detail Data</a>
+                                                <a href="<?= base_url(); ?>admin/detail_barang/<?= $bk['id']; ?>" class="btn btn-primary mr-3">Detail Data</a>
                                             </div>
                                         </td>
                                     </tr>
