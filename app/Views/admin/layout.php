@@ -264,6 +264,29 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item <?= $menu == 'verifikasi' ? 'menu-open' : ''  ?>">
+                            <a href="#" class="nav-link  <?= $menu == 'verifikasi' ? 'active' : ''  ?>">
+                                <i class="nav-icon fas fa-check"></i>
+                                <p>
+                                    Verifikasi Barang
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="" class="nav-link <?= $sub_menu == 'sudah_verifikasi' ? 'active' : ''  ?>">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Sudah Verifikasi</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= base_url(); ?>admin/belum_verifikasi" class="nav-link <?= $sub_menu == 'belum_verifikasi' ? 'active' : ''  ?>">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Belum Verifikasi</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="nav-item">
                             <a href="<?= base_url(); ?> logout" class="nav-link">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>

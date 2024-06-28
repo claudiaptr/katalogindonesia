@@ -44,6 +44,11 @@ class Barang extends Migration
             'jumlah_barang' => [
                 'type' => 'INT',
             ],
+            'verifikasi' => [
+                'type' => 'ENUM',
+                'constraint' => ['1', '2','3'],
+                'default' => 1,
+            ],
             'pemilik' => [
                 'type'           => 'BIGINT',
                 'constraint'     => 20,

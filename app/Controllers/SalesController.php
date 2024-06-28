@@ -34,7 +34,11 @@ class SalesController extends BaseController
     {
         $id = session()->get('id');
         $data = [
-            'barang' => $this->barang->where('pemilik', $id)->findAll(),
+            'barang' => $this->barang
+            ->select('barang.*, kategori.nama_kategori as kategori_name, sub_kategori.nama_sub_kategori as sub_kategori_name')
+            ->join('kategori', 'kategori.id = barang.id_kategori_barang')
+            ->join('sub_kategori', 'sub_kategori.id = barang.id_sub_kategori_barang')
+            ->where('barang.pemilik', $id)->findAll(),
             'menu' => 'barang',
         ];
 

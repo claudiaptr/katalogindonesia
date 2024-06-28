@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\Barang;
 use App\Models\IklanCarausel;
 use App\Models\Kategori;
 use App\Models\SubKategori;
@@ -11,12 +12,13 @@ use CodeIgniter\HTTP\ResponseInterface;
 class AdminController extends BaseController
 {
     //kontruktor untuk menambahkan model
-    protected $iklancarausel, $kategori, $sub_kategori;
+    protected $iklancarausel, $kategori, $sub_kategori, $barang;
     public function __construct()
     {
         $this->sub_kategori = new SubKategori();
         $this->iklancarausel = new IklanCarausel();
         $this->kategori = new Kategori();
+        $this->barang = new Barang();
     }
 
     // view iklan carausel
@@ -207,7 +209,8 @@ class AdminController extends BaseController
         session()->setFlashdata('pesan', 'data berhasil ditambahkan');
         return redirect()->to('admin/view_sub_kategori');
     }
-    public function edit_sub_kategori($slug)  {
+    public function edit_sub_kategori($slug)
+    {
         $data = [
             'menu' => 'sub_ketegori',
             'sub_menu' => '',
@@ -236,5 +239,25 @@ class AdminController extends BaseController
     {
         $this->sub_kategori->delete($id);
         return redirect()->to('/admin/view_sub_kategori');
+    }
+    public function view_belum_verifikasi()
+    {
+        $data = [
+            'menu' => 'verifikasi',
+            'sub_menu' => 'belum_verifikasi',
+            'barang' => $this->barang
+            ->select('barang.*, kategori.nama_kategori as kategori_name, sub_kategori.nama_sub_kategori as sub_kategori_name')
+            ->join('kategori', 'kategori.id = barang.id_kategori_barang')
+            ->join('sub_kategori', 'sub_kategori.id = barang.id_sub_kategori_barang')
+            ->where('verifikasi', 1)->findAll(),
+        ];
+        return view('admin/belum_verifikasi/view_blm_verifikasi', $data);
+    }
+    public function detail_barang($id)  {
+        $data = [
+            'menu' => 'verifikasi',
+            'sub_menu' => 'belum_verifikasi',
+        ];
+        return view('admin/belum_verifikasi/detail_blm_verifikasi', $data);
     }
 }
