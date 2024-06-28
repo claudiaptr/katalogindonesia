@@ -80,7 +80,6 @@ class AdminController extends BaseController
             'iklan' => $this->iklancarausel->getIklanCarausel($slug),
             'menu' => 'iklan',
             'sub_menu' => 'iklan_carausel'
-
         ];
         return view('admin/iklan_carausel/edit_iklan', $data);
     }
@@ -268,5 +267,13 @@ class AdminController extends BaseController
             'kategori' => $this->kategori->getSubKategori()
         ];
         return view('admin/belum_verifikasi/detail_blm_verifikasi', $data);
+    }
+    public function verifikasi_barang($id)  {
+        $this->barang->save([
+            'id' => $id,
+            'verifikasi' => 3,
+        ]);
+        session()->setFlashdata('pesan', 'data berhasil diverifikasi');
+        return redirect()->to('/admin/belum_verifikasi');
     }
 }
