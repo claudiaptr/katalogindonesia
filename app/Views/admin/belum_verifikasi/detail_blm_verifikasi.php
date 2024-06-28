@@ -67,8 +67,6 @@
                                     <button class="btn btn-danger btn-lg btn-flat "> <i class="fas fa-ban fa-lg mr-2"></i>Tolak</button>
                                 </form>
                             </div>
-                            
-                          
                         </div>
                     </div>
                 </div>
