@@ -3,20 +3,25 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+
 use App\Models\Barang;
+use App\Models\GambarBarang;
 use App\Models\IklanCarausel;
 use App\Models\Kategori;
 use App\Models\SubKategori;
+use App\Models\Variasi;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class AdminController extends BaseController
 {
     //kontruktor untuk menambahkan model
-    protected $iklancarausel, $kategori, $sub_kategori, $barang;
+    protected $iklancarausel, $kategori, $sub_kategori, $barang, $variasi, $fotoBarang;
     public function __construct()
     {
         $this->sub_kategori = new SubKategori();
         $this->iklancarausel = new IklanCarausel();
+        $this->fotoBarang = new GambarBarang();
+        $this->variasi = new Variasi();
         $this->kategori = new Kategori();
         $this->barang = new Barang();
     }
@@ -257,6 +262,10 @@ class AdminController extends BaseController
         $data = [
             'menu' => 'verifikasi',
             'sub_menu' => 'belum_verifikasi',
+            'barang' => $this->barang->find($id),
+            'foto_barang' => $this->fotoBarang->where('id_barang', $id)->findAll(),
+            'variasi' => $this->variasi->data_opsi($id),
+            'kategori' => $this->kategori->getSubKategori()
         ];
         return view('admin/belum_verifikasi/detail_blm_verifikasi', $data);
     }
