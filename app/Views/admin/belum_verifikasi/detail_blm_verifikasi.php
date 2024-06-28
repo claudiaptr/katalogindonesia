@@ -53,20 +53,25 @@
                             </h2>
                         </div>
                         <div class="mt-4 row ">
-                            <div class="col">
-                                <form class="verifikasi" action="<?= base_url(); ?>admin/verifikasi_barang/<?= $barang['id']; ?>" method="post">
-                                    <?= csrf_field(); ?>
-                                    <input type="hidden" name="_method" value="PUT">
-                                    <button class="btn btn-success btn-lg btn-flat "> <i class="fas fa-check fa-lg mr-2"></i>Verifikasi</button>
-                                </form>
-                            </div>
-                            <div class="col">
-                                <form class="tolak" action="<?= base_url(); ?>admin/tolak_verifikasi_barang/<?= $barang['id']; ?>" method="post">
-                                    <?= csrf_field(); ?>
-                                    <input type="hidden" name="_method" value="PUT">
-                                    <button class="btn btn-danger btn-lg btn-flat "> <i class="fas fa-ban fa-lg mr-2"></i>Tolak</button>
-                                </form>
-                            </div>
+                            <?php if ($barang['verifikasi'] == 1) : ?>
+                                <div class="col">
+
+                                    <form class="verifikasi" action="<?= base_url(); ?>admin/verifikasi_barang/<?= $barang['id']; ?>" method="post">
+                                        <?= csrf_field(); ?>
+                                        <input type="hidden" name="_method" value="PUT">
+                                        <button class="btn btn-success btn-lg btn-flat "> <i class="fas fa-check fa-lg mr-2"></i>Verifikasi</button>
+                                    </form>
+                                </div>
+                            <?php endif ?>
+                            <?php if ($barang['verifikasi'] == 1 || $barang['verifikasi'] == 3) : ?>
+                                <div class="col">
+                                    <form class="tolak" action="<?= base_url(); ?>admin/tolak_verifikasi_barang/<?= $barang['id']; ?>" method="post">
+                                        <?= csrf_field(); ?>
+                                        <input type="hidden" name="_method" value="PUT">
+                                        <button class="btn btn-danger btn-lg btn-flat "> <i class="fas fa-ban fa-lg mr-2"></i>Tolak</button>
+                                    </form>
+                                </div>
+                            <?php endif ?>
                         </div>
                     </div>
                 </div>

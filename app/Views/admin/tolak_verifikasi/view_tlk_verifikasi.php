@@ -32,7 +32,28 @@
                                 </tr>
                             </thead>
                             <tbody>
-
+                                <?php foreach ($barang as $bk) : ?>
+                                    <tr class="text-center">
+                                        <td><img width="70px" src="<?= base_url(); ?>barang/<?= $bk['foto_barang']; ?>" alt=""></td>
+                                        <td><?= $bk['judul_barang']; ?></td>
+                                        <td><?= $bk['kategori_name']; ?></td>
+                                        <td><?= $bk['sub_kategori_name']; ?></td>
+                                        <td>
+                                            <?php if ($bk['verifikasi'] == 1) : ?>
+                                                <span class="btn btn-warning">Pending</span>
+                                            <?php elseif ($bk['verifikasi'] == 2) : ?>
+                                                <span class="btn btn-danger">Ditolak</span>
+                                            <?php elseif ($bk['verifikasi'] == 3) : ?>
+                                                <span class="btn btn-success">Diterima</span>
+                                            <?php endif ?>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                                <a href="<?= base_url(); ?>admin/detail_barang/<?= $bk['id']; ?>" class="btn btn-primary mr-3">Detail Data</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
                             </tbody>
 
                         </table>
