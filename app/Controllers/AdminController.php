@@ -253,6 +253,32 @@ class AdminController extends BaseController
         ];
         return view('admin/belum_verifikasi/view_blm_verifikasi', $data);
     }
+    public function view_sudah_verifikasi()
+    {
+        $data = [
+            'menu' => 'verifikasi',
+            'sub_menu' => 'sudah_verifikasi',
+            'barang' => $this->barang
+            ->select('barang.*, kategori.nama_kategori as kategori_name, sub_kategori.nama_sub_kategori as sub_kategori_name')
+            ->join('kategori', 'kategori.id = barang.id_kategori_barang')
+            ->join('sub_kategori', 'sub_kategori.id = barang.id_sub_kategori_barang')
+            ->where('verifikasi', 1)->findAll(),
+        ];
+        return view('admin/sudah_verifikasi/view_sdh_verifikasi', $data);
+    }
+    public function view_tolak_verifikasi()
+    {
+        $data = [
+            'menu' => 'verifikasi',
+            'sub_menu' => 'tolak_verifikasi',
+            'barang' => $this->barang
+            ->select('barang.*, kategori.nama_kategori as kategori_name, sub_kategori.nama_sub_kategori as sub_kategori_name')
+            ->join('kategori', 'kategori.id = barang.id_kategori_barang')
+            ->join('sub_kategori', 'sub_kategori.id = barang.id_sub_kategori_barang')
+            ->where('verifikasi', 1)->findAll(),
+        ];
+        return view('admin/tolak_verifikasi/view_tlk_verifikasi', $data);
+    }
     public function detail_barang($id)  {
         $data = [
             'menu' => 'verifikasi',

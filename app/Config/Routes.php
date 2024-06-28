@@ -37,8 +37,10 @@ $routes->get('/admin/edit_sub_kategori/(:any)', 'AdminController::edit_sub_kateg
 $routes->post('/admin/update_sub_kategori/(:num)', 'AdminController::update_sub_kategori/$1');
 $routes->delete('/admin/delete_sub_kategori/(:num)', 'AdminController::delete_sub_kategori/$1');
 
-$routes->get('/admin/belum_verifikasi','AdminController::view_belum_verifikasi');
-$routes->get('/admin/detail_barang/(:num)','AdminController::detail_barang/$1');
+$routes->get('/admin/belum_verifikasi', 'AdminController::view_belum_verifikasi');
+$routes->get('/admin/detail_barang/(:num)', 'AdminController::detail_barang/$1');
+$routes->get('/admin/sudah_verifikasi', 'AdminController::view_sudah_verifikasi');
+$routes->get('/admin/tolak_verifikasi', 'AdminController::view_tolak_verifikasi');
 
 
 // login dan register admin
@@ -74,29 +76,23 @@ $routes->get('/user/cek', 'UserController::cek');
 $routes->add('/logout', 'Auth::logout');
 
 // penjual
-$routes->get('/daftar/penjual','Auth::daftar_penjual');
-$routes->add('/store/penjual','Auth::add_penjual');
+$routes->get('/daftar/penjual', 'Auth::daftar_penjual');
+$routes->add('/store/penjual', 'Auth::add_penjual');
 $routes->get('/sales/home', 'SalesController::home');
-$routes->get('/sales/view_barang','SalesController::view_barang');
-$routes->get('/sales/add_barang','SalesController::add_barang');
-$routes->get('/sales/edit_barang/(:num)','SalesController::edit_barang/$1');
-$routes->post('/sales/update_barang/(:num)','SalesController::update_barang/$1');
+$routes->get('/sales/view_barang', 'SalesController::view_barang');
+$routes->get('/sales/add_barang', 'SalesController::add_barang');
+$routes->get('/sales/edit_barang/(:num)', 'SalesController::edit_barang/$1');
+$routes->post('/sales/update_barang/(:num)', 'SalesController::update_barang/$1');
 $routes->get('/sales/delete_foto_lain/(:num)', 'SalesController::delete_foto_lain/$1');
-$routes->get('/sales/view_tambah_variasi/(:num)','SalesController::view_tambah_variasi/$1');
+$routes->get('/sales/view_tambah_variasi/(:num)', 'SalesController::view_tambah_variasi/$1');
 $routes->delete('/sales/delete_variasi/(:num)', 'SalesController::delete_variasi/$1');
-$routes->get('/sales/tambah_opsi/(:num)','SalesController::tambah_opsi/$1');
+$routes->get('/sales/tambah_opsi/(:num)', 'SalesController::tambah_opsi/$1');
 $routes->get('/sales/edit_opsi/(:num)', 'SalesController::edit_opsi/$1');
 $routes->post('/sales/update_opsi/(:num)', 'SalesController::update_opsi/$1');
-$routes->post('/sales/store_opsi','SalesController::store_opsi');
-$routes->post('/sales/store_barang','SalesController::store_barang');
-$routes->post('/sales/sub_kategori','SalesController::sub_kategori');
-$routes->delete('/sales/delete_barang/(:num)','SalesController::delete_barang/$1');
+$routes->post('/sales/store_opsi', 'SalesController::store_opsi');
+$routes->post('/sales/store_barang', 'SalesController::store_barang');
+$routes->post('/sales/sub_kategori', 'SalesController::sub_kategori');
+$routes->delete('/sales/delete_barang/(:num)', 'SalesController::delete_barang/$1');
 $routes->post('sales/delete_opsi/(:num)', 'SalesController::deleteOpsi/$1');
 
 // user
-
-
-
-
-
-
