@@ -1,19 +1,21 @@
 <?= $this->extend('sales/layout'); ?>
 <?= $this->section('link'); ?>
 <link rel="stylesheet" href="<?= base_url(); ?>sales/plugins/select2/select2.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css">
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 <?= $this->endSection() ?>
-
 <?= $this->section('home'); ?>
 <?php if (session()->has('validation')) : ?>
     <?php $validation = session('validation'); ?>
+
 <?php endif; ?>
 
 <div class="content-wrapper">
-    <!-- Header Konten (Judul Halaman) -->
+    <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
             Tambah Barang Katalog
+
+
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -22,7 +24,7 @@
         </ol>
     </section>
 
-    <!-- Konten Utama -->
+    <!-- Main content -->
     <section class="content">
         <form role="form" id="demoform" method="post" enctype="multipart/form-data" action="<?= base_url('sales/store_barang'); ?>">
             <div class="row">
@@ -32,7 +34,7 @@
                             <h3 class="box-title">Form Tambah Barang</h3>
                         </div><!-- /.box-header -->
                         <div class="box-body">
-                            <!-- input teks -->
+                            <!-- text input -->
                             <input type="hidden" name="pemilik" value="<?= session()->get('id'); ?>">
                             <div class="form-group col-md-6  <?= ($validation->hasError('judul_barang')) ? 'has-error' : ''; ?>">
                                 <label>Judul Barang</label>
@@ -56,6 +58,7 @@
                             <div class="form-group col-md-6 <?= ($validation->hasError('id_sub_kategori_barang')) ? 'has-error' : ''; ?>">
                                 <label>Sub Kategori Barang</label>
                                 <select class="form-control" name="id_sub_kategori_barang" id="id_sub_kategori" data-placeholder="Select a Kategori Barang">
+
                                 </select>
                                 <?php if ($validation->hasError('id_sub_kategori_barang')) : ?>
                                     <label id="id_sub_kategori_barang-error" class="error invalid-feedback" for="id_sub_kategori_barang"><?= $validation->getError('id_sub_kategori_barang'); ?></label>
@@ -83,6 +86,7 @@
                                 <?php endif; ?>
                             </div>
                             <!-- tambahkan input lainnya -->
+
 
                             <!-- textarea -->
                             <div class="form-group col-md-12 <?= ($validation->hasError('deskripsi_barang')) ? 'has-error' : ''; ?>">
@@ -116,6 +120,7 @@
                                             <i class="fa fa-plus"></i>
                                             <span>Add files</span>
                                         </span>
+
                                     </div>
                                 </div>
                                 <div class="col-lg-6 d-flex align-items-center">
@@ -125,9 +130,49 @@
                                         </div>
                                     </div>
                                 </div>
+
+
                             </div>
                             <div class="add-more-data">
+
+
                             </div>
+
+                            <!-- <div class="table table-striped files" id="previews">
+                                <div id="template" class="row mt-2">
+                                    <div class="col-auto">
+                                        <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
+                                    </div>
+                                    <div class="col d-flex align-items-center">
+                                        <p class="mb-0">
+                                            <span class="lead" data-dz-name></span>
+                                            (<span data-dz-size></span>)
+                                        </p>
+                                        <strong class="error text-danger" data-dz-errormessage></strong>
+                                    </div>
+                                    <div class="col-4 d-flex align-items-center">
+                                        <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                            <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto d-flex align-items-center">
+                                        <div class="btn-group">
+                                            <button class="btn btn-primary start">
+                                                <i class="fas fa-upload"></i>
+                                                <span>Start</span>
+                                            </button>
+                                            <button data-dz-remove class="btn btn-warning cancel">
+                                                <i class="fas fa-times-circle"></i>
+                                                <span>Cancel</span>
+                                            </button>
+                                            <button data-dz-remove class="btn btn-danger delete">
+                                                <i class="fas fa-trash"></i>
+                                                <span>Delete</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
                         </div>
 
                         <!-- /.card-body -->
@@ -145,18 +190,66 @@
                                             <i class="fa fa-plus"></i>
                                             <span>Add Variasi</span>
                                         </span>
+
                                     </div>
                                 </div>
+
+
+
                             </div>
                             <div class="add-more-variasi">
+
                             </div>
+
+                            <!-- <div class="table table-striped files" id="previews">
+                                <div id="template" class="row mt-2">
+                                    <div class="col-auto">
+                                        <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
+                                    </div>
+                                    <div class="col d-flex align-items-center">
+                                        <p class="mb-0">
+                                            <span class="lead" data-dz-name></span>
+                                            (<span data-dz-size></span>)
+                                        </p>
+                                        <strong class="error text-danger" data-dz-errormessage></strong>
+                                    </div>
+                                    <div class="col-4 d-flex align-items-center">
+                                        <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                            <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto d-flex align-items-center">
+                                        <div class="btn-group">
+                                            <button class="btn btn-primary start">
+                                                <i class="fas fa-upload"></i>
+                                                <span>Start</span>
+                                            </button>
+                                            <button data-dz-remove class="btn btn-warning cancel">
+                                                <i class="fas fa-times-circle"></i>
+                                                <span>Cancel</span>
+                                            </button>
+                                            <button data-dz-remove class="btn btn-danger delete">
+                                                <i class="fas fa-trash"></i>
+                                                <span>Delete</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
                         </div>
                         <div class="box-footer">
                             <p class="">* Untuk Menambahkan Opsi klik enter </p>
                         </div>
+
+                        <!-- /.card-body -->
+
                     </div>
+                    <!-- /.card -->
+
                 </div>
+
             </div>
+
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </section><!-- /.content -->
@@ -166,7 +259,153 @@
 
 <?= $this->section('scripts') ?>
 <script src="<?= base_url(); ?>sales/plugins/select2/select2.full.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+<script>
+    $(function() {
+        //Initialize Select2 Elements
+        $(".select2").select2({
+            tags: true
+        });
+    });
+</script>
+<script>
+    $(".add-more").on("click", function() {
+        var card =
+            '<div style="margin-top: 10px;" class="row">' +
+            '<div class="col-lg-10">' +
+            '<div class="custom-file">' +
+            '<input  required type="file" accept="image/png, image/jpeg" class="form-control-file"  name="foto_detail[]"  id="foto_detail">' +
+            "</div>" +
+            "</div>" +
+            '<div class="col-lg-2">' +
+            '<button type="button" class="btn btn-danger delete"> Delete </button>' +
+            "</div>" +
+            "</div>";
+        $(".add-more-data").append(card);
+    });
+
+
+    $(".add-variasi").on("click", function() {
+        // uniqueId++;
+        var card =
+            '<div style="margin-top: 10px;" class="row">' +
+            '<div class="form-group col-md-12">' +
+            '<label>Nama Variasi</label>' +
+            ' <input required type="text" class="form-control" name="nama_variasi[]" placeholder="Enter nama variasi">' +
+            '</div>' +
+            '<div class="col-lg-2">' +
+            '<button type="button" class="btn btn-danger hapus"> Delete </button>' +
+            "</div>" +
+            "</div>";
+        $(".add-more-variasi").append(card);
+        $(".select2").select2({
+            tags: true
+        });
+    });
+
+    $(".add-more-data").delegate(".delete", "click", function() {
+        $(this).parent().parent().remove();
+    });
+
+    $(".add-more-variasi").delegate(".hapus", "click", function() {
+        $(this).parent().parent().remove();
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('#id_kategori').change(function(e) {
+            var id_kategori = $('#id_kategori').val();
+            $.ajax({
+                type: 'POST',
+                url: "<?= base_url('/sales/sub_kategori'); ?>",
+                data: {
+                    id_kategori: id_kategori
+                },
+
+                success: function(response) {
+                    $("#id_sub_kategori").html(response);
+                }
+            })
+        })
+    })
+</script>
+<script>
+    function formatRupiah(input) {
+        let angka = input.value.replace(/[^,\d]/g, '').toString();
+        let split = angka.split(',');
+        let sisa = split[0].length % 3;
+        let rupiah = split[0].substr(0, sisa);
+        let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+        if (ribuan) {
+            let separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+        rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+        input.value = 'Rp ' + rupiah;
+    }
+
+    document.getElementById('demoform').addEventListener('submit', function(e) {
+        let input = document.getElementById('rupiah-input');
+        input.value = input.value.replace(/[^,\d]/g, '').replace(',', '.');
+    });
+</script>
+
+<!-- <script>
+    $(function() {
+        $('#demoform').validate({
+            rules: {
+                judul_barang: {
+                    required: true,
+                },
+                id_kategori_barang: {
+                    required: true,
+                },
+                id_sub_kategori_barang: {
+                    required: true,
+                },
+                foto_barang: {
+                    required: true,
+                    accept: "image/*"
+                },
+                harga_barang: {
+                    required: true,
+                    numeric: true,
+                },
+                jumlah_barang: {
+                    required: true,
+                    numeric: true,
+                },
+                deskripsi_barang: {
+                    required: true,
+                },
+            },
+            messages: {
+                foto_barang: {
+                    accept: "Only image files are allowed."
+                },
+                id_kategori: {
+                    required: "Please select judul kategori",
+                },
+            },
+            rElement: 'span',
+            errorPlacement: function(error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+                error.appendTo(element.parent());
+            },
+            highlight: function(element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            },
+
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
+    });
+</script> -->
 <script>
     $(function() {
         //Inisialisasi Select2
