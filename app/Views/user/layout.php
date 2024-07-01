@@ -10,6 +10,12 @@ if (session()->has('id')) {
 
   // Ambil data pengguna yang login
   $data = $userModel->getLogin($userId);
+
+  $total_cart = 0;
+
+  if ($userId) {
+    $total_cart = $cart->totalItemsByUser($userId);
+  }
 }
 ?>
 <!DOCTYPE html>
@@ -100,9 +106,16 @@ if (session()->has('id')) {
             <i class="fas fa-heart text-dark"></i>
             <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
           </a>
-          <a href="" class="btn px-0 ml-2">
+          <a href="<?= base_url(); ?>cart" class="btn px-0 ml-2">
             <i class="fas fa-shopping-cart text-dark"></i>
-            <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
+            <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">
+              <?php if (session()->get('id')) : ?>
+                <?= $total_cart; ?>
+              <?php else : ?>
+                0
+              <?php endif ?>
+
+            </span>
           </a>
         </div>
       </div>
@@ -190,11 +203,17 @@ if (session()->has('id')) {
             <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
               <a href="" class="btn px-0">
                 <i class="fas fa-heart text-primary"></i>
-                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
               </a>
-              <a href="" class="btn px-0 ml-3">
+              <a href="<?= base_url(); ?>cart" class="btn px-0 ml-3">
                 <i class="fas fa-shopping-cart text-primary"></i>
-                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
+                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">
+
+                  <?php if (session()->get('id')) : ?>
+                    <?= $total_cart; ?>
+                  <?php else : ?>
+                    0
+                  <?php endif ?>
+                </span>
               </a>
             </div>
           </div>
@@ -296,6 +315,7 @@ if (session()->has('id')) {
 
   <!-- Template Javascript -->
   <script src="<?= base_url(); ?>user/js/main.js"></script>
+  <?= $this->renderSection('scripts'); ?>
 </body>
 
 </html>

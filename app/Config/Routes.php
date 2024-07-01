@@ -60,6 +60,7 @@ $routes->get('/checkout', 'UserController::checkout');
 $routes->get('/cart', 'UserController::cart');
 $routes->post('/add_chart', 'UserController::add_chart');
 $routes->get('/delete_chart', 'UserController::delete_chart');
+$routes->get('/hapus_semua', 'UserController::hapus_semua');
 
 $routes->get('/sales/home', 'SalesController::home');
 
@@ -68,8 +69,10 @@ $routes->get('/sales/home', 'SalesController::home');
 $routes->get('/user/home', 'UserController::home');
 $routes->get('/user/shop', 'UserController::shop');
 $routes->get('/', 'UserController::home');
-$routes->get('/user/detail', 'UserController::detail');
 $routes->get('/user/contact', 'UserController::contact');
+$routes->post('/user/harga_barang', 'UserController::harga_barang');
+$routes->get('/user/delete_chart/(:any)', 'UserController::delete_cart/$1');
+
 $routes->get('/user/cek', 'UserController::cek');
 
 

@@ -28,5 +28,16 @@ class Opsi extends Model
     protected $deletedField  = 'deleted_at';
 
     // Validation
-  
+    public function getHargaBerdasarkanVariasi($id_variasi)
+    {
+        // Contoh query sederhana, sesuaikan dengan logika bisnis Anda
+        
+        $builder = $this->db->table($this->table);
+        $builder->select('harga');
+        $builder->where('nama_opsi', $id_variasi);
+        $query = $builder->get();
+        $result = $query->getRowArray();
+
+        return $result['harga'] ?? 0;
+    }
 }

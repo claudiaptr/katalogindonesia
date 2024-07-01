@@ -55,5 +55,6 @@ class Barang extends Model
         $query = $this->db->table('barang')->where('id', $id);
         return $query->get();
     }
+   
     
 }

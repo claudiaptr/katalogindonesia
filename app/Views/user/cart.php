@@ -13,7 +13,10 @@
      </div>
  </div>
  <!-- Breadcrumb End -->
- <?php $keranjang = $cart->contents(); ?>
+ <?php 
+ $id_user = session()->get('id');
+ $keranjang = $cart->contentsByUser($id_user); 
+ ?>
  <!-- Cart Start -->
  <div class="container-fluid">
      <div class="row px-xl-5">
@@ -37,7 +40,9 @@
                                  <?= $krng['qty']; ?>
                              </td>
                              <td class="align-middle"> <?= $krng['subtotal']; ?></td>
-                             <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
+                             <td class="align-middle">
+                                <a href="<?= base_url(); ?>user/delete_chart/<?= $krng['rowid']; ?>" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a>
+                            </td>
                          </tr>
                      <?php endforeach; ?>
 
@@ -58,7 +63,7 @@
                  <div class="border-bottom pb-2">
                      <div class="d-flex justify-content-between mb-3">
                          <h6>Subtotal</h6>
-                         <h6>Rp. <?= $cart->total(); ?></h6>
+                         <h6>Rp. <?= $cart->totalByUser(session()->get('id')); ?></h6>
                      </div>
                      <!-- <div class="d-flex justify-content-between">
                          <h6 class="font-weight-medium">Shipping</h6>
@@ -68,7 +73,7 @@
                  <div class="pt-2">
                      <div class="d-flex justify-content-between mt-2">
                          <h5>Total</h5>
-                         <h5> Rp. <?= $cart->total(); ?></h5>
+                         <h5> Rp. <?= $cart->totalByUser(session()->get('id')); ?></h5>
                      </div>
                      <button class="btn btn-block btn-primary font-weight-bold my-3 py-3">Proceed To Checkout</button>
                  </div>
