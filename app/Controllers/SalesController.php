@@ -226,18 +226,21 @@ class SalesController extends BaseController
         // Handle variasi update
         $variasiNames = $this->request->getPost('nama_variasi');
         $variasiIds = $this->request->getPost('variasi_id');
-        foreach ($variasiNames as $index => $nama_variasi) {
-            $variasi_id = $variasiIds[$index] ?? null;
-            if ($variasi_id) {
-                $this->variasi->update($variasi_id, ['nama_variasi' => $nama_variasi]);
-            } else {
-                $this->variasi->insert([
-                    'id_barang' => $id,
-                    'nama_variasi' => $nama_variasi,
-                ]);
+        if ($variasiNames) {
+            foreach ($variasiNames as $index => $nama_variasi) {
+                $variasi_id = $variasiIds[$index] ?? null;
+                if ($variasi_id) {
+                    $this->variasi->update($variasi_id, ['nama_variasi' => $nama_variasi]);
+                } else {
+                    $this->variasi->insert([
+                        'id_barang' => $id,
+                        'nama_variasi' => $nama_variasi,
+                    ]);
+                }
             }
+    
         }
-
+       session()->getFlashdata('pesan','data berhasil di update');
 
         return redirect()->to('/sales/view_barang')->with('success', 'Data barang berhasil diperbarui.');
     }
