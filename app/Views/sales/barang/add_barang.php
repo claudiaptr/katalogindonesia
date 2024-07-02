@@ -1,6 +1,7 @@
 <?= $this->extend('sales/layout'); ?>
 <?= $this->section('link'); ?>
 <link rel="stylesheet" href="<?= base_url(); ?>sales/plugins/select2/select2.min.css">
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 <?= $this->endSection() ?>
 <?= $this->section('home'); ?>
 <?php if (session()->has('validation')) : ?>
@@ -90,7 +91,7 @@
                             <!-- textarea -->
                             <div class="form-group col-md-12 <?= ($validation->hasError('deskripsi_barang')) ? 'has-error' : ''; ?>">
                                 <label>Deskripsi Barang</label>
-                                <textarea class="form-control" name="deskripsi_barang" rows="3" placeholder="Enter Judul Barang"></textarea>
+                                <textarea class="form-control summernote" name="deskripsi_barang" rows="3" placeholder="Enter Deskripsi Barang"></textarea>
                                 <?php if ($validation->hasError('deskripsi_barang')) : ?>
                                     <label id="deskripsi_barang-error" class="error invalid-feedback" for="deskripsi_barang"><?= $validation->getError('deskripsi_barang'); ?></label>
                                 <?php endif; ?>
@@ -258,6 +259,7 @@
 
 <?= $this->section('scripts') ?>
 <script src="<?= base_url(); ?>sales/plugins/select2/select2.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 <script>
     $(function() {
         //Initialize Select2 Elements
@@ -404,4 +406,36 @@
         });
     });
 </script> -->
+<script>
+    $(function() {
+        //Inisialisasi Select2
+        $(".select2").select2({
+            tags: true
+        });
+
+        //Inisialisasi Summernote
+        $('.summernote').summernote({
+            height: 150
+        });
+
+        // Tambah Foto Barang Lain
+        $(".add-more").click(function() {
+            var html = $(".add-more-data").html();
+            $(".add-more-data").append(html);
+        });
+        $("body").on("click", ".remove", function() {
+            $(this).parents(".control-group").remove();
+        });
+
+        // Tambah Variasi
+        $(".add-variasi").click(function() {
+            var html = $(".add-more-variasi").html();
+            $(".add-more-variasi").append(html);
+        });
+        $("body").on("click", ".remove-variasi", function() {
+            $(this).parents(".control-group").remove();
+        });
+
+    });
+</script>
 <?= $this->endSection() ?>
