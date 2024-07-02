@@ -74,6 +74,7 @@ $routes->get('/tracking', 'UserController::tracking');
 $routes->post('/user/harga_barang', 'UserController::harga_barang');
 $routes->get('/user/delete_chart/(:any)', 'UserController::delete_cart/$1');
 
+
 $routes->get('/user/cek', 'UserController::cek');
 
 

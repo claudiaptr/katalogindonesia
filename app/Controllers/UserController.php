@@ -61,6 +61,17 @@ class UserController extends BaseController
 
         return view('user/detail', $data);
     }
+    public function shop()
+    {
+        $data = [
+            'barang' => $this->barang->findAll(), // Ambil semua barang
+            'kategori' => $this->kategori->getSubKategori(),
+            'cart' => \Config\Services::cart(),
+        ];
+
+        return view('user/shop', $data);
+    }
+
     public function contact()
     {
         $data = [
@@ -80,15 +91,7 @@ class UserController extends BaseController
         return view('user/tracking', $data);
     }
 
-    public function shop()
-    {
-        $data = [
-
-            'kategori' => $this->kategori->getSubKategori(),
-            'cart' => \Config\Services::cart(),
-        ];
-        return view('user/shop', $data);
-    }
+  
     public function checkout()
     {
         $data = [
