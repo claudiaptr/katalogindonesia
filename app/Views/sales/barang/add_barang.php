@@ -87,7 +87,6 @@
                             </div>
                             <!-- tambahkan input lainnya -->
 
-
                             <!-- textarea -->
                             <div class="form-group col-md-12 <?= ($validation->hasError('deskripsi_barang')) ? 'has-error' : ''; ?>">
                                 <label>Deskripsi Barang</label>
