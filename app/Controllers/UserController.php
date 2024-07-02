@@ -70,6 +70,15 @@ class UserController extends BaseController
         ];
         return view('user/contact', $data);
     }
+    public function tracking()
+    {
+        $data = [
+
+            'kategori' => $this->kategori->getSubKategori(),
+            'cart' => \Config\Services::cart(),
+        ];
+        return view('user/tracking', $data);
+    }
 
     public function shop()
     {

@@ -199,6 +199,7 @@ if (session()->has('id')) {
                 </div>
               </div>
               <a href="<?= base_url(); ?>user/contact" class="nav-item nav-link">Contact</a>
+              <a href="<?= base_url(); ?>tracking" class="nav-item nav-link">Tracking</a>
             </div>
             <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
               <a href="" class="btn px-0">
