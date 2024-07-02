@@ -378,7 +378,7 @@ class SalesController extends BaseController
             'nama_opsi' => $this->request->getVar('nama_opsi'),
             'harga' => $this->request->getVar('harga'),
         ]);
-        session()->setFlashdata('pesan', 'data berhasil diupdate');
+        session()->setFlashdata('pesan', 'data berhasil diedit');
         return redirect()->to('/sales/view_tambah_variasi/')->with('success', 'Opsi berhasil diperbarui.');
     }
     public function store_opsi()
