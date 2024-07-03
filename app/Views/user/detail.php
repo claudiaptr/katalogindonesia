@@ -45,7 +45,7 @@
                       <input type="hidden" name="id" value="<?= $barang['id']; ?>">
                       <input type="hidden" name="foto_barang" value="<?= $barang['foto_barang']; ?>">
                       <input type="hidden" name="id_user" value="<?= session()->get('id'); ?>">
-                      <h3  id="harga_barang_text" class="font-weight-semi-bold mb-4">Rp. <?= number_format($barang['harga_barang'], 0, ',', '.'); ?></h3>
+                      <h3 id="harga_barang_text" class="font-weight-semi-bold mb-4">Rp. <?= number_format($barang['harga_barang'], 0, ',', '.'); ?></h3>
                       <p class="mb-4"><?= $barang['deskripsi_barang']; ?></p>
                       <?php foreach ($variasi as $vsi) : ?>
                           <div class="d-flex mb-3">
@@ -109,8 +109,7 @@
               <div class="tab-content">
                   <div class="tab-pane fade show active" id="tab-pane-1">
                       <h4 class="mb-3">Product Description</h4>
-                      <p>Eos no lorem eirmod diam diam, eos elitr et gubergren diam sea. Consetetur vero aliquyam invidunt duo dolores et duo sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod consetetur invidunt sed sed et, lorem duo et eos elitr, sadipscing kasd ipsum rebum diam. Dolore diam stet rebum sed tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing, eos dolores sit no ut diam consetetur duo justo est, sit sanctus diam tempor aliquyam eirmod nonumy rebum dolor accusam, ipsum kasd eos consetetur at sit rebum, diam kasd invidunt tempor lorem, ipsum lorem elitr sanctus eirmod takimata dolor ea invidunt.</p>
-                      <p>Dolore magna est eirmod sanctus dolor, amet diam et eirmod et ipsum. Amet dolore tempor consetetur sed lorem dolor sit lorem tempor. Gubergren amet amet labore sadipscing clita clita diam clita. Sea amet et sed ipsum lorem elitr et, amet et labore voluptua sit rebum. Ea erat sed et diam takimata sed justo. Magna takimata justo et amet magna et.</p>
+                      <div class="tab-pane fade show active" id="product-desc" role="tabpanel" aria-labelledby="product-desc-tab"><?= $barang['deskripsi_barang']; ?></div>
                   </div>
                   <div class="tab-pane fade" id="tab-pane-2">
                       <h4 class="mb-3">Additional Information</h4>
@@ -356,23 +355,26 @@
 
   <?= $this->section('scripts'); ?>
   <script>
-    $(document).ready(function() {
-        $('input[type=radio]').change(function() {
-            var formData = $('#variasiForm').serialize(); // Ambil data form dalam bentuk serialized
-            $.ajax({
-                type: 'POST',
-                url: '<?= base_url('user/harga_barang'); ?>', // Ganti dengan URL ke fungsi controller
-                data: formData,
-                dataType: 'json',
-                success: function(response) {
-                    $('#harga_barang').val(response.harga); // Update hidden input dengan harga baru
-                    $('#harga_barang_text').text('Rp. ' + new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(response.harga).replace('IDR', '').trim());
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                }
-            });
-        });
-    });
-</script>
+      $(document).ready(function() {
+          $('input[type=radio]').change(function() {
+              var formData = $('#variasiForm').serialize(); // Ambil data form dalam bentuk serialized
+              $.ajax({
+                  type: 'POST',
+                  url: '<?= base_url('user/harga_barang'); ?>', // Ganti dengan URL ke fungsi controller
+                  data: formData,
+                  dataType: 'json',
+                  success: function(response) {
+                      $('#harga_barang').val(response.harga); // Update hidden input dengan harga baru
+                      $('#harga_barang_text').text('Rp. ' + new Intl.NumberFormat('id-ID', {
+                          style: 'currency',
+                          currency: 'IDR'
+                      }).format(response.harga).replace('IDR', '').trim());
+                  },
+                  error: function(xhr, status, error) {
+                      console.error(xhr.responseText);
+                  }
+              });
+          });
+      });
+  </script>
   <?= $this->endSection(); ?>
