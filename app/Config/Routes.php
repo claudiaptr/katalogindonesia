@@ -70,7 +70,9 @@ $routes->get('/user/home', 'UserController::home');
 $routes->get('/user/shop', 'UserController::shop');
 $routes->get('/', 'UserController::home');
 $routes->get('/user/contact', 'UserController::contact');
-$routes->get('/tracking', 'UserController::tracking');                                         
+$routes->get('/tracking', 'UserController::tracking');   
+$routes->post('user/filter', 'UserController::filter_toko');
+
 $routes->post('/user/harga_barang', 'UserController::harga_barang');
 $routes->get('/user/delete_chart/(:any)', 'UserController::delete_cart/$1');
 

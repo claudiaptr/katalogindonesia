@@ -16,7 +16,7 @@ class UserController extends BaseController
     protected $barang;
     protected $fotoBarang;
     protected $kategori, $variasi, $opsi, $iklancarausel;
-    protected $iklantetap, $cart,$session;
+    protected $iklantetap, $cart, $session;
 
 
     public function __construct()
@@ -33,7 +33,7 @@ class UserController extends BaseController
     }
     public function home()
     {
-       
+
         $data = [
             'barang' => $this->barang->getAlamatToko(8),
             'barang_baru' => $this->barang->getNewBarang(8),
@@ -65,13 +65,27 @@ class UserController extends BaseController
     public function shop()
     {
         $data = [
-            'barang' => $this->barang->findAll(), // Ambil semua barang
+            'barang' => $this->barang->getbarang(),
             'kategori' => $this->kategori->getSubKategori(),
             'cart' => \Config\Services::cart(),
+            'menu' => 'shop',
         ];
-
         return view('user/shop', $data);
     }
+    public function filter_toko()
+    {
+        $provinsi = $this->request->getVar('provinsi');
+        $kabupaten = $this->request->getVar('kabupaten');
+        $kecamatan = $this->request->getVar('kecamatan');
+        $kelurahan = $this->request->getVar('kelurahan');
+
+        // Panggil model untuk mengambil data barang sesuai filter
+        $barang = $this->barang->getbarang($provinsi, $kabupaten, $kecamatan, $kelurahan);
+        log_message('info', 'Data barang yang dikembalikan: ' . json_encode($barang));
+        // Mengembalikan data barang dalam bentuk JSON
+        return $this->response->setJSON($barang);
+    }
+
 
     public function contact()
     {
@@ -89,16 +103,15 @@ class UserController extends BaseController
 
             'kategori' => $this->kategori->getSubKategori(),
             'cart' => \Config\Services::cart(),
-            'menu' => 'shop',
+            'menu' => 'tracking',
         ];
         return view('user/tracking', $data);
     }
 
-  
+
     public function checkout()
     {
         $data = [
-
             'kategori' => $this->kategori->getSubKategori(),
             'cart' => \Config\Services::cart(),
             'menu' => 'checkout',
@@ -131,7 +144,7 @@ class UserController extends BaseController
     }
     public function add_chart()
     {
-        
+
         $cart = \Config\Services::cart();
         $variasi = $this->request->getVar('variasi');
         $id_user = $this->session->get('id');
@@ -153,7 +166,7 @@ class UserController extends BaseController
         ));
         return redirect()->to('cart');
     }
-  
+
     public function harga_barang()
     {
         $request = service('request');
@@ -173,7 +186,8 @@ class UserController extends BaseController
         // Kirim kembali harga dalam format JSON
         return $this->response->setJSON(['harga' => $harga_akhir]);
     }
-    public function hapus_semua (){
+    public function hapus_semua()
+    {
         $this->cart->destroy();
         return redirect()->to('cart');
     }

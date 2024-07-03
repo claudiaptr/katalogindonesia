@@ -12,7 +12,7 @@ class Barang extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = false;
-    protected $allowedFields    = ['foto_barang','deskripsi_barang','id_kategori_barang','id_sub_kategori_barang','judul_barang','harga_barang','pemilik','jumlah_barang'];
+    protected $allowedFields    = ['foto_barang', 'deskripsi_barang', 'id_kategori_barang', 'id_sub_kategori_barang', 'judul_barang', 'harga_barang', 'pemilik', 'jumlah_barang'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -43,10 +43,14 @@ class Barang extends Model
     // protected $afterFind      = [];
     // protected $beforeDelete   = [];
     // protected $afterDelete    = [];
-    public function getRandomBarang($limit = 6)
+    public function getRandomBarang($limit = null)
     {
         
-        return $this->orderBy('RAND()')->where('verifikasi',3)->findAll($limit);
+        if ($limit) {
+            dd('berhasil');
+        }
+        dd('gagal');
+
     }
     public function getNewBarang($limit = 6)
     {
@@ -59,7 +63,8 @@ class Barang extends Model
         $query = $builder->get();
         return $query->getResultArray();
     }
-    public function get_product($id) {
+    public function get_product($id)
+    {
         $query = $this->db->table('barang')->where('id', $id);
         return $query->get();
     }
@@ -75,7 +80,27 @@ class Barang extends Model
         $query = $builder->get();
         return $query->getResultArray();
     }
-   
-   
-    
+    public function getbarang($provinsi = null, $kabupaten = null, $kecamatan = null, $kelurahan = null)
+    {
+        $builder = $this->db->table('barang');
+        $builder->select('barang.*, alamat_toko.id AS id_alamat, alamat_toko.provinsi, alamat_toko.kabupaten, alamat_toko.kecamatan, alamat_toko.kelurahan');
+        $builder->join('alamat_toko', 'barang.pemilik = alamat_toko.user');
+        $builder->where('barang.verifikasi', 3);
+        if ($provinsi) {
+            $builder->where('alamat_toko.provinsi', $provinsi);
+        }
+        if ($kabupaten) {
+            $builder->where('alamat_toko.kabupaten', $kabupaten);
+        }
+        if ($kecamatan) {
+            $builder->where('alamat_toko.kecamatan', $kecamatan);
+        }
+        if ($kelurahan) {
+            $builder->where('alamat_toko.kelurahan', $kelurahan);
+        }
+
+        $builder->orderBy('RAND()');
+        $query = $builder->get();
+        return $query->getResultArray();
+    }
 }

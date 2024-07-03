@@ -148,41 +148,56 @@
                         </div>
                         <div class="ml-2">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Sorting</button>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#">Latest</a>
-                                    <a class="dropdown-item" href="#">Popularity</a>
-                                    <a class="dropdown-item" href="#">Best Rating</a>
-                                </div>
+                                <select id="provinsi" name="provinsi" class="form-control">
+                                    <option value="">Pilih Provinsi</option>
+                                    <option value="Jakarta">jakarta</option>
+                                    <option value="Bali">Bali</option>
+                                </select>
                             </div>
                             <div class="btn-group ml-2">
-                                <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Showing</button>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#">10</a>
-                                    <a class="dropdown-item" href="#">20</a>
-                                    <a class="dropdown-item" href="#">30</a>
-                                </div>
+                                <select id="kabupaten" name="kabupaten" class="form-control">
+                                    <option>Pilih kabupaten</option>
+                                    <option value="Denpasar">Denpasar</option>
+                                    <option value="Bali">Bali</option>
+                                </select>
+                            </div>
+                            <div class="btn-group ml-2">
+                                <select id="kecamatan" name="kecamatan" class="form-control">
+                                    <option>Pilih kecamatan</option>
+                                    <option value="Denpasar Barat">Denpasar Barat</option>
+                                    <option value="Bali">Bali</option>
+                                </select>
+                            </div>
+                            <div class="btn-group ml-2">
+                                <select id="kelurahan" name="kelurahan" class="form-control">
+                                    <option>Pilih kelurahan</option>
+                                    <option value="Peguyangan">Peguyangan</option>
+                                    <option value="Bali">Bali</option>
+                                </select>
                             </div>
                         </div>
                     </div>
                 </div>
-                <?php foreach ($barang as $bk) : ?>
-                    <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                        <div class="product-item bg-light mb-4">
-                            <a href="<?= base_url(); ?>user/detail/<?= $bk['id']; ?>" class="d-block text-decoration-none">
-                                <div class="product-img position-relative overflow-hidden">
-                                    <img class="" style="object-fit: scale-down !important; width: 280px; height: 280px;" src="<?= base_url(); ?>barang/<?= $bk['foto_barang']; ?>" alt="">
-                                </div>
-                                <div class="text-center py-4 ">
-                                    <p class="h6 text-decoration-none text-truncate"><?= $bk['judul_barang']; ?></p>
-                                    <div class="justify-content-center mt-2">
-                                        <h5 class="mb-0 ">Rp. <?= number_format($bk['harga_barang'], 0, ',', '.'); ?></h5>
+                <div id="barang-container" class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                    <?php foreach ($barang as $bk) : ?>
+                        <div class="barang-item">
+                            <div class="product-item bg-light mb-4">
+                                <a href="<?= base_url(); ?>user/detail/<?= $bk['id']; ?>" class="d-block text-decoration-none">
+                                    <div class="product-img position-relative overflow-hidden">
+                                        <img class="" style="object-fit: scale-down !important; width: 280px; height: 280px;" src="<?= base_url(); ?>barang/<?= $bk['foto_barang']; ?>" alt="">
                                     </div>
-                                </div>
-                            </a>
+                                    <div class="text-center py-4 ">
+                                        <p class="h6 text-decoration-none text-truncate"><?= $bk['judul_barang']; ?></p>
+                                        <div class="justify-content-center mt-2">
+                                            <h5 class="mb-0 ">Rp. <?= number_format($bk['harga_barang'], 0, ',', '.'); ?></h5>
+                                        </div>
+                                        <small style="color: darkgray;"><?= $bk['kabupaten']; ?></small>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
+                </div>
 
                 <div class="col-12">
                     <nav>
@@ -201,4 +216,57 @@
     </div>
 </div>
 <!-- Shop End -->
+<?= $this->endSection(); ?>
+
+<?= $this->section('scripts'); ?>
+<script>
+   $(document).ready(function() {
+    function loadBarang() {
+        var provinsi = $('#provinsi').val() || null;
+        var kabupaten = $('#kabupaten').val() || null;
+        var kecamatan = $('#kecamatan').val() || null;
+        var kelurahan = $('#kelurahan').val()|| null;
+        $.ajax({
+            url: '<?= base_url('user/filter'); ?>',
+            type: 'POST',
+            data: {
+                provinsi: provinsi,
+                kabupaten: kabupaten,
+                kecamatan: kecamatan,
+                kelurahan: kelurahan
+            },
+            success: function(response) {
+                var html = '';
+                if (response.length > 0) {
+                    response.forEach(function(bk) {
+                        html += '<div class="product-item bg-light mb-4">';
+                        html += '    <a href="<?= base_url(); ?>user/detail/' + bk.id + '" class="d-block text-decoration-none">';
+                        html += '        <div class="product-img position-relative overflow-hidden">';
+                        html += '            <img class="" style="object-fit: scale-down !important; width: 280px; height: 280px;" src="<?= base_url(); ?>barang/' + bk.foto_barang + '" alt="">';
+                        html += '        </div>';
+                        html += '        <div class="text-center py-4 ">';
+                        html += '            <p class="h6 text-decoration-none text-truncate">' + bk.judul_barang + '</p>';
+                        html += '            <div class="justify-content-center mt-2">';
+                        html += '                <h5 class="mb-0 ">Rp. ' + parseInt(bk.harga_barang).toLocaleString('id-ID') + '</h5>';
+                        html += '            </div>';
+                        html += '            <small style="color: darkgray;">' + bk.kabupaten + '</small>';
+                        html += '        </div>';
+                        html += '    </a>';
+                        html += '</div>';
+                    });
+                } else {
+                    html = '<p>Tidak ada barang yang ditemukan.</p>';
+                }
+                $('#barang-container').html(html);
+            }
+        });
+    }
+
+    $('#provinsi, #kabupaten, #kecamatan, #kelurahan').on('change', function() {
+        loadBarang();
+    });
+
+    
+});
+</script>
 <?= $this->endSection(); ?>
