@@ -347,11 +347,13 @@
                     <!-- Optionally, you can add icons to the links -->
                     <li class=" <?= $menu == 'dashboard' ? 'active' : ''  ?>"><a href="<?= base_url(); ?>sales/home"><i class="fa fa-th-large"></i> <span>Dashboard</span></a></li>
                     <li class=" <?= $menu == 'barang' ? 'active' : ''  ?>"><a href="<?= base_url(); ?>sales/view_barang"><i class="fa fa-cube"></i> <span>Barang</span></a></li>
+                    <li class=" <?= $menu == 'diskon' ? 'active' : ''  ?>"><a href="<?= base_url(); ?>sales/view_diskon"><i class="fa fa-cube"></i> <span>Diskon</span></a></li>
+                    <li class=" <?= $menu == 'Pesanan' ? 'active' : ''  ?>"><a href="<?= base_url(); ?>sales/view_pesanan"><i class="fa fa-cube"></i> <span>Pesanan</span></a></li>
                     <li class="treeview">
-                        <a href="#"><i class="fa fa-link"></i> <span>lainya</span> <i class="fa fa-angle-left pull-right"></i></a>
+                        <a href="#"><i class="fa fa-link"></i> <span>Proses Pesanan</span> <i class="fa fa-angle-left pull-right"></i></a>
                         <ul class="treeview-menu">
-                            <li><a href="#">View Barang</a></li>
-                            <li><a href="#">Link in level 2</a></li>
+                            <li><a href="<?= base_url(); ?>sales/kemas_pesanan">Barang di Kemas</a></li>
+                            <li><a href="<?= base_url(); ?>sales/kirim_pesanan">Barang di Kirim</a></li>
                         </ul>
                     </li>
                 </ul><!-- /.sidebar-menu -->
