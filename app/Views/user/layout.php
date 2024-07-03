@@ -188,17 +188,17 @@ if (session()->has('id')) {
           </button>
           <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
             <div class="navbar-nav mr-auto py-0">
-              <a href="<?= base_url(); ?>" class="nav-item nav-link active">Home</a>
-              <a href="<?php echo base_url('user/shop'); ?>" class="nav-item nav-link">Shop</a>
-              <a href="<?= base_url(); ?>user/detail" class="nav-item nav-link">Shop Detail</a>
+              <a href="<?= base_url(); ?>" class="nav-item nav-link <?= $menu == 'dashboard' ? 'active' : ''  ?> ">Home</a>
+              <a href="<?php echo base_url('user/shop'); ?>" class="nav-item nav-link <?= $menu == 'shop' ? 'active' : ''  ?>">Shop</a>
+              <a href="<?= base_url(); ?>user/detail" class="nav-item nav-link ">Shop Detail</a>
               <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i class="fa fa-angle-down mt-1"></i></a>
-                <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                  <a href="<?= base_url(); ?>cart" class="dropdown-item">Shopping Cart</a>
-                  <a href="<?= base_url(); ?>checkout" class="dropdown-item">Checkout</a>
+                <div class="dropdown-menu bg-primary rounded-0 border-0 m-0 ">
+                  <a href="<?= base_url(); ?>cart" class="dropdown-item <?= $menu == 'cart' ? 'active' : ''  ?>">Shopping Cart</a>
+                  <a href="<?= base_url(); ?>checkout" class="dropdown-item <?= $menu == 'checkout' ? 'active' : ''  ?>">Checkout</a>
                 </div>
               </div>
-              <a href="<?= base_url(); ?>user/contact" class="nav-item nav-link">Contact</a>
+              <a href="<?= base_url(); ?>user/contact" class="nav-item nav-link <?= $menu == 'contact' ? 'active' : ''  ?>">Contact</a>
             </div>
             <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
               <a href="" class="btn px-0">

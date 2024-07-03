@@ -45,16 +45,37 @@ class Barang extends Model
     // protected $afterDelete    = [];
     public function getRandomBarang($limit = 6)
     {
+        
         return $this->orderBy('RAND()')->where('verifikasi',3)->findAll($limit);
     }
     public function getNewBarang($limit = 6)
     {
-        return $this->orderBy('created_at', 'DESC')->where('verifikasi',3)->findAll($limit);
+        $builder = $this->db->table('barang');
+        $builder->select('barang.*, alamat_toko.id AS id_alamat, alamat_toko.provinsi, alamat_toko.kabupaten, alamat_toko.kecamatan, alamat_toko.kelurahan');
+        $builder->join('alamat_toko', 'barang.pemilik = alamat_toko.user');
+        $builder->where('barang.verifikasi', 3);
+        $builder->orderBy('created_at', 'DESC');
+        $builder->limit($limit);
+        $query = $builder->get();
+        return $query->getResultArray();
     }
     public function get_product($id) {
         $query = $this->db->table('barang')->where('id', $id);
         return $query->get();
     }
+
+    public function getAlamatToko($limit = 6)
+    {
+        $builder = $this->db->table('barang');
+        $builder->select('barang.*, alamat_toko.id AS id_alamat, alamat_toko.provinsi, alamat_toko.kabupaten, alamat_toko.kecamatan, alamat_toko.kelurahan');
+        $builder->join('alamat_toko', 'barang.pemilik = alamat_toko.user');
+        $builder->where('barang.verifikasi', 3);
+        $builder->orderBy('RAND()');
+        $builder->limit($limit);
+        $query = $builder->get();
+        return $query->getResultArray();
+    }
+   
    
     
 }

@@ -33,10 +33,9 @@ class UserController extends BaseController
     }
     public function home()
     {
-        helper('form');
-
+       
         $data = [
-            'barang' => $this->barang->getRandomBarang(8),
+            'barang' => $this->barang->getAlamatToko(8),
             'barang_baru' => $this->barang->getNewBarang(8),
             'kategori' => $this->kategori->getSubKategori(),
             'iklan_tetap_1' => $this->iklantetap->find(1),
@@ -45,6 +44,7 @@ class UserController extends BaseController
             'iklan_tetap_4' => $this->iklantetap->find(4),
             'iklan_carausel' => $this->iklancarausel->findAll(),
             'cart' => \Config\Services::cart(),
+            'menu' => 'dashboard',
         ];
         return view('user/home', $data);
     }
@@ -57,6 +57,7 @@ class UserController extends BaseController
             'variasi' => $this->variasi->data_opsi($id),
             'kategori' => $this->kategori->getSubKategori(),
             'cart' => \Config\Services::cart(),
+            'menu' => 'shop',
         ];
 
         return view('user/detail', $data);
@@ -67,6 +68,7 @@ class UserController extends BaseController
 
             'kategori' => $this->kategori->getSubKategori(),
             'cart' => \Config\Services::cart(),
+            'menu' => 'contact',
         ];
         return view('user/contact', $data);
     }
@@ -77,6 +79,7 @@ class UserController extends BaseController
 
             'kategori' => $this->kategori->getSubKategori(),
             'cart' => \Config\Services::cart(),
+            'menu' => 'shop',
         ];
         return view('user/shop', $data);
     }
@@ -86,6 +89,7 @@ class UserController extends BaseController
 
             'kategori' => $this->kategori->getSubKategori(),
             'cart' => \Config\Services::cart(),
+            'menu' => 'checkout',
         ];
         return view('user/checkout', $data);
     }
@@ -94,6 +98,7 @@ class UserController extends BaseController
         $data = [
             'cart' => \Config\Services::cart(),
             'kategori' => $this->kategori->getSubKategori(),
+            'menu' => 'cart',
         ];
         return view('user/cart', $data);
     }

@@ -55,7 +55,50 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="text" name="alamat" class="form-control" placeholder="Alamat Toko">
+                        <select id="provinsi" name="provinsi" class="form-control">
+                            <option>Pilih Provinsi</option>
+                        </select>
+
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-map-pin"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+
+                        <select id="kabupaten" name="kabupaten" class="form-control">
+
+                        </select>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-map-pin"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <select id="kecamatan" name="kecamatan" class="form-control">
+
+                        </select>
+
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-map-pin"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <select id="kelurahan" name="kelurahan" class="form-control">
+
+                        </select>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-map-pin"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" name="alamat" class="form-control" placeholder="Alamat Lengkap Toko">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-map-pin"></span>
@@ -77,7 +120,7 @@
                         </div>
                         <!-- /.col -->
                     </div>
-                    
+
                 </form>
 
                 <!-- <div class="social-auth-links text-center">
@@ -103,6 +146,74 @@
     <script src="<?= base_url(); ?>asset/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="<?= base_url(); ?>asset/dists/js/adminlte.min.js"></script>
+    <script>
+        fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/provinces.json`)
+            .then(response => response.json())
+            .then(provinces => {
+                var data = provinces;
+                var tampung = ' <option>Pilih Provinsi</option>';
+                document.getElementById('kabupaten').innerHTML = '<option>Pilih</option>';
+                document.getElementById('kecamatan').innerHTML = '<option>Pilih</option>';
+                document.getElementById('kelurahan').innerHTML = '<option>Pilih</option>';
+                data.forEach(element => {
+                    tampung += `<option data-reg="${element.id}" value="${element.name}">${element.name}</option>`;
+                });
+                document.getElementById('provinsi').innerHTML = tampung;
+
+            });
+    </script>
+    <script>
+        const selectProvinsi = document.getElementById('provinsi');
+        selectProvinsi.addEventListener('change', (e) => {
+            var provinsi = e.target.options[e.target.selectedIndex].dataset.reg;
+            fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/regencies/${provinsi}.json`)
+                .then(response => response.json())
+                .then(regencies => {
+                    var data = regencies;
+                    var tampung = ' <option>Pilih Kabupaten</option>';
+                    document.getElementById('kecamatan').innerHTML = '<option>Pilih</option>';
+                    document.getElementById('kelurahan').innerHTML = '<option>Pilih</option>';
+                    data.forEach(element => {
+                        tampung += `<option data-dist="${element.id}" value="${element.name}">${element.name}</option>`;
+                    });
+                    document.getElementById('kabupaten').innerHTML = tampung;
+
+                });
+        });
+
+        const selectKabupaten = document.getElementById('kabupaten');
+        selectKabupaten.addEventListener('change', (e) => {
+            var kabupaten = e.target.options[e.target.selectedIndex].dataset.dist;
+            fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/districts/${kabupaten}.json`)
+                .then(response => response.json())
+                .then(districts => {
+                    var data = districts;
+                    var tampung = ' <option>Pilih Kecamatan</option>';
+                    document.getElementById('kelurahan').innerHTML = '<option>Pilih</option>';
+                    data.forEach(element => {
+                        tampung += `<option data-vill="${element.id}" value="${element.name}">${element.name}</option>`;
+                    });
+                    document.getElementById('kecamatan').innerHTML = tampung;
+
+                });
+        });
+
+        const selectKecamatan = document.getElementById('kecamatan');
+        selectKecamatan.addEventListener('change', (e) => {
+            var kecamatan = e.target.options[e.target.selectedIndex].dataset.vill;
+            fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/villages/${kecamatan}.json`)
+                .then(response => response.json())
+                .then(villages => {
+                    var data = villages;
+                    var tampung = ' <option>Pilih Kelurahan</option>';
+                    data.forEach(element => {
+                        tampung += `<option  value="${element.name}">${element.name}</option>`;
+                    });
+                    document.getElementById('kelurahan').innerHTML = tampung;
+
+                });
+        });
+    </script>
 </body>
 
 </html>

@@ -265,6 +265,7 @@
                             <div class="justify-content-center mt-2">
                                 <h5 class="mb-0 ">Rp. <?= number_format($bk['harga_barang'], 0, ',', '.'); ?></h5>
                             </div>
+                            <small style="color: darkgray;"><?= $bk['kabupaten']; ?></small>
                         </div>
                     </a>
                 </div>
@@ -333,6 +334,7 @@
                                 <small class="fa fa-star text-primary mr-1"></small>
                                 <small>(99)</small>
                             </div>
+                            <small><?= $bb['kabupaten']; ?></small>
                         </div>
                 </div>
             </div>

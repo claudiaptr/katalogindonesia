@@ -35,10 +35,10 @@ class SalesController extends BaseController
         $id = session()->get('id');
         $data = [
             'barang' => $this->barang
-            ->select('barang.*, kategori.nama_kategori as kategori_name, sub_kategori.nama_sub_kategori as sub_kategori_name')
-            ->join('kategori', 'kategori.id = barang.id_kategori_barang')
-            ->join('sub_kategori', 'sub_kategori.id = barang.id_sub_kategori_barang')
-            ->where('barang.pemilik', $id)->findAll(),
+                ->select('barang.*, kategori.nama_kategori as kategori_name, sub_kategori.nama_sub_kategori as sub_kategori_name')
+                ->join('kategori', 'kategori.id = barang.id_kategori_barang')
+                ->join('sub_kategori', 'sub_kategori.id = barang.id_sub_kategori_barang')
+                ->where('barang.pemilik', $id)->findAll(),
             'menu' => 'barang',
         ];
 
@@ -102,7 +102,7 @@ class SalesController extends BaseController
                 ],
             ],
         ]);
-       
+
         if (!$validate) {
             $validation = \Config\Services::validation();
             $error = $validation->getErrors();
@@ -180,7 +180,7 @@ class SalesController extends BaseController
     public function update_barang($id)
     {
         // Validasi input
-        
+
         // Mengunggah gambar utama jika ada
         $foto_barang = $this->request->getFile('foto_barang');
         if ($foto_barang && $foto_barang->isValid() && !$foto_barang->hasMoved()) {
@@ -238,10 +238,8 @@ class SalesController extends BaseController
                     ]);
                 }
             }
-    
         }
-       session()->getFlashdata('pesan','data berhasil di update');
-
+        session()->getFlashdata('pesan', 'data berhasil di update');
         return redirect()->to('/sales/view_barang')->with('success', 'Data barang berhasil diperbarui.');
     }
     public function delete_foto_lain($id)
@@ -305,7 +303,7 @@ class SalesController extends BaseController
     {
         // Cek apakah variasi ada berdasarkan ID
         $variasi = $this->variasi->find($id);
-        
+
         if (!$variasi) {
             return redirect()->to('/sales/view_tambah_variasi')->with('error', 'Variasi tidak ditemukan.');
         }
@@ -322,7 +320,7 @@ class SalesController extends BaseController
         $data = [
             'menu' => 'barang',
             'variasi' => $variasi,
-            'validation'=> \Config\Services::validation(),
+            'validation' => \Config\Services::validation(),
         ];
         return view('sales/barang/add_opsi', $data);
     }
@@ -346,7 +344,7 @@ class SalesController extends BaseController
     {
         // Tambahkan debugging
         $requestData = $this->request->getPost();
-        
+
 
         // Validasi input
         $validate = $this->validate([
@@ -424,8 +422,8 @@ class SalesController extends BaseController
         }
 
         session()->setFlashdata('pesan', 'data berhasil ditambah');
-        
-        return redirect()->to('/sales/view_tambah_variasi/'.$id_barang)->with('success', 'Opsi baru berhasil ditambahkan.');
+
+        return redirect()->to('/sales/view_tambah_variasi/' . $id_barang)->with('success', 'Opsi baru berhasil ditambahkan.');
     }
     public function deleteOpsi($id)
     {
