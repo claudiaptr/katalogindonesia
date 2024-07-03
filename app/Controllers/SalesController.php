@@ -433,4 +433,71 @@ class SalesController extends BaseController
             return $this->response->setJSON(['status' => 'error', 'message' => 'Gagal menghapus data']);
         }
     }
+    public function view_pesanan()
+    {
+        $id = session()->get('id');
+        $data = [
+            'barang' => $this->barang
+                ->select('barang.*, kategori.nama_kategori as kategori_name, sub_kategori.nama_sub_kategori as sub_kategori_name')
+                ->join('kategori', 'kategori.id = barang.id_kategori_barang')
+                ->join('sub_kategori', 'sub_kategori.id = barang.id_sub_kategori_barang')
+                ->where('barang.pemilik', $id)->findAll(),
+            'menu' => 'barang',
+        ];
+
+        return view('sales/pesanan/view_pesanan', $data);
+    }
+    public function kemas_pesanan()
+    {
+        $id = session()->get('id');
+        $data = [
+            'barang' => $this->barang
+                ->select('barang.*, kategori.nama_kategori as kategori_name, sub_kategori.nama_sub_kategori as sub_kategori_name')
+                ->join('kategori', 'kategori.id = barang.id_kategori_barang')
+                ->join('sub_kategori', 'sub_kategori.id = barang.id_sub_kategori_barang')
+                ->where('barang.pemilik', $id)->findAll(),
+            'menu' => 'barang',
+        ];
+
+        return view('sales/pesanan/kemas_pesanan', $data);
+    }
+    public function kirim_pesanan()
+    {
+        $id = session()->get('id');
+        $data = [
+            'barang' => $this->barang
+                ->select('barang.*, kategori.nama_kategori as kategori_name, sub_kategori.nama_sub_kategori as sub_kategori_name')
+                ->join('kategori', 'kategori.id = barang.id_kategori_barang')
+                ->join('sub_kategori', 'sub_kategori.id = barang.id_sub_kategori_barang')
+                ->where('barang.pemilik', $id)->findAll(),
+            'menu' => 'barang',
+        ];
+
+        return view('sales/pesanan/kirim_pesanan', $data);
+    }
+    public function view_diskon()
+    {
+        $id = session()->get('id');
+        $data = [
+            'barang' => $this->barang
+                ->select('barang.*, kategori.nama_kategori as kategori_name, sub_kategori.nama_sub_kategori as sub_kategori_name')
+                ->join('kategori', 'kategori.id = barang.id_kategori_barang')
+                ->join('sub_kategori', 'sub_kategori.id = barang.id_sub_kategori_barang')
+                ->where('barang.pemilik', $id)->findAll(),
+            'menu' => 'barang',
+        ];
+
+        return view('sales/diskon/view_diskon', $data);
+    }
+    public function add_diskon()
+    {
+        $data = [
+            'validation' => \Config\Services::validation(),
+            'kategori' => $this->kategori->findAll(),
+            'sub_ketgori' => $this->sub_kategori->findAll(),
+            'menu' => 'barang',
+        ];
+
+        return view('sales/diskon/add_diskon', $data);
+    }
 }
