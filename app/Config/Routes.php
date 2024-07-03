@@ -69,7 +69,8 @@ $routes->get('/sales/home', 'SalesController::home');
 $routes->get('/user/home', 'UserController::home');
 $routes->get('/user/shop', 'UserController::shop');
 $routes->get('/', 'UserController::home');
-$routes->get('/user/contact', 'UserController::contact');
+$routes->get('/user/jasa', 'UserController::jasa');
+$routes->get('/user/contact', 'EmailController::index');
 $routes->get('/tracking', 'UserController::tracking');   
 $routes->post('user/filter', 'UserController::filter_toko');
 
@@ -78,6 +79,10 @@ $routes->get('/user/delete_chart/(:any)', 'UserController::delete_cart/$1');
 
 
 $routes->get('/user/cek', 'UserController::cek');
+$routes->match(['get', 'post'], 'email', 'SendEmail::index');
+$routes->get('/user/email/send', 'EmailController::send');
+
+
 
 
 
@@ -88,25 +93,25 @@ $routes->add('/logout', 'Auth::logout');
 $routes->get('/daftar/penjual', 'Auth::daftar_penjual');
 $routes->add('/store/penjual', 'Auth::add_penjual');
 $routes->get('/sales/home', 'SalesController::home');
-$routes->get('/sales/view_barang', 'SalesController::view_barang');
+$routes->get('/sales/view_barang',  'SalesController::view_barang');
 $routes->get('/sales/view_diskon', 'SalesController::view_diskon');
 $routes->get('/sales/view_pesanan', 'SalesController::view_pesanan');
 $routes->get('/sales/kemas_pesanan', 'SalesController::kemas_pesanan');
 $routes->get('/sales/kirim_pesanan', 'SalesController::kirim_pesanan');
-$routes->get('/sales/add_barang', 'SalesController::add_barang');
+$routes->get('/sales/add_barang',  'SalesController::add_barang');
 $routes->get('/sales/add_diskon', 'SalesController::add_diskon');
-$routes->get('/sales/edit_barang/(:num)', 'SalesController::edit_barang/$1');
-$routes->post('/sales/update_barang/(:num)', 'SalesController::update_barang/$1');
+$routes->get('/sales/edit_barang/(:num)',  'SalesController::edit_barang/$1');
+$routes->post('/sales/update_barang/(:num)',  'SalesController::update_barang/$1');
 $routes->get('/sales/delete_foto_lain/(:num)', 'SalesController::delete_foto_lain/$1');
-$routes->get('/sales/view_tambah_variasi/(:num)', 'SalesController::view_tambah_variasi/$1');
+$routes->get('/sales/view_tambah_variasi/(:num)',  'SalesController::view_tambah_variasi/$1');
 $routes->delete('/sales/delete_variasi/(:num)', 'SalesController::delete_variasi/$1');
-$routes->get('/sales/tambah_opsi/(:num)', 'SalesController::tambah_opsi/$1');
+$routes->get('/sales/tambah_opsi/(:num)',  'SalesController::tambah_opsi/$1');
 $routes->get('/sales/edit_opsi/(:num)', 'SalesController::edit_opsi/$1');
 $routes->post('/sales/update_opsi/(:num)', 'SalesController::update_opsi/$1');
-$routes->post('/sales/store_opsi', 'SalesController::store_opsi');
-$routes->post('/sales/store_barang', 'SalesController::store_barang');
-$routes->post('/sales/sub_kategori', 'SalesController::sub_kategori');
-$routes->delete('/sales/delete_barang/(:num)', 'SalesController::delete_barang/$1');
+$routes->post('/sales/store_opsi',  'SalesController::store_opsi');
+$routes->post('/sales/store_barang',  'SalesController::store_barang');
+$routes->post('/sales/sub_kategori',  'SalesController::sub_kategori');
+$routes->delete('/sales/delete_barang/(:num)',  'SalesController::delete_barang/$1');
 $routes->post('sales/delete_opsi/(:num)', 'SalesController::deleteOpsi/$1');
 
 // user

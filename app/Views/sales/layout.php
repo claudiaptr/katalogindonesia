@@ -35,6 +35,7 @@
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="<?= base_url(); ?>sales/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
     <link rel="stylesheet" href="<?= base_url(); ?>sales/plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.css">
     <style>
         .dropzoneDragArea {
             background-color: #fbfdff;
@@ -51,6 +52,7 @@
             border-radius: 10px;
         }
     </style>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -577,6 +579,7 @@
 
     <!-- AdminLTE for demo purposes -->
     <script src="<?= base_url(); ?>sales/dists/js/demo.js"></script>
+    <script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
     <script>
         const flashData = $('.flash_data').data('flashdata')
         const errorflashData = $('.error_flash').data('flashdata')

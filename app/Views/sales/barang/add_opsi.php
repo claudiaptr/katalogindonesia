@@ -30,10 +30,7 @@
                             <div id="actions" class="row">
                                 <div class="col-lg-6">
                                     <div class="btn-group w-100">
-                                        <span class="btn btn-success add-variasi col fileinput-button">
-                                            <i class="fa fa-plus"></i>
-                                            <span>Add Variasi</span>
-                                        </span>
+                                        <span class="btn btn-success add-variasi col fileinput-button"><i class="fa fa-plus"></i><span>Add Variasi</span></span>
 
                                     </div>
                                 </div>
@@ -41,23 +38,24 @@
                             <div class="form-group col-md-12">
                                 <input type="hidden" class="form-control" name="id_variasi" value="<?= $variasi['id']; ?>">
                                 <input type="hidden" class="form-control" name="id_barang" value="<?= $variasi['id_barang']; ?>">
-                                
+
                             </div>
                             <div class="form-group col-md-12">
                                 <label>Opsi</label>
                                 <input type="text" class="form-control" name="nama_opsi[]" placeholder="Enter nama variasi">
-                               
+
                             </div>
+
                             <div class="form-group col-md-12">
                                 <label>Harga</label>
-                                <input type="text" class="form-control" name="harga[]" placeholder="Enter nama variasi">
+                                <input type="text" required class="form-control" name="harga[]" placeholder="Enter nama variasi">
                             </div>
                         </div>
                         <!-- /.card-body -->
 
                     </div>
                     <div class="add-more-variasi">
-                       
+
                     </div>
                 </div>
 
@@ -65,7 +63,7 @@
 
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-        
+
     </section><!-- /.content -->
 </div>
 
@@ -74,51 +72,33 @@
 <?= $this->section('scripts') ?>
 
 <script>
-   $(document).ready(function() {
-    // Function to add new variation fields
-    $(".add-variasi").on("click", function() {
-        var card =
-            '<div class="box box-default">' +
-            '<div class="box-body">' +
-            '<div class="form-group col-md-12">' +
-            '<label>Nama Opsi</label>' +
-            '<input type="text" class="form-control" name="nama_opsi[]" placeholder="Enter nama opsi">' +
-            '</div>' +
-            '<div class="form-group col-md-12">' +
-            '<label>Harga</label>' +
-            '<input type="text" class="form-control" name="harga[]" placeholder="Enter harga opsi">' +
-            '</div>' +
-            '<div class="form-group col-md-12">' +
-            '<button type="button" class="btn btn-danger delete">Delete</button>' +
-            '</div>' +
-            '</div>' +
-            '</div>';
-        $(".add-more-variasi").append(card);
-    });
-
-    // Function to remove variation fields
-    $(".add-more-variasi").on("click", ".delete", function() {
-        $(this).closest('.box-default').remove();
-    });
-});
-
-</script>
-<script>
     $(document).ready(function() {
-        $('#id_kategori').change(function(e) {
-            var id_kategori = $('#id_kategori').val();
-            $.ajax({
-                type: 'POST',
-                url: "<?= base_url('/sales/sub_kategori'); ?>",
-                data: {
-                    id_kategori: id_kategori
-                },
+        // Function to add new variation fields
+        $(".add-variasi").on("click", function() {
+            var card =
+                '<div class="box box-default hapus">' +
+                '<div class="box-body">' +
+                '<div class="form-group col-md-12">' +
+                '<label>Nama Opsi</label>' +
+                '<input type="text" class="form-control" name="nama_opsi[]" placeholder="Enter nama opsi">' +
+                '</div>' +
+                '<div class="form-group col-md-12">' +
+                '<label>Harga</label>' +
+                '<input type="text" class="form-control" name="harga_opsi[]" placeholder="Enter harga opsi">' +
+                '</div>' +
+                '<div class="form-group col-md-12">' +
+                '<button type="button" class="btn btn-danger delete">Delete</button>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+            $(".add-more-variasi").append(card);
+        });
 
-                success: function(response) {
-                    $("#id_sub_kategori").html(response);
-                }
-            })
-        })
-    })
+        // Function to remove variation fields
+        $(".add-more-variasi").on("click", ".delete", function() {
+            $(this).closest('.box-default').remove();
+        });
+    });
 </script>
+
 <?= $this->endSection() ?>

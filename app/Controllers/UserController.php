@@ -31,6 +31,7 @@ class UserController extends BaseController
         $this->cart = \Config\Services::cart();
         $this->session = \Config\Services::session();
     }
+
     public function home()
     {
 
@@ -62,6 +63,7 @@ class UserController extends BaseController
 
         return view('user/detail', $data);
     }
+<<<<<<< HEAD
     public function shop()
     {
         $data = [
@@ -87,6 +89,26 @@ class UserController extends BaseController
     }
 
 
+=======
+
+    // Jasa
+    public function jasa()
+    {
+        helper('form');
+        $data = [
+            'barang' => $this->barang->getRandomBarang(8),
+            'barang_baru' => $this->barang->getNewBarang(8),
+            'kategori' => $this->kategori->getSubKategori(),
+            'iklan_tetap_1' => $this->iklantetap->find(1),
+            'iklan_tetap_2' => $this->iklantetap->find(2),
+            'iklan_tetap_3' => $this->iklantetap->find(3),
+            'iklan_tetap_4' => $this->iklantetap->find(4),
+            'iklan_carausel' => $this->iklancarausel->findAll()
+        ];
+        return view('user/jasa', $data);
+    }
+
+>>>>>>> origin/erdi
     public function contact()
     {
         $data = [

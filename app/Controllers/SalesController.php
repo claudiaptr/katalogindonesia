@@ -239,7 +239,8 @@ class SalesController extends BaseController
                 }
             }
         }
-        session()->getFlashdata('pesan', 'data berhasil di update');
+        session()->setFlashdata('pesan', 'data berhasil diupdate');
+
         return redirect()->to('/sales/view_barang')->with('success', 'Data barang berhasil diperbarui.');
     }
     public function delete_foto_lain($id)
@@ -322,6 +323,7 @@ class SalesController extends BaseController
             'variasi' => $variasi,
             'validation' => \Config\Services::validation(),
         ];
+
         return view('sales/barang/add_opsi', $data);
     }
 
