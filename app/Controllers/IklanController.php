@@ -4,15 +4,18 @@ namespace App\Controllers;
 
 use App\Models\IklanTetap;
 use App\Controllers\BaseController;
+use App\Models\Barang;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class IklanController extends BaseController
 {
     //iklan tetap
     protected $iklantetap;
+    protected $barang;
     public function __construct()
     {
         $this->iklantetap = new IklanTetap();
+        $this->barang = new Barang();
     }
 
     public function view_iklan_tetap()
@@ -20,7 +23,8 @@ class IklanController extends BaseController
         $data = [
             'menu' => 'iklan',
             'sub_menu' => 'iklan_tetap',
-            'iklan' => $this->iklantetap->getIklanTetap()
+            'iklan' => $this->iklantetap->getIklanTetap(),
+            'jumlah_verifikasi'=> $this->barang->where('verifikasi',1)->countAllResults()
         ];
 
         return view('admin/iklan_tetap/view_iklan_tetap', $data);
@@ -30,7 +34,8 @@ class IklanController extends BaseController
     {
         $data = [
             'menu' => 'iklan',
-            'sub_menu' => 'iklan_tetap'
+            'sub_menu' => 'iklan_tetap',
+            'jumlah_verifikasi'=> $this->barang->where('verifikasi',1)->countAllResults()
         ];
         return view('admin/iklan_tetap/tambah_iklan_tetap', $data);
     }
@@ -71,6 +76,7 @@ class IklanController extends BaseController
             'validation' => \Config\Services::validation(),
             'iklan' => $this->iklantetap->getIklantetap($slug),
             'menu' => 'iklan',
+            'jumlah_verifikasi'=> $this->barang->where('verifikasi',1)->countAllResults(),
             'sub_menu' => 'iklan_tetap'
 
         ];

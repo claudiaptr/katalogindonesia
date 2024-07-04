@@ -178,7 +178,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="barang-container" class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                <div id="barang-container" class="">
                     <?php foreach ($barang as $bk) : ?>
                         <div class="barang-item">
                             <div class="product-item bg-light mb-4">

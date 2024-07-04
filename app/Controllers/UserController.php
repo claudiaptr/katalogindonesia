@@ -63,7 +63,6 @@ class UserController extends BaseController
 
         return view('user/detail', $data);
     }
-<<<<<<< HEAD
     public function shop()
     {
         $data = [
@@ -89,7 +88,6 @@ class UserController extends BaseController
     }
 
 
-=======
 
     // Jasa
     public function jasa()
@@ -108,7 +106,6 @@ class UserController extends BaseController
         return view('user/jasa', $data);
     }
 
->>>>>>> origin/erdi
     public function contact()
     {
         $data = [

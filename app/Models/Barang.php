@@ -92,12 +92,12 @@ class Barang extends Model
         if ($kabupaten) {
             $builder->where('alamat_toko.kabupaten', $kabupaten);
         }
-        if ($kecamatan) {
-            $builder->where('alamat_toko.kecamatan', $kecamatan);
-        }
-        if ($kelurahan) {
-            $builder->where('alamat_toko.kelurahan', $kelurahan);
-        }
+        // if ($kecamatan) {
+        //     $builder->where('alamat_toko.kecamatan', $kecamatan);
+        // }
+        // if ($kelurahan) {
+        //     $builder->where('alamat_toko.kelurahan', $kelurahan);
+        // }
 
         $builder->orderBy('RAND()');
         $query = $builder->get();
