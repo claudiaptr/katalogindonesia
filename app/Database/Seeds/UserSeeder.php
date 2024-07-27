@@ -37,8 +37,19 @@ class UserSeeder extends Seeder
                 'level'    => '1',
             ],
         ];
+        $alamat = [
+            [
+                'provinsi' => 'Bali',
+                'kabupaten'    => 'Tabanan',
+                'kecamatan' => 'Baturiti',
+                'kelurahan'    => 'Candikuning',
+                'user' => 1,
+               
+            ],
+        ];
 
         // Inserting multiple rows using Query Builder
         $this->db->table('user')->insertBatch($data);
+        $this->db->table('alamat_toko')->insertBatch($alamat);
     }
 }

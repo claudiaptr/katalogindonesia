@@ -75,7 +75,7 @@ namespace CodeIgniterCart {
                 return false;
             }
 
-            if (!isset($items['id'], $items['qty'], $items['price'], $items['name'], $items['id_user'])) {
+            if (!isset($items['id'], $items['qty'], $items['price'], $items['name'], $items['id_user'], $items['id_barang'])) {
                 log_message('error', 'The cart array must contain a product ID, quantity, price, name, and user ID.');
                 return false;
             }
@@ -211,6 +211,33 @@ namespace CodeIgniterCart {
             $this->cartContents = ['cart_total' => 0, 'total_items' => 0];
             $this->session->remove('cart_contents');
         }
+        public function destroyByUser($id_user): void
+        {
+            // Iterasi melalui cartContents dan hanya hapus item yang cocok dengan id_user
+            foreach ($this->cartContents as $rowid => $item) {
+                if (isset($item['id_user']) && $item['id_user'] == $id_user) {
+                    unset($this->cartContents[$rowid]);
+                }
+            }
+
+            // Perbarui total dan jumlah item setelah penghapusan
+            $this->cartContents['total_items'] = 0;
+            $this->cartContents['cart_total'] = 0;
+            foreach ($this->cartContents as $item) {
+                if (is_array($item) && isset($item['qty'], $item['price'])) {
+                    $this->cartContents['total_items'] += $item['qty'];
+                    $this->cartContents['cart_total'] += $item['qty'] * $item['price'];
+                }
+            }
+
+            // Perbarui session dengan data keranjang yang diperbarui
+            if (count($this->cartContents) <= 2) {
+                $this->session->remove('cart_contents');
+            } else {
+                $this->session->set('cart_contents', $this->cartContents);
+            }
+        }
+
 
         public function contentsByUser($id_user, $newest_first = false): array
         {

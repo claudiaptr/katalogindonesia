@@ -9,6 +9,7 @@ use App\Models\Kategori;
 use App\Models\Opsi;
 use App\Models\Variasi;
 use App\Models\IklanTetap;
+use App\Models\Transaksi;
 use Google_Client;
 
 class UserController extends BaseController
@@ -16,7 +17,7 @@ class UserController extends BaseController
     protected $barang;
     protected $fotoBarang;
     protected $kategori, $variasi, $opsi, $iklancarausel;
-    protected $iklantetap, $cart, $session;
+    protected $iklantetap, $cart, $session,$transaksi;
 
 
     public function __construct()
@@ -30,6 +31,7 @@ class UserController extends BaseController
         $this->iklantetap = new IklanTetap();
         $this->cart = \Config\Services::cart();
         $this->session = \Config\Services::session();
+        $this->transaksi = new Transaksi();
     }
 
     public function home()
@@ -87,7 +89,7 @@ class UserController extends BaseController
         return $this->response->setJSON($barang);
     }
 
-
+ 
 
     // Jasa
     public function jasa()
@@ -180,21 +182,19 @@ class UserController extends BaseController
             'qty'     => $this->request->getPost('jumlah'),
             'price'   => $this->request->getPost('harga_barang'),
             'name'    => $this->request->getPost('judul_barang'),
+            'id_barang'    => $this->request->getPost('id_barang'),
             'options' => $options,
             'id_user' => $id_user
         ));
         return redirect()->to('cart');
     }
-
     public function harga_barang()
     {
         $request = service('request');
         $variasi = $request->getVar('variasi'); // Ambil nilai dari inputan radio
-        $harga_awal = $request->getVar('harga_barang'); // Ambil harga awal dari form
-
+        $harga_awal = $request->getVar('harga_barang_awal'); // Ambil harga awal dari form
         // Inisialisasi harga akhir dengan harga awal
         $harga_akhir = $harga_awal;
-
         // Proses untuk mendapatkan harga variasi berdasarkan nilai $variasi
         $hargaModel = new Opsi();
         foreach ($variasi as $variasi_item) {
@@ -208,6 +208,42 @@ class UserController extends BaseController
     public function hapus_semua()
     {
         $this->cart->destroy();
+        return redirect()->to('cart');
+    }
+
+    public function transaksi()
+    {
+        $id_user = $this->request->getVar('id_user');
+        $id_barang = $this->request->getVar('id_barang');
+        $sub_total = $this->request->getVar('sub_total');
+        $total = $this->request->getVar('total');
+        $jumlah = $this->request->getVar('jumlah');
+        $nomortelp = $this->request->getVar('nomortelp');
+        $alamat = $this->request->getVar('alamat');
+        $bukti_pembayaran = $this->request->getFile('bukti_pembayaran');
+        $nama_foto = $bukti_pembayaran->getRandomName();
+        $bukti_pembayaran->move('transaksi', $nama_foto);
+        $options = $this->request->getVar('options');
+        if (is_array($id_barang) && is_array($sub_total) && is_array($jumlah)) {
+            $data = [];
+            foreach ($id_barang as $key => $barang_id) {
+                $data[] = [
+                    'id_user' => $id_user,
+                    'id_barang' => $barang_id,
+                    'sub_total' => $sub_total[$key],
+                    'jumlah' => $jumlah[$key],
+                    'options' => $options[$key],
+                    'total' => $total,
+                    'nomortelp' => $nomortelp,
+                    'alamat' => $alamat,
+                    'bukti_pembayaran' => $nama_foto,
+                    'verifikasi' => 1,
+                ];
+            }
+            $this->transaksi->insertBatch($data);
+            $this->cart->destroyByUser($id_user);
+        }
+        session()->setFlashdata('pesan', 'Pesanan berhasil dibuat');
         return redirect()->to('cart');
     }
 }

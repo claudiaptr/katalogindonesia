@@ -18,7 +18,8 @@
 
     <!-- Main content -->
     <section class="content">
-        <form role="form" method="POST" action="">
+        <form role="form" method="POST" action="<?= base_url(); ?>sales/update_opsi">
+        <input type="hidden" class="form-control" name="id_barang" value="<?= $variasi['id_barang']; ?>">
             <div class="row">
                 <div class="col-md-12">
                     <div class="add-more-variasi">
@@ -35,17 +36,18 @@
                                             </div>
                                         </div>
                                     </div>
+                                   
                                     <div class="form-group col-md-12">
                                         <label>Nama Opsi</label>
-                                        <input type="text" class="form-control" name="nama_opsi" value="<?= $vi['nama_opsi']; ?>" placeholder="Enter nama opsi">
+                                        <input type="text" class="form-control" name="nama_opsi[]" value="<?= $vi['nama_opsi']; ?>" placeholder="Enter nama opsi">
                                     </div>
                                     <div class="form-group col-md-12">
                                         <input type="hidden" class="form-control" name="id_variasi" value="<?= $variasi['id']; ?>">
-                                      
+                                        <input type="hidden" class="form-control" name="id[]" value="<?= $vi['id']; ?>">
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label>Harga</label>
-                                        <input type="text" class="form-control" name="harga" value="<?= $vi['harga']; ?>" placeholder="Enter harga opsi">
+                                        <input type="text" class="form-control" name="harga[]" value="<?= $vi['harga']; ?>" placeholder="Enter harga opsi">
                                     </div>
                                 </div>
                             </div>

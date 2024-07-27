@@ -39,10 +39,11 @@
                   </div>
 
                   <form id="variasiForm" method="POST" action="<?= base_url(); ?>add_chart">
-
+                      <input type="hidden" id="harga_barang_awal" name="harga_barang_awal" value="<?= $barang['harga_barang']; ?>">
                       <input type="hidden" id="harga_barang" name="harga_barang" value="<?= $barang['harga_barang']; ?>">
                       <input type="hidden" name="judul_barang" value="<?= $barang['judul_barang']; ?>">
                       <input type="hidden" name="id" value="<?= $barang['id']; ?>">
+                      <input type="hidden" name="id_barang" value="<?= $barang['id']; ?>">
                       <input type="hidden" name="foto_barang" value="<?= $barang['foto_barang']; ?>">
                       <input type="hidden" name="id_user" value="<?= session()->get('id'); ?>">
                       <h3 id="harga_barang_text" class="font-weight-semi-bold mb-4">Rp. <?= number_format($barang['harga_barang'], 0, ',', '.'); ?></h3>
@@ -355,26 +356,29 @@
 
   <?= $this->section('scripts'); ?>
   <script>
-      $(document).ready(function() {
-          $('input[type=radio]').change(function() {
-              var formData = $('#variasiForm').serialize(); // Ambil data form dalam bentuk serialized
-              $.ajax({
-                  type: 'POST',
-                  url: '<?= base_url('user/harga_barang'); ?>', // Ganti dengan URL ke fungsi controller
-                  data: formData,
-                  dataType: 'json',
-                  success: function(response) {
-                      $('#harga_barang').val(response.harga); // Update hidden input dengan harga baru
-                      $('#harga_barang_text').text('Rp. ' + new Intl.NumberFormat('id-ID', {
-                          style: 'currency',
-                          currency: 'IDR'
-                      }).format(response.harga).replace('IDR', '').trim());
-                  },
-                  error: function(xhr, status, error) {
-                      console.error(xhr.responseText);
-                  }
-              });
-          });
-      });
+    $(document).ready(function() {
+    $('input[type=radio]').change(function() {
+        var formData = $('#variasiForm').serialize();
+        console.log(formData); // Ambil data form dalam bentuk serialized
+        $.ajax({
+            type: 'POST',
+            url: '<?= base_url('user/harga_barang'); ?>', // Ganti dengan URL ke fungsi controller
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+                $('#harga_barang').val(response.harga);
+                 // Update hidden input dengan harga baru
+                $('#harga_barang_text').text(new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR'
+                }).format(response.harga).replace('IDR', '').trim());
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    });
+});
+
   </script>
   <?= $this->endSection(); ?>

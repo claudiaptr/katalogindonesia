@@ -51,6 +51,10 @@ class User extends Migration
                 'constraint' => ['1', '2', '3'],
                 'default' => 3,
             ],
+            'saldo' => [
+                'type' => 'INT',
+                'unsigned'       => true,
+            ],
 
         ]);
         $this->forge->addKey('id', true);

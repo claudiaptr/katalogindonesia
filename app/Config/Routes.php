@@ -18,7 +18,7 @@ $routes->post('/admin/update_iklan_carausel/(:num)', 'AdminController::update_ik
 
 $routes->get('/admin/view_iklan_tetap', 'IklanController::view_iklan_tetap');
 $routes->post('/admin/store_iklan_tetap', 'IklanController::store_iklan_tetap');
-$routes->get('/admin/add_iklan_tetap', 'IklanController::add_iklan_tetap');
+// $routes->get('/admin/add_iklan_tetap', 'IklanController::add_iklan_tetap');
 $routes->delete('/admin/delete_iklan_tetap/(:num)', 'IklanController::delete_iklan_tetap/$1');
 
 $routes->get('/admin/edit_iklan_tetap/(:any)', 'IklanController::edit_iklan_tetap/$1');
@@ -44,6 +44,24 @@ $routes->put('/admin/tolak_verifikasi_barang/(:num)', 'AdminController::tolak_ve
 $routes->get('/admin/sudah_verifikasi', 'AdminController::view_sudah_verifikasi');
 $routes->get('/admin/tolak_verifikasi', 'AdminController::view_tolak_verifikasi');
 
+$routes->get('/admin/detail_pembayaran/(:num)', 'AdminController::detail_pembayaran/$1');
+$routes->get('/admin/verifikasi_blm_pembayaran', 'AdminController::verifikasi_blm_pembayaran');
+$routes->put('/admin/verifikasi_pembayaran/(:num)', 'AdminController::verifikasi_pembayaran/$1');
+$routes->get('/admin/verifikasi_sdh_pembayaran', 'AdminController::view_sudah_verifikasi_pembayaran');
+$routes->get('/admin/verifikasi_tlk_pembayaran', 'AdminController::view_tolak_verifikasi_pembayaran');
+$routes->put('/admin/tolak_verifikasi_pembayaran/(:num)', 'AdminController::tolak_verifikasi_pembayaran/$1');
+
+$routes->get('/admin/verifikasi_blm_penarikan', 'AdminController::view_blm_penarikan');
+$routes->get('/admin/verifikasi_penarikan/(:num)', 'AdminController::verifikasi_penarikan/$1');
+$routes->post('/admin/store_verifikasi_penarikan/(:num)', 'AdminController::store_verifikasi_penarikan/$1');
+$routes->get('/admin/edit_verifikasi_penarikan/(:num)', 'AdminController::edit_verifikasi_penarikan/$1');
+$routes->post('/admin/update_verifikasi_penarikan/(:num)', 'AdminController::update_verifikasi_penarikan/$1');
+$routes->get('/admin/detail_penarikan/(:num)', 'AdminController::detail_penarikan/$1');
+$routes->put('/admin/tolak_verifikasi_penarikan/(:num)', 'AdminController::tolak_verifikasi_penarikan/$1');
+
+$routes->get('/admin/view_transfer', 'AdminController::view_transfer');
+$routes->get('/admin/add_transfer/(:num)', 'AdminController::add_transfer/$1');
+$routes->post('/admin/store_saldo/(:num)', 'AdminController::store_transfer/$1');
 
 // login dan register admin
 $routes->get('/auth/login', 'Auth::login');
@@ -55,6 +73,7 @@ $routes->get('/auth/register_google', 'Auth::register_google');
 
 
 $routes->get('/user/detail/(:num)', 'UserController::detail/$1');
+
 $routes->get('/user/contact', 'UserController::contact');
 $routes->get('/checkout', 'UserController::checkout');
 $routes->get('/cart', 'UserController::cart');
@@ -75,6 +94,7 @@ $routes->get('/tracking', 'UserController::tracking');
 $routes->post('user/filter', 'UserController::filter_toko');
 
 $routes->post('/user/harga_barang', 'UserController::harga_barang');
+$routes->post('/transaksii', 'UserController::transaksi');
 $routes->get('/user/delete_chart/(:any)', 'UserController::delete_cart/$1');
 
 
@@ -107,11 +127,15 @@ $routes->get('/sales/view_tambah_variasi/(:num)',  'SalesController::view_tambah
 $routes->delete('/sales/delete_variasi/(:num)', 'SalesController::delete_variasi/$1');
 $routes->get('/sales/tambah_opsi/(:num)',  'SalesController::tambah_opsi/$1');
 $routes->get('/sales/edit_opsi/(:num)', 'SalesController::edit_opsi/$1');
-$routes->post('/sales/update_opsi/(:num)', 'SalesController::update_opsi/$1');
+$routes->post('/sales/update_opsi', 'SalesController::update_opsi');
 $routes->post('/sales/store_opsi',  'SalesController::store_opsi');
 $routes->post('/sales/store_barang',  'SalesController::store_barang');
 $routes->post('/sales/sub_kategori',  'SalesController::sub_kategori');
 $routes->delete('/sales/delete_barang/(:num)',  'SalesController::delete_barang/$1');
 $routes->post('sales/delete_opsi/(:num)', 'SalesController::deleteOpsi/$1');
+$routes->get('sales/view_penarikan', 'SalesController::view_penarikan');
+$routes->get('sales/add_penarikan', 'SalesController::add_penarikan');
+$routes->post('/sales/store_penarikan',  'SalesController::store_penarikan');
+$routes->get('/sales/foto_bukti/(:num)', 'SalesController::foto_bukti/$1');
 
 // user

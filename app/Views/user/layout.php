@@ -41,6 +41,7 @@ if (session()->has('id')) {
   <!-- Libraries Stylesheet -->
   <link href="<?= base_url(); ?>user/lib/animate/animate.min.css" rel="stylesheet">
   <link href="<?= base_url(); ?>user/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.css">
 
   <!-- Customized Bootstrap Stylesheet -->
   <link href="<?= base_url(); ?>user/css/style.css" rel="stylesheet">
@@ -222,7 +223,8 @@ if (session()->has('id')) {
     </div>
   </div>
   <!-- Navbar End -->
-
+  <div class="flash_data" data-flashdata="<?= session()->getFlashdata('pesan'); ?>"></div>
+  <div class="error_flash" data-flashdata="<?= session()->getFlashdata('error'); ?>"></div>
 
   <?= $this->renderSection('content'); ?>
 
@@ -308,6 +310,7 @@ if (session()->has('id')) {
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
   <script src="<?= base_url(); ?>user/lib/easing/easing.min.js"></script>
   <script src="<?= base_url(); ?>user/lib/owlcarousel/owl.carousel.min.js"></script>
+  <script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
 
   <!-- Contact Javascript File -->
   <script src="<?= base_url(); ?>user/mail/jqBootstrapValidation.min.js"></script>
@@ -316,6 +319,18 @@ if (session()->has('id')) {
   <!-- Template Javascript -->
   <script src="<?= base_url(); ?>user/js/main.js"></script>
   <?= $this->renderSection('scripts'); ?>
+  <script>
+    const flashData = $('.flash_data').data('flashdata')
+    const errorflashData = $('.error_flash').data('flashdata')
+    console.log(errorflashData);
+    if (flashData) {
+      swal("Success!", flashData, "success")
+    }
+
+    if (errorflashData) {
+      swal("Terjadi Kesalahan", errorflashData, "error")
+    }
+  </script>
 </body>
 
 </html>

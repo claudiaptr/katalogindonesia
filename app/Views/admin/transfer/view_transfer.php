@@ -4,11 +4,9 @@
     <div class="container-fluid">
         <div class="d-flex mb-2 justify-content-between">
             <div class="">
-                <h1 class="m-0">Iklan Tetap</h1>
+                <h1 class="m-0">Tambah Saldo</h1>
             </div><!-- /.col -->
-            <!-- <div  class="">
-                <a href="<?= base_url() ?>/admin/add_iklan_tetap" class="btn btn-primary"> Tambah Data </a>
-            </div> -->
+
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
 </div>
@@ -22,36 +20,32 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table id="example1" class="table table-bordered table-striped">
+                        <table id="example2" class="table table-bordered table-striped">
                             <thead>
-                                <tr>
-                                    <th> Foto Iklan</th>
-                                    <th>Judul Iklan</th>
-                                    <th>Isi Iklan</th>
+                            <tr>
+                                    <th>Nama Penjual</th>
+                                    <th>Nama Toko</th>
+                                    <th>Saldo</th>
+                                    <th>Email Penjual</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php foreach ($iklan as $ik) : ?>
+                                <?php foreach ($penjual as $pj) : ?>
                                     <tr class="text-center">
-                                        <td><img width="120px" src="<?= base_url(); ?>img/<?= $ik['foto_iklan']; ?>" alt=""></td>
-                                        <td><?= $ik['judul_iklan']; ?></td>
-                                        <td><?= $ik['isi_iklan']; ?></td> 
+                                        <td><?= $pj['username']; ?></td>
+                                        <td><?= $pj['nama_toko']; ?></td>
+                                        <td>Rp. <?= number_format($pj['saldo'], 0, ',', '.'); ?></td>
+                                        <td><?= $pj['email']; ?></td>
                                         <td>
                                             <div class="d-flex justify-content-center">
-                                                <a href="<?= base_url(); ?>admin/edit_iklan_tetap/<?= $ik['slug']; ?>" class="btn btn-primary mr-3">Edit Data</a>
-                                                <form class="delete" action="<?= base_url(); ?>admin/delete_iklan_tetap/<?= $ik['id']; ?>" method="post">
-                                                    <?= csrf_field(); ?>
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    <button class="btn btn-danger ">Hapus Data</button>
-                                                </form>
+                                                <a href="<?= base_url(); ?>admin/add_transfer/<?= $pj['id']; ?>" class="btn btn-primary mr-3">Tambah Saldo</a>
                                             </div>
-
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
-                           
+
                         </table>
                     </div>
                     <!-- /.card-body -->

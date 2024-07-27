@@ -2,17 +2,21 @@
 
 namespace App\Controllers;
 
+
 use App\Models\Barang;
 use App\Models\GambarBarang;
 use App\Models\Kategori;
+use App\Models\Model_Auth;
 use App\Models\Opsi;
+use App\Models\Pernarikan;
 use App\Models\SubKategori;
+use App\Models\Transaksi;
 use App\Models\Variasi;
 
 class SalesController extends BaseController
 {
     protected $barang;
-    protected $fotoBarang, $kategori, $sub_kategori, $variasi, $opsi;
+    protected $fotoBarang, $kategori, $sub_kategori, $variasi, $opsi, $transaksi, $penarikan, $user;
     public function __construct()
     {
         $this->barang = new Barang();
@@ -21,6 +25,9 @@ class SalesController extends BaseController
         $this->sub_kategori = new SubKategori();
         $this->variasi = new Variasi();
         $this->opsi = new Opsi();
+        $this->transaksi = new Transaksi();
+        $this->penarikan = new Pernarikan();
+        $this->user = new Model_Auth();
         session();
     }
     public function home()
@@ -342,30 +349,34 @@ class SalesController extends BaseController
         return view('sales/barang/edit_opsi', $data);
     }
 
-    public function update_opsi($id)
+    public function update_opsi()
     {
         // Tambahkan debugging
         $requestData = $this->request->getPost();
-
+        $nama_opsi = $this->request->getVar('nama_opsi');
+        $id_barang = $this->request->getVar('id_barang');
+        $harga = $this->request->getVar('harga');
+        $id = $this->request->getVar('id');
 
         // Validasi input
-        $validate = $this->validate([
-            'nama_opsi' => [
-                'rules'  => 'required',
+        $rules = [];
+        foreach ($nama_opsi as $key => $value) {
+            $rules["nama_opsi.$key"] = [
+                'rules' => 'required',
                 'errors' => [
-                    'required' => 'You must input a Nama Opsi.',
+                    'required' => "You must choose a Username for option " . ($key + 1) . ".",
                 ],
-            ],
-            'harga' => [
-                'rules'  => 'required',
+            ];
+            $rules["harga.$key"] = [
+                'rules' => 'required|numeric',
                 'errors' => [
-                    'required' => 'You must input a Harga Opsi.',
-                    'numeric' => 'Harga Opsi must be a number.',
+                    'required' => "You must choose a Harga for option " . ($key + 1) . ".",
+                    'numeric' => "The Harga for option " . ($key + 1) . " must be a number.",
                 ],
-            ],
-        ]);
+            ];
+        }
 
-        if (!$validate) {
+        if (!$this->validate($rules)) {
             $validation = \Config\Services::validation();
             $error = \Config\Services::validation()->getErrors();
             $errorString = implode(' ', $error);
@@ -374,12 +385,15 @@ class SalesController extends BaseController
         }
 
         // Memperbarui data opsi
-        $this->opsi->update($id, [
-            'nama_opsi' => $this->request->getVar('nama_opsi'),
-            'harga' => $this->request->getVar('harga'),
-        ]);
+        for ($i = 0; $i < count($nama_opsi); $i++) {
+            $this->opsi->save([
+                'id' => $id[$i],
+                'nama_opsi' => $nama_opsi[$i],
+                'harga' => $harga[$i],
+            ]);
+        }
         session()->setFlashdata('pesan', 'data berhasil diedit');
-        return redirect()->to('/sales/view_tambah_variasi/')->with('success', 'Opsi berhasil diperbarui.');
+        return redirect()->to('/sales/view_tambah_variasi/' . $id_barang)->with('success', 'Opsi berhasil diperbarui.');
     }
     public function store_opsi()
     {
@@ -439,12 +453,15 @@ class SalesController extends BaseController
     {
         $id = session()->get('id');
         $data = [
-            'barang' => $this->barang
-                ->select('barang.*, kategori.nama_kategori as kategori_name, sub_kategori.nama_sub_kategori as sub_kategori_name')
+            'barang' => $this->transaksi
+                ->select('transaksi.id as transaksi_id, transaksi.verifikasi as verifikasi_transaksi, transaksi.*, barang.id as barang_id, barang.verifikasi as verifikasi_barang, barang.*, kategori.nama_kategori as kategori_name, sub_kategori.nama_sub_kategori as sub_kategori_name,user.username')
+                ->join('barang', 'barang.id = transaksi.id_barang')
                 ->join('kategori', 'kategori.id = barang.id_kategori_barang')
                 ->join('sub_kategori', 'sub_kategori.id = barang.id_sub_kategori_barang')
-                ->where('barang.pemilik', $id)->findAll(),
-            'menu' => 'barang',
+                ->join('user', 'user.id = transaksi.id_user')
+                ->where('barang.pemilik', $id)
+                ->findAll(),
+            'menu' => 'pesanan',
         ];
 
         return view('sales/pesanan/view_pesanan', $data);
@@ -501,5 +518,54 @@ class SalesController extends BaseController
         ];
 
         return view('sales/diskon/add_diskon', $data);
+    }
+    public function add_penarikan()
+    {
+        $data = [
+            'menu' => 'penarikan',
+        ];
+
+        return view('sales/penarikan/add_penarikan', $data);
+    }
+    public function view_penarikan()
+    {
+        $id = session()->get('id');
+        $data = [
+            'menu' => 'penarikan',
+            'penarikan' => $this->penarikan->where('id_user', $id)->findAll(),
+        ];
+        return view('sales/penarikan/view_penarikan', $data);
+    }
+    public function foto_bukti($id)
+    {
+        $data = [
+            'menu' => 'penarikan',
+            'penarikan' => $this->penarikan->find($id),
+        ];
+        return view('sales/penarikan/bukti_penarikan', $data);
+    }
+    public function store_penarikan()
+    {
+        // Retrieve input values
+        $bank = $this->request->getVar('bank');
+        $rekening = $this->request->getVar('rekening');
+        $jumlah_penarikan = $this->request->getVar('jumlah_penarikan');
+        $username_penarikan = $this->request->getVar('username_penarikan');
+        $id_user = session()->get('id');
+        $user = $this->user->find($id_user);
+        if ($user['saldo'] > $jumlah_penarikan) {
+            $this->penarikan->save([
+                'bank' => $bank,
+                'nomor_rekening' => $rekening,
+                'jumlah_penarikan' => $jumlah_penarikan,
+                'username_penarikan' => $username_penarikan,
+                'id_user' => $id_user,
+            ]);
+            session()->setFlashdata('pesan', 'Penarikan Berhasil Mohon Menunggu Untuk Divalidasi');
+            return redirect()->to('/sales/view_penarikan');
+        } else {
+            session()->setFlashdata('error', 'Saldo Kurang');
+            return redirect()->back();
+        }
     }
 }

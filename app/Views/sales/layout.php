@@ -1,3 +1,10 @@
+<?php
+use App\Models\Model_Auth;
+$id = session()->get('id');
+$userModel = new Model_Auth(); // Inisialisasi model
+$user = $userModel->find($id);
+ 
+?>
 <!DOCTYPE html>
 <html>
 
@@ -271,14 +278,14 @@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="<?= base_url(); ?>sales/dists/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                                <span class="hidden-xs">Alexander Pierce</span>
+                                <span class="hidden-xs"><?= session()->get('username'); ?></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header">
                                     <img src="<?= base_url(); ?>sales/dists/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                                     <p>
-                                        Alexander Pierce - Web Developer
+                                        <?= session()->get('username'); ?> - Web Developer
                                         <small>Member since Nov. 2012</small>
                                     </p>
                                 </li>
@@ -326,9 +333,9 @@
                         <img src="<?= base_url(); ?>sales/dists/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                     </div>
                     <div class="pull-left info">
-                        <p>Alexander Pierce</p>
+                        <p><?= session()->get('username'); ?></p>
                         <!-- Status -->
-                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                        <p>Rp. <?= number_format($user['saldo'], 0, ',', '.'); ?></p>
                     </div>
                 </div>
 
@@ -349,8 +356,8 @@
                     <!-- Optionally, you can add icons to the links -->
                     <li class=" <?= $menu == 'dashboard' ? 'active' : ''  ?>"><a href="<?= base_url(); ?>sales/home"><i class="fa fa-th-large"></i> <span>Dashboard</span></a></li>
                     <li class=" <?= $menu == 'barang' ? 'active' : ''  ?>"><a href="<?= base_url(); ?>sales/view_barang"><i class="fa fa-cube"></i> <span>Barang</span></a></li>
-                    <li class=" <?= $menu == 'diskon' ? 'active' : ''  ?>"><a href="<?= base_url(); ?>sales/view_diskon"><i class="fa fa-cube"></i> <span>Diskon</span></a></li>
-                    <li class=" <?= $menu == 'Pesanan' ? 'active' : ''  ?>"><a href="<?= base_url(); ?>sales/view_pesanan"><i class="fa fa-cube"></i> <span>Pesanan</span></a></li>
+                    <li class=" <?= $menu == 'pesanan' ? 'active' : ''  ?>"><a href="<?= base_url(); ?>sales/view_pesanan"><i class="fa fa-cube"></i> <span>Pesanan</span></a></li>
+                    <li class=" <?= $menu == 'penarikan' ? 'active' : ''  ?>"><a href="<?= base_url(); ?>sales/view_penarikan"><i class="fa fa-dollar"></i> <span>Penarikan</span></a></li>
                     <li class="treeview">
                         <a href="#"><i class="fa fa-link"></i> <span>Proses Pesanan</span> <i class="fa fa-angle-left pull-right"></i></a>
                         <ul class="treeview-menu">
@@ -552,7 +559,6 @@
     <script src="<?= base_url(); ?>sales/bootstrap/js/bootstrap.min.js"></script>
     <!-- Morris.js charts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-
     <!-- Sparkline -->
     <script src="<?= base_url(); ?>sales/plugins/sparkline/jquery.sparkline.min.js"></script>
     <!-- jvectormap -->

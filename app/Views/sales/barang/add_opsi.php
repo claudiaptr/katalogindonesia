@@ -84,7 +84,7 @@
                 '</div>' +
                 '<div class="form-group col-md-12">' +
                 '<label>Harga</label>' +
-                '<input type="text" class="form-control" name="harga_opsi[]" placeholder="Enter harga opsi">' +
+                '<input type="text" class="form-control" name="harga[]" placeholder="Enter harga opsi">' +
                 '</div>' +
                 '<div class="form-group col-md-12">' +
                 '<button type="button" class="btn btn-danger delete">Delete</button>' +

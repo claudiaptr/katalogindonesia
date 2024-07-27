@@ -153,6 +153,7 @@ class Auth extends BaseController
 
             if ($user && password_verify($password, $user['password'])) {
                 $this->setUserSession($user);
+                session()->setFlashdata('pesan', 'Login Sukses !!!');
                 return redirect()->to(session()->get('level') == 1 ? base_url('admin/dashboard') : base_url('/'));
             } else {
                 session()->setFlashdata('error', 'Login Failed, Email and Password do not match!');

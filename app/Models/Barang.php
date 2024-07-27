@@ -89,9 +89,9 @@ class Barang extends Model
         if ($provinsi) {
             $builder->where('alamat_toko.provinsi', $provinsi);
         }
-        if ($kabupaten) {
-            $builder->where('alamat_toko.kabupaten', $kabupaten);
-        }
+        // if ($kabupaten) {
+        //     $builder->where('alamat_toko.kabupaten', $kabupaten);
+        // }
         // if ($kecamatan) {
         //     $builder->where('alamat_toko.kecamatan', $kecamatan);
         // }

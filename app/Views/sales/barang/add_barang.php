@@ -268,12 +268,13 @@
     });
 </script>
 <script>
+    var jumlah = 0;
     $(".add-more").on("click", function() {
         var card =
             '<div style="margin-top: 10px;" class="row">' +
             '<div class="col-lg-10">' +
             '<div class="custom-file">' +
-            '<input  required type="file" accept="image/png, image/jpeg" class="form-control-file"  name="foto_detail[]"  id="foto_detail">' +
+            '<input  required type="file" accept="image/*" class="form-control-file"  name="foto_detail[]"  id="foto_detail">' +
             "</div>" +
             "</div>" +
             '<div class="col-lg-2">' +
@@ -285,7 +286,6 @@
 
 
     $(".add-variasi").on("click", function() {
-        // uniqueId++;
         var card =
             '<div style="margin-top: 10px;" class="row">' +
             '<div class="form-group col-md-12">' +
@@ -349,62 +349,7 @@
     });
 </script>
 
-<!-- <script>
-    $(function() {
-        $('#demoform').validate({
-            rules: {
-                judul_barang: {
-                    required: true,
-                },
-                id_kategori_barang: {
-                    required: true,
-                },
-                id_sub_kategori_barang: {
-                    required: true,
-                },
-                foto_barang: {
-                    required: true,
-                    accept: "image/*"
-                },
-                harga_barang: {
-                    required: true,
-                    numeric: true,
-                },
-                jumlah_barang: {
-                    required: true,
-                    numeric: true,
-                },
-                deskripsi_barang: {
-                    required: true,
-                },
-            },
-            messages: {
-                foto_barang: {
-                    accept: "Only image files are allowed."
-                },
-                id_kategori: {
-                    required: "Please select judul kategori",
-                },
-            },
-            rElement: 'span',
-            errorPlacement: function(error, element) {
-                error.addClass('invalid-feedback');
-                element.closest('.form-group').append(error);
-                error.appendTo(element.parent());
-            },
-            highlight: function(element, errorClass, validClass) {
-                $(element).addClass('is-invalid');
-            },
-            unhighlight: function(element, errorClass, validClass) {
-                $(element).removeClass('is-invalid');
-            },
 
-            submitHandler: function(form) {
-                form.submit();
-            }
-        });
-    });
-</script> -->
 <script>
     $(function() {
         //Inisialisasi Select2
@@ -417,23 +362,8 @@
             height: 150
         });
 
-        // Tambah Foto Barang Lain
-        $(".add-more").click(function() {
-            var html = $(".add-more-data").html();
-            $(".add-more-data").append(html);
-        });
-        $("body").on("click", ".remove", function() {
-            $(this).parents(".control-group").remove();
-        });
-
-        // Tambah Variasi
-        $(".add-variasi").click(function() {
-            var html = $(".add-more-variasi").html();
-            $(".add-more-variasi").append(html);
-        });
-        $("body").on("click", ".remove-variasi", function() {
-            $(this).parents(".control-group").remove();
-        });
+      
+       
 
     });
 </script>

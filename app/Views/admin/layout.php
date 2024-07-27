@@ -1,5 +1,19 @@
+<?php
+
+use App\Models\Pernarikan;
+use App\Models\Transaksi;
+
+$id = session()->get('id');
+$transaksi = new Transaksi(); // Inisialisasi model
+$jumlah_blm_transakasi = $transaksi->where('verifikasi', 1)->countAllResults();
+
+$penarikan = new Pernarikan();
+$jumlah_blm_penarikan = $penarikan->where('verifikasi_penarikan', 1)->countAllResults()
+
+?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -196,7 +210,7 @@
                         <img src="<?= base_url(); ?>asset/dists/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">Alexander Pierce</a>
+                        <a href="#" class="d-block"><?= session()->get('username'); ?></a>
                     </div>
                 </div>
 
@@ -296,6 +310,75 @@
                                         <p>Tolak Verifikasi</p>
                                     </a>
                                 </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item <?= $menu == 'pembayaran' ? 'menu-open' : ''  ?>">
+                            <a href="#" class="nav-link  <?= $menu == 'pembayaran' ? 'active' : ''  ?>">
+                                <i class="nav-icon fas fa-dollar-sign"></i>
+                                <p>
+                                    Pembayaran
+                                    <i class="right fas fa-angle-left"></i>
+                                    <?php if ($jumlah_blm_transakasi > 0) : ?>
+                                        <span class="badge badge-info right"><?= $jumlah_blm_transakasi; ?></span>
+                                    <?php endif ?>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="<?= base_url(); ?>admin/verifikasi_sdh_pembayaran" class="nav-link <?= $sub_menu == 'sudah_verifikasi_pembayaran' ? 'active' : ''  ?>">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Sudah Verifikasi</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= base_url(); ?>admin/verifikasi_blm_pembayaran" class="nav-link <?= $sub_menu == 'belum_verifikasi_pembayaran' ? 'active' : ''  ?>">
+                                        <?php if ($jumlah_blm_transakasi > 0) : ?>
+                                            <span class="badge badge-info right"><?= $jumlah_blm_transakasi; ?></span>
+                                        <?php endif ?>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Belum Verifikasi</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= base_url(); ?>admin/verifikasi_tlk_pembayaran" class="nav-link <?= $sub_menu == 'tolak_verifikasi_pembayaran' ? 'active' : ''  ?>">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Tolak Verifikasi</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url(); ?>admin/view_transfer" class="nav-link <?= $menu == 'transfer' ? 'active' : ''  ?>">
+                                <i class="nav-icon fas fa-money-bill"></i>
+                                <p>
+                                    Transfer
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item <?= $menu == 'penarikan' ? 'menu-open' : ''  ?>">
+                            <a href="#" class="nav-link  <?= $menu == 'penarikan' ? 'active' : ''  ?>">
+                                <i class="nav-icon fas fa-dollar-sign"></i>
+                                <p>
+                                    Penarikan
+                                    <i class="right fas fa-angle-left"></i>
+                                    <?php if ($jumlah_blm_penarikan > 0) : ?>
+                                        <span class="badge badge-info right"><?= $jumlah_blm_penarikan; ?></span>
+                                    <?php endif ?>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                               
+                             
+                                <li class="nav-item">
+                                    <a href="<?= base_url(); ?>admin/verifikasi_blm_penarikan" class="nav-link <?= $sub_menu == 'belum_verifikasi_penarikan' ? 'active' : ''  ?>">
+                                        <?php if ($jumlah_blm_penarikan > 0) : ?>
+                                            <span class="badge badge-info right"><?= $jumlah_blm_penarikan; ?></span>
+                                        <?php endif ?>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Penarikan</p>
+                                    </a>
+                                </li>
+                               
                             </ul>
                         </li>
                         <li class="nav-item">

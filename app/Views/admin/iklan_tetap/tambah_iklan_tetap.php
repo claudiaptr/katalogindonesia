@@ -10,7 +10,7 @@
 
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
-    </div>
+    </div> 
     <div class="card card-primary">
         <div class="card-header">
             <h3 class="card-title">Iklan Tetap</h3>
