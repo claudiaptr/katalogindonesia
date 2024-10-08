@@ -1,9 +1,11 @@
 <?php
+
 use App\Models\Model_Auth;
+
 $id = session()->get('id');
 $userModel = new Model_Auth(); // Inisialisasi model
 $user = $userModel->find($id);
- 
+
 ?>
 <!DOCTYPE html>
 <html>

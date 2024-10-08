@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Model_Auth;
+use App\Models\CartModel;  // Don't forget to include CartModel
 
 if (session()->has('id')) {
   $userId = session()->get('id');
@@ -11,11 +12,14 @@ if (session()->has('id')) {
   // Ambil data pengguna yang login
   $data = $userModel->getLogin($userId);
 
-  $total_cart = 0;
+  // Initialize CartModel to get cart items
+  $cartModel = new CartModel();
 
-  if ($userId) {
-    $total_cart = $cart->totalItemsByUser($userId);
-  }
+  // Get total cart items for the user
+  $total_cart = $cartModel->totalItemsByUser($userId);
+
+  // Ensure $total_cart is set
+  $total_cart = isset($total_cart) ? $total_cart : 0;
 }
 ?>
 <!DOCTYPE html>
@@ -59,229 +63,118 @@ if (session()->has('id')) {
           <a class="text-body mr-3" href="">FAQs</a>
         </div>
       </div>
-      <div class="col-lg-6 text-center text-lg-right">
-        <div class="d-inline-flex align-items-center">
-
-
-          <?php if (session()->get('username')) : ?>
-            <div class="btn-group">
-              <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown"><?= session()->get('username'); ?> </button>
-              <div class="dropdown-menu dropdown-menu-right">
-                <?php if ($data['level'] == 2) : ?>
-                  <a href="<?= base_url(); ?>sales/home" class="dropdown-item" type="button">Masuk Ke Halaman Penjual</a>
-                <?php else : ?>
-                  <a href="<?= base_url(); ?>daftar/penjual" class="dropdown-item" type="button">Daftar Sebagai Penjual</a>
-                <?php endif; ?>
-                <a href="<?= base_url(); ?>logout" class="dropdown-item" type="button">Log Out</a>
-              </div>
-            </div>
-          <?php else : ?>
-            <div class="btn-group">
-              <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
-              <div class="dropdown-menu dropdown-menu-right">
-                <a href="<?= base_url(); ?>auth/login" class="dropdown-item" type="button">Login</a>
-                <a href="<?= base_url(); ?>auth/register" class="dropdown-item" type="button">Daftar</a>
-              </div>
-            </div>
-          <?php endif ?>
-
-          <div class="btn-group mx-2">
-            <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">USD</button>
-            <div class="dropdown-menu dropdown-menu-right">
-              <button class="dropdown-item" type="button">EUR</button>
-              <button class="dropdown-item" type="button">GBP</button>
-              <button class="dropdown-item" type="button">CAD</button>
-            </div>
-          </div>
-          <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">EN</button>
-            <div class="dropdown-menu dropdown-menu-right">
-              <button class="dropdown-item" type="button">FR</button>
-              <button class="dropdown-item" type="button">AR</button>
-              <button class="dropdown-item" type="button">RU</button>
-            </div>
-          </div>
-        </div>
-        <div class="d-inline-flex align-items-center d-block d-lg-none">
-          <a href="" class="btn px-0 ml-2">
-            <i class="fas fa-heart text-dark"></i>
-            <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
-          </a>
-          <a href="<?= base_url(); ?>cart" class="btn px-0 ml-2">
-            <i class="fas fa-shopping-cart text-dark"></i>
-            <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">
-              <?php if (session()->get('id')) : ?>
-                <?= $total_cart; ?>
-              <?php else : ?>
-                0
-              <?php endif ?>
-
-            </span>
-          </a>
-        </div>
-      </div>
     </div>
-    <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
-      <div class="col-lg-4 d-flex align-items-end">
-        <div class="">
-          <img class="img-fluid" width="50px" src="<?= base_url(); ?>user/img/katalog1.png" alt="">
-        </div>
-        <div class="">
-          <a href="" class="text-decoration-none">
-            <span class="h3 text-uppercase text-primary bg-dark px-2">atalog</span>
-            <span class="h3 text-uppercase text-dark bg-primary px-2 ml-n1">Indonesia</span>
-          </a>
-        </div>
-      </div>
-      <div class="col-lg-4 col-4 text-left">
-        <form action="">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search for products">
-            <div class="input-group-append">
-              <span class="input-group-text bg-transparent text-primary">
-                <i class="fa fa-search"></i>
-              </span>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="col-lg-4 col-6 text-right">
-        <p class="m-0">Customer Service</p>
-        <h5 class="m-0">+62-8786-5309-966</h5>
-      </div>
-    </div>
+  </div>
   </div>
   <!-- Topbar End -->
 
 
   <!-- Navbar Start -->
-  <div class="container-fluid bg-dark mb-30">
+  <div class="container-fluid bg-dark mb-50">
     <div class="row px-xl-5">
+      <!-- Logo Section -->
       <div class="col-lg-3 d-none d-lg-block">
-        <a class="btn d-flex align-items-center justify-content-between bg-primary w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; padding: 0 30px;">
-          <h6 class="text-dark m-0"><i class="fa fa-bars mr-2"></i>Categories</h6>
-          <i class="fa fa-angle-down text-dark"></i>
-        </a>
-        <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
-          <div class="navbar-nav w-100">
-
-            <?php foreach ($kategori as $kt) : ?>
-              <div class="nav-item dropdown dropright">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><?= $kt['kategori_nama'] ?> <i class="fa fa-angle-right float-right mt-1"></i></a>
-                <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
-                  <?php foreach ($kt['sub_kategori'] as $sk) : ?>
-                    <a href="" class="dropdown-item"><?= $sk['nama_sub_kategori'] ?></a>
-                  <?php endforeach; ?>
-                </div>
-              </div>
-            <?php endforeach; ?>
-          </div>
-        </nav>
+        <div class="">
+          <img class="img-fluid" width="300px" src="<?= base_url(); ?>user/img/logokatalog.png" alt="Logo">
+        </div>
       </div>
+
+      <!-- Main Navbar -->
       <div class="col-lg-9">
         <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
-          <a href="" class="text-decoration-none d-block d-lg-none">
-            <span class="h1 text-uppercase text-light bg-danger px-2">KATALOG</span>
-            <span class="h1 text-uppercase text-danger bg-light px-2 ml-n1">INDONESIA</span>
-          </a>
-          <button type="bp;utton" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+          <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
           </button>
+
           <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+            <!-- Menu Items -->
             <div class="navbar-nav mr-auto py-0">
-              <a href="<?= base_url(); ?>" class="nav-item nav-link <?= $menu == 'dashboard' ? 'active' : ''  ?> ">Home</a>
-              <a href="<?php echo base_url('user/shop'); ?>" class="nav-item nav-link <?= $menu == 'shop' ? 'active' : ''  ?>">Shop</a>
-              <a href="<?= base_url(); ?>user/jasa" class="nav-item nav-link ">Jasa</a>
-              <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i class="fa fa-angle-down mt-1"></i></a>
-                <div class="dropdown-menu bg-primary rounded-0 border-0 m-0 ">
-                  <a href="<?= base_url(); ?>cart" class="dropdown-item <?= $menu == 'cart' ? 'active' : ''  ?>">Shopping Cart</a>
-                  <a href="<?= base_url(); ?>checkout" class="dropdown-item <?= $menu == 'checkout' ? 'active' : ''  ?>">Checkout</a>
-                </div>
-              </div>
-              <a href="<?= base_url(); ?>user/contact" class="nav-item nav-link <?= $menu == 'contact' ? 'active' : ''  ?>">Contact</a>
+              <a href="<?= base_url(); ?>" class="nav-item nav-link <?= $menu == 'dashboard' ? 'active' : '' ?>">Home</a>
+              <a href="<?= base_url('user/shop'); ?>" class="nav-item nav-link <?= $menu == 'shop' ? 'active' : '' ?>">Barang</a>
+              <a href="<?= base_url('user/jasa'); ?>" class="nav-item nav-link <?= $menu == 'jasa' ? 'active' : '' ?>">Jasa</a>
             </div>
+
+            <div id="google_translate_element"></div>
+
+
+            <!-- Search Bar -->
+            <div class="col-lg-4 col-4 text-left">
+              <form action="">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Search for products">
+                  <div class="input-group-append">
+                    <span class="input-group-text bg-transparent text-primary">
+                      <i class="fa fa-search"></i>
+                    </span>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <!-- Favorite Button -->
             <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
               <a href="" class="btn px-0">
                 <i class="fas fa-heart text-primary"></i>
               </a>
-              <a href="<?= base_url(); ?>cart" class="btn px-0 ml-3">
-                <i class="fas fa-shopping-cart text-primary"></i>
-                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">
+            </div>
 
-                  <?php if (session()->get('id')) : ?>
-                    <?= $total_cart; ?>
-                  <?php else : ?>
-                    0
-                  <?php endif ?>
-                </span>
-              </a>
+            <!-- User Account Section -->
+            <div class="col-lg-4 col-6 text-right">
+              <?php if (session()->get('username')) : ?>
+                <div class="btn-group">
+                  <button type="button" class="btn user-btn" data-toggle="dropdown">
+                    <i class="fas fa-user"></i> <?= session()->get('username'); ?>
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-right custom-dropdown">
+                    <a href="<?= base_url(); ?>myaccount" class="dropdown-item">My Account</a>
+                    <a href="<?= base_url(); ?>logout" class="dropdown-item">Log Out</a>
+                  </div>
+                </div>
+              <?php else : ?>
+                <div class="btn-group">
+                  <button type="button" class="btn custom-login-btn" onclick="window.location='<?= base_url(); ?>auth/login'">Masuk</button>
+                  <button type="button" class="btn custom-register-btn" onclick="window.location='<?= base_url(); ?>auth/register'">Daftar</button>
+                </div>
+              <?php endif; ?>
             </div>
           </div>
-        </nav>`
+        </nav>
       </div>
+      <!-- Main Navbar End -->
     </div>
   </div>
   <!-- Navbar End -->
-  <div class="flash_data" data-flashdata="<?= session()->getFlashdata('pesan'); ?>"></div>
-  <div class="error_flash" data-flashdata="<?= session()->getFlashdata('error'); ?>"></div>
 
-  <?= $this->renderSection('content'); ?>
+
+  <!-- Main Content -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12">
+        <!-- Add your dynamic content here -->
+        <?= $this->renderSection('content'); ?>
+      </div>
+    </div>
+  </div>
+  <!-- Main Content End -->
 
 
   <!-- Footer Start -->
   <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
     <div class="row px-xl-5 pt-5">
-      <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-        <h5 class="text-secondary text-uppercase mb-4">Get In Touch</h5>
-        <p class="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor. Rebum tempor no vero est magna amet no</p>
-        <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i> Jln. Ganetri IV No. 4 DPS 80237 Bali; Jln. Sari Dana I No. 1 DPS 80116 Bali</p>
-        <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>patners@katalogindonesia.com</p>
-        <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+62-8786-5309-966</p>
-      </div>
+
       <div class="col-lg-8 col-md-12">
         <div class="row">
           <div class="col-md-4 mb-5">
-            <h5 class="text-secondary text-uppercase mb-4">Quick Shop</h5>
-            <div class="d-flex flex-column justify-content-start">
-              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-              <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
-            </div>
-          </div>
-          <div class="col-md-4 mb-5">
             <h5 class="text-secondary text-uppercase mb-4">My Account</h5>
             <div class="d-flex flex-column justify-content-start">
-              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
+              <a class="text-secondary mb-2" href="/"><i class="fa fa-angle-right mr-2"></i>Home</a>
               <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
               <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
+              <a class="text-secondary mb-2" href="/cart"><i class="fa fa-angle-right mr-2"></i>Cart</a>
               <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
             </div>
           </div>
-          <div class="col-md-4 mb-5">
-            <h5 class="text-secondary text-uppercase mb-4">Newsletter</h5>
-            <p>Duo stet tempor ipsum sit amet magna ipsum tempor est</p>
-            <form action="">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Your Email Address">
-                <div class="input-group-append">
-                  <button class="btn btn-primary">Sign Up</button>
-                </div>
-              </div>
-            </form>
-            <h6 class="text-secondary text-uppercase mt-4 mb-3">Follow Us</h6>
-            <div class="d-flex">
-              <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
-              <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
-              <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
-              <a class="btn btn-primary btn-square" href="#"><i class="fab fa-instagram"></i></a>
-            </div>
-          </div>
+
         </div>
       </div>
     </div>
@@ -290,7 +183,7 @@ if (session()->has('id')) {
         <p class="mb-md-0 text-center text-md-left text-secondary">
           &copy; <a class="text-primary" href="#">Domain</a>. All Rights Reserved. Designed
           by
-          <a class="text-primary" href="https://htmlcodex.com">HTML Codex</a>
+          <a class="text-primary" href="https://htmlcodex.com">CL</a>
         </p>
       </div>
       <div class="col-md-6 px-xl-0 text-center text-md-right">
@@ -330,7 +223,23 @@ if (session()->has('id')) {
     if (errorflashData) {
       swal("Terjadi Kesalahan", errorflashData, "error")
     }
+
   </script>
+
+<script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement(
+                {pageLanguage: 'en'},
+                'google_translate_element'
+            );
+        }
+    </script>
+
+    <script type="text/javascript" 
+            src=
+"https://translate.google.com/translate_a/element.js?
+cb=googleTranslateElementInit">
+    </script>
 </body>
 
 </html>

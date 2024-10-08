@@ -90,8 +90,10 @@ $routes->get('/user/shop', 'UserController::shop');
 $routes->get('/', 'UserController::home');
 $routes->get('/user/jasa', 'UserController::jasa');
 $routes->get('/user/contact', 'EmailController::index');
-$routes->get('/tracking', 'UserController::tracking');   
+$routes->get('/tracking', 'UserController::tracking');
 $routes->post('user/filter', 'UserController::filter_toko');
+$routes->get('myaccount', 'UserController::myAccount');
+
 
 $routes->post('/user/harga_barang', 'UserController::harga_barang');
 $routes->post('/transaksii', 'UserController::transaksi');
@@ -101,9 +103,6 @@ $routes->get('/user/delete_chart/(:any)', 'UserController::delete_cart/$1');
 $routes->get('/user/cek', 'UserController::cek');
 $routes->match(['get', 'post'], 'email', 'SendEmail::index');
 $routes->get('/user/email/send', 'EmailController::send');
-
-
-
 
 
 //Logout
@@ -119,6 +118,7 @@ $routes->get('/sales/view_pesanan', 'SalesController::view_pesanan');
 $routes->get('/sales/kemas_pesanan', 'SalesController::kemas_pesanan');
 $routes->get('/sales/kirim_pesanan', 'SalesController::kirim_pesanan');
 $routes->get('/sales/add_barang',  'SalesController::add_barang');
+$routes->get('/sales/add_jasa',  'SalesController::add_jasa');
 $routes->get('/sales/add_diskon', 'SalesController::add_diskon');
 $routes->get('/sales/edit_barang/(:num)',  'SalesController::edit_barang/$1');
 $routes->post('/sales/update_barang/(:num)',  'SalesController::update_barang/$1');

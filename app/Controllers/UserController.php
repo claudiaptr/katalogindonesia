@@ -10,6 +10,8 @@ use App\Models\Opsi;
 use App\Models\Variasi;
 use App\Models\IklanTetap;
 use App\Models\Transaksi;
+use App\Models\Model_Auth;
+use App\Models\CartModel;
 use Google_Client;
 
 class UserController extends BaseController
@@ -17,7 +19,7 @@ class UserController extends BaseController
     protected $barang;
     protected $fotoBarang;
     protected $kategori, $variasi, $opsi, $iklancarausel;
-    protected $iklantetap, $cart, $session,$transaksi;
+    protected $iklantetap, $cart, $session, $transaksi;
 
 
     public function __construct()
@@ -51,6 +53,35 @@ class UserController extends BaseController
         ];
         return view('user/home', $data);
     }
+
+    public function myaccount()
+    {
+        $userId = session()->get('user_id');
+
+        $cartModel = new CartModel();
+        $userModel = new Model_Auth();
+
+        $total_cart = 0;
+        if ($userId) {
+            $total_cart = $cartModel->totalItemsByUser($userId);
+        }
+
+        // Ambil kategori untuk ditampilkan di view
+        $kategori = $this->kategori->getSubKategori();
+
+        $data = [
+            'user' => $userModel->getLogin($userId),
+            'total_cart' => $total_cart,
+            'kategori' => $kategori,
+            'menu' => 'myaccount', // Menambahkan menu ke data
+        ];
+
+        return view('user/layout', $data);
+    }
+
+
+
+
     public function detail($id)
     {
 
@@ -65,16 +96,21 @@ class UserController extends BaseController
 
         return view('user/detail', $data);
     }
+
     public function shop()
     {
+        // Fetch only barang items (ID = 1)
         $data = [
-            'barang' => $this->barang->getbarang(),
+            'barang' => $this->barang->getBarangByKategori(1),
             'kategori' => $this->kategori->getSubKategori(),
             'cart' => \Config\Services::cart(),
             'menu' => 'shop',
         ];
         return view('user/shop', $data);
     }
+
+
+
     public function filter_toko()
     {
         $provinsi = $this->request->getVar('provinsi');
@@ -89,24 +125,30 @@ class UserController extends BaseController
         return $this->response->setJSON($barang);
     }
 
- 
+
 
     // Jasa
     public function jasa()
     {
         helper('form');
+
+        // Fetch only jasa items (ID = 2)
         $data = [
-            'barang' => $this->barang->getRandomBarang(8),
-            'barang_baru' => $this->barang->getNewBarang(8),
+            'barang' => $this->barang->getBarangByKategori(2), // Get items by category ID 2
+            'barang_baru' => $this->barang->getNewBarang(8), // Get new items, adjust as needed
             'kategori' => $this->kategori->getSubKategori(),
+            'menu' => 'jasa',
             'iklan_tetap_1' => $this->iklantetap->find(1),
             'iklan_tetap_2' => $this->iklantetap->find(2),
             'iklan_tetap_3' => $this->iklantetap->find(3),
             'iklan_tetap_4' => $this->iklantetap->find(4),
             'iklan_carausel' => $this->iklancarausel->findAll()
         ];
+
         return view('user/jasa', $data);
     }
+
+
 
     public function contact()
     {
