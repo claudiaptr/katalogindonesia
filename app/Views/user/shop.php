@@ -20,43 +20,60 @@
     <div class="row px-xl-5">
         <!-- Shop Sidebar Start -->
         <div class="col-lg-3 col-md-4">
-            <!-- Location Filters -->
-            <div class="location-filters mb-4">
-                <h5 class="section-title position-relative text-uppercase mb-3">
-                    <span class="bg-secondary pr-3">Filter by Location</span>
-                </h5>
 
+        <!-- Sidebar Start -->
+        <div class="col-lg-3 col-md-4 bg-light p-4">
+            <!-- Categories Section -->
+            <h5 class="text-uppercase mb-4">CATEGORIES</h5>
+            <div class="categories">
+                <?php foreach ($kategori as $kt) : ?>
+                    <div class="category-item mb-2">
+                        <a href="#" class="category-link"><?= $kt['kategori_nama'] ?></a>
+                        <div class="subcategories">
+                            <?php foreach ($kt['sub_kategori'] as $sk) : ?>
+                                <a href="#" class="subcategory-link"><?= $sk['nama_sub_kategori'] ?></a>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+            <hr class="my-4">
+
+            <!-- Location Filters -->
+            <h5 class="section-title position-relative text-uppercase mb-3">
+                <span class="bg-secondary pr-3">Filter by Location</span>
+            </h5>
+            <div class="location-filters mb-4">
                 <div class="form-group">
                     <select id="provinsi" name="provinsi" class="form-control" required>
                         <option value="">Pilih Provinsi</option>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <select id="kabupaten" name="kabupaten" class="form-control" required>
                         <option value="">Pilih Kabupaten</option>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <select id="kecamatan" name="kecamatan" class="form-control" required>
                         <option value="">Pilih Kecamatan</option>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <select id="kelurahan" name="kelurahan" class="form-control" required>
                         <option value="">Pilih Kelurahan/Desa</option>
                     </select>
                 </div>
             </div>
-            <!-- Location Filters End -->
+
+            <hr class="my-4">
 
             <!-- Filter by Price -->
             <h5 class="section-title position-relative text-uppercase mb-3">
                 <span class="bg-secondary pr-3">Batas Harga</span>
             </h5>
-            <div class="bg-light p-4 mb-30">
+            <div class="bg-light p-3 mb-3">
                 <form method="GET" action="/your-filter-action">
                     <div class="form-group d-flex justify-content-between align-items-center">
                         <input type="number" name="price_min" class="form-control mr-2" placeholder="Rp MIN" min="0">
@@ -68,7 +85,7 @@
             </div>
             <!-- Filter by Price End -->
         </div>
-        <!-- Shop Sidebar End -->
+        <!-- Sidebar End -->
 
 
         <!-- Shop Product Start -->
@@ -120,6 +137,8 @@
 <?= $this->endSection(); ?>
 
 <?= $this->section('scripts'); ?>
+
+
 <script>
     // Mengisi dropdown provinsi
     fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/provinces.json`)

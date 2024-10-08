@@ -139,3 +139,9 @@ $routes->post('/sales/store_penarikan',  'SalesController::store_penarikan');
 $routes->get('/sales/foto_bukti/(:num)', 'SalesController::foto_bukti/$1');
 
 // user
+$routes->group('myaccount', function($routes) {
+    $routes->get('', 'Account::index'); // Dashboard
+    $routes->get('orders', 'Account::orders'); // Halaman Pesanan
+    $routes->get('orders/(:num)', 'Account::orderDetail/$1'); // Detail Pesanan
+    $routes->get('settings', 'Account::settings'); // Pengaturan Akun
+});

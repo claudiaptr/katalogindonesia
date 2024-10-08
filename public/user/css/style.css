@@ -65,10 +65,51 @@ body {
   background-color: #F5F5F5;
 }
 
+.categories {
+  margin-top: 20px;
+}
+
+.category-item {
+  margin-bottom: 10px;
+}
+
+.category-link {
+  display: block;
+  padding: 10px;
+  color: #007bff; /* Warna teks */
+  text-decoration: none;
+}
+
+.category-link:hover {
+  text-decoration: underline;
+}
+
+.subcategories {
+  margin-left: 20px;
+  display: none; /* Tampilkan atau sembunyikan subkategori dengan JavaScript */
+}
+
+.subcategory-link {
+  display: block;
+  padding: 5px 0;
+  color: #555; /* Warna teks subkategori */
+  text-decoration: none;
+}
+
+.subcategory-link:hover {
+  text-decoration: underline;
+}
+
+/* Tambahkan gaya untuk menampilkan subkategori saat hover kategori */
+.category-item:hover .subcategories {
+  display: block;
+}
+
+
 .custom-login-btn {
-  background-color: transparent;
-  color: #cccc00; /* Yellow color */
-  border: 2px solid #cccc00;
+  background-color: transparent; 
+  color: white; 
+  border: 2px solid #cccc00; 
   border-radius: 8px;
   padding: 8px 16px;
   font-size: 16px;
@@ -76,8 +117,8 @@ body {
 }
 
 .custom-register-btn {
-  background-color: #cccc00; /* Yellow color */
-  color: #333333; /* Gray color for text */
+  background-color: #cccc00; 
+  color: white; 
   border: none;
   border-radius: 8px;
   padding: 8px 16px;
@@ -86,8 +127,9 @@ body {
 }
 
 .custom-login-btn:hover, .custom-register-btn:hover {
-  opacity: 0.8;
+  opacity: 0.8; /* Efek saat hover */
 }
+
 
 /* Styling for the user button after login */
 .user-btn {
@@ -4174,6 +4216,7 @@ input[type="button"].btn-block {
   white-space: nowrap;
 }
 
+
 .navbar-brand:hover, .navbar-brand:focus {
   text-decoration: none;
 }
@@ -4228,6 +4271,14 @@ input[type="button"].btn-block {
   content: "";
   background: no-repeat center center;
   background-size: 100% 100%;
+}
+
+.navbar-nav .nav-link.h5 {
+  font-size: 1.25rem; /* Ukuran teks lebih besar */
+}
+
+.navbar-nav .nav-item {
+  margin-left: 15px; /* Sesuaikan sesuai kebutuhan */
 }
 
 @media (max-width: 575.98px) {
