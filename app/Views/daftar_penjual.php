@@ -42,18 +42,33 @@
                 }
                 ?>
 
-                <form action="<?= base_url(); ?>/store/penjual" method="post">
+                <form action="<?= base_url(); ?>/store/penjual" method="post" enctype="multipart/form-data">
                     <?= csrf_field(); ?>
 
+                    <!-- Nama Toko -->
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Nama Toko" name="nama_toko" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
-                                <span class="fas fa-user"></span>
+                                <span class="fas fa-store"></span>
                             </div>
                         </div>
                     </div>
 
+                    <!-- No HP -->
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="No HP" name="no_hp" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-phone"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tanggal Daftar (Auto-filled) -->
+                    <input type="hidden" name="tanggal_daftar" value="<?= date('Y-m-d'); ?>">
+
+                    <!-- Provinsi -->
                     <div class="input-group mb-3">
                         <select id="provinsi" name="provinsi" class="form-control" required>
                             <option value="">Pilih Provinsi</option>
@@ -65,6 +80,7 @@
                         </div>
                     </div>
 
+                    <!-- Kabupaten -->
                     <div class="input-group mb-3">
                         <select id="kabupaten" name="kabupaten" class="form-control" required>
                             <option value="">Pilih Kabupaten</option>
@@ -76,6 +92,7 @@
                         </div>
                     </div>
 
+                    <!-- Kecamatan -->
                     <div class="input-group mb-3">
                         <select id="kecamatan" name="kecamatan" class="form-control" required>
                             <option value="">Pilih Kecamatan</option>
@@ -87,6 +104,7 @@
                         </div>
                     </div>
 
+                    <!-- Kelurahan/Desa -->
                     <div class="input-group mb-3">
                         <select id="kelurahan" name="kelurahan" class="form-control" required>
                             <option value="">Pilih Kelurahan/Desa</option>
@@ -98,8 +116,9 @@
                         </div>
                     </div>
 
+                    <!-- Alamat Domisili -->
                     <div class="input-group mb-3">
-                        <input type="text" name="alamat" class="form-control" placeholder="Alamat Lengkap Toko" required>
+                        <input type="text" name="alamat" class="form-control" placeholder="Alamat Lengkap Toko">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-map-pin"></span>
@@ -107,6 +126,17 @@
                         </div>
                     </div>
 
+                    <!-- Foto Kartu Identitas -->
+                    <div class="input-group mb-3">
+                        <input type="file" name="foto_profil" class="form-control" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-id-card"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Submit -->
                     <div class="row">
                         <div class="col-8"></div>
                         <div class="col-4">
@@ -126,6 +156,7 @@
     <!-- AdminLTE App -->
     <script src="<?= base_url(); ?>asset/dists/js/adminlte.min.js"></script>
 
+    <!-- Script Wilayah Indonesia -->
     <script>
         // Mengisi dropdown provinsi
         fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/provinces.json`)
