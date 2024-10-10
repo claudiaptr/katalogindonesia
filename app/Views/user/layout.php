@@ -165,7 +165,7 @@ if (session()->has('id')) {
                             <a href="<?= base_url(); ?>" class="nav-item nav-link <?= $menu == 'dashboard' ? 'active' : '' ?> h5">Home</a>
                             <a href="<?= base_url('user/shop'); ?>" class="nav-item nav-link <?= $menu == 'shop' ? 'active' : '' ?> h5">Barang</a>
                             <a href="<?= base_url('user/jasa'); ?>" class="nav-item nav-link <?= $menu == 'jasa' ? 'active' : '' ?> h5">Jasa</a>
-                            <a href="<?= base_url('contact'); ?>" class="nav-item nav-link h5">Contact</a>
+                            <a href="<?= base_url(); ?>user/contact" class="nav-item nav-link h5">Contact</a>
                         </div>
 
                         <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
@@ -235,18 +235,18 @@ if (session()->has('id')) {
           <div class="col-md-4 mb-5">
             <h5 class="text-secondary text-uppercase mb-4">Quick Shop</h5>
             <div class="d-flex flex-column justify-content-start">
-              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Barang</a>
-              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Jasa</a>
-              <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+              <a class="text-secondary mb-2" href="<?= base_url(); ?>" class="nav-item nav-link <?= $menu == 'dashboard' ? 'active' : ''  ?> "><i class="fa fa-angle-right mr-2"></i>Home</a>
+              <a class="text-secondary mb-2" href="<?php echo base_url('user/shop'); ?>"><i class="fa fa-angle-right mr-2"></i>Barang</a>
+              <a class="text-secondary mb-2" href="<?= base_url(); ?>user/jasa"><i class="fa fa-angle-right mr-2"></i>Jasa</a>
+              <a class="text-secondary" href="<?= base_url(); ?>user/contact"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
             </div>
           </div>
           <div class="col-md-4 mb-5">
             <h5 class="text-secondary text-uppercase mb-4">My Account</h5>
             <div class="d-flex flex-column justify-content-start">
-              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
+              <a class="text-secondary mb-2" href="<?= base_url(); ?>" class="nav-item nav-link <?= $menu == 'dashboard' ? 'active' : ''  ?> "><i class="fa fa-angle-right mr-2"></i>Home</a>
               <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Wishlist</a>
-              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
+              <a class="text-secondary mb-2" href="<?= base_url(); ?>cart#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
             </div>
           </div>
           <div class="col-md-4 mb-5">
