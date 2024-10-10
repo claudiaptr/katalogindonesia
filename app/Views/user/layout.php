@@ -40,7 +40,7 @@ if (session()->has('id')) {
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
   <!-- Font Awesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
   <!-- Libraries Stylesheet -->
   <link href="<?= base_url(); ?>user/lib/animate/animate.min.css" rel="stylesheet">
@@ -52,75 +52,79 @@ if (session()->has('id')) {
 </head>
 
 <body>
-  <!-- Topbar Start -->
-  <div class="container-fluid">
-    <div class="row bg-secondary py-1 px-xl-5">
-      <div class="col-lg-6 d-none d-lg-block">
-        <div class="d-inline-flex align-items-center h-100">
-          <a class="text-body mr-3" href="">About</a>
-          <a class="text-body mr-3" href="">Contact</a>
-          <a class="text-body mr-3" href="">Help</a>
-          <a class="text-body mr-3" href="">FAQs</a>
-        </div>
-      </div>
-      <!-- Language Selector -->
-      <div class="col-lg-6 text-right">
+    <!-- Topbar Start -->
+    <div class="container-fluid">
+        <div class="row bg-secondary py-1 px-xl-5">
+            <div class="col-lg-6 d-none d-lg-block">
+                <div class="d-inline-flex align-items-center h-100">
+                    <a class="text-body mr-3" href="">About</a>
+                    <a class="text-body mr-3" href="">Contact</a>
+                    <a class="text-body mr-3" href="">Help</a>
+                    <a class="text-body mr-3" href="">FAQs</a>
+                </div>
+            </div>
+            <!-- Language Selector -->
+            <div class="col-lg-6 text-right">
                 <div class="ml-auto">
                     <div id="google_translate_element"></div>
                 </div>
-       </div>
-
-
-        <div class="d-inline-flex align-items-center d-block d-lg-none">
-          <a href="" class="btn px-0 ml-2">
-            <i class="fas fa-heart text-dark"></i>
-            <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
-          </a>
-          <a href="<?= base_url(); ?>cart" class="btn px-0 ml-2">
-            <i class="fas fa-shopping-cart text-dark"></i>
-            <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">
-              <?php if (session()->get('id')) : ?>
-                <?= $total_cart; ?>
-              <?php else : ?>
-                0
-              <?php endif ?>
-
-            </span>
-          </a>
-        </div>
-      </div>
-    </div>
-    <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
-      <div class="col-lg-4 d-flex align-items-end">
-        <div class="">
-          <img class="img-fluid" width="50px" src="<?= base_url(); ?>user/img/katalog1.png" alt="">
-        </div>
-        <div class="">
-          <a href="" class="text-decoration-none">
-            <span class="h3 text-uppercase text-primary bg-dark px-2">atalog</span>
-            <span class="h3 text-uppercase text-dark bg-primary px-2 ml-n1">Indonesia</span>
-          </a>
-        </div>
-      </div>
-      <div class="col-lg-4 col-4 text-left">
-        <form action="">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search for products">
-            <div class="input-group-append">
-              <span class="input-group-text bg-transparent text-primary">
-                <i class="fa fa-search"></i>
-              </span>
             </div>
-          </div>
-        </form>
-      </div>
-      <div class="col-lg-4 col-6 text-right">
-        <p class="m-0">Customer Service</p>
-        <h5 class="m-0">+62-8786-5309-966</h5>
-      </div>
+
+            <div class="d-inline-flex align-items-center d-block d-lg-none">
+                <a href="" class="btn px-0 ml-2">
+                    <i class="fas fa-heart text-dark"></i>
+                    <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
+                </a>
+                <a href="<?= base_url(); ?>cart" class="btn px-0 ml-2">
+                    <i class="fas fa-shopping-cart text-dark"></i>
+                    <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">
+                        <?php if (session()->get('id')) : ?>
+                            <?= $total_cart; ?>
+                        <?php else : ?>
+                            0
+                        <?php endif ?>
+                    </span>
+                </a>
+            </div>
+        </div>
+        <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
+            <div class="col-lg-4 d-flex align-items-end">
+                <div class="">
+                    <img class="img-fluid" width="50px" src="<?= base_url(); ?>user/img/katalog1.png" alt="">
+                </div>
+                <div class="">
+                    <a href="" class="text-decoration-none">
+                        <span class="h3 text-uppercase text-primary bg-dark px-2">atalog</span>
+                        <span class="h3 text-uppercase text-dark bg-primary px-2 ml-n1">Indonesia</span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-4 text-left">
+                <form action="">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for products">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent text-primary">
+                                <i class="fa fa-search"></i>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Social Media Icons Right Aligned -->
+            <div class="col-lg-4 d-flex justify-content-end">
+                <a class="btn btn-primary btn-square mr-2" href="mailto:kataloggindonesia@gmail.com"><i class="fas fa-envelope"></i></a>
+                <a class="btn btn-primary btn-square mr-2" href="https://www.facebook.com/profile.php?id=61564551196320&locale=id_ID"><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a class="btn btn-primary btn-square mr-2" href="https://www.instagram.com/katalog_idn?igsh=MnRyN2M0NWV3bGFw"><i class="fab fa-instagram"></i></a>
+                <a class="btn btn-primary btn-square mr-2" href="https://www.youtube.com/@katalog.indonesia"><i class="fab fa-youtube"></i></a>
+                <a class="btn btn-primary btn-square" href="https://www.tiktok.com/@katalog_idn"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
     </div>
-  </div>
-  <!-- Topbar End -->
+    <!-- Topbar End -->
+
 
 
   <!-- Navbar Start -->
@@ -226,23 +230,14 @@ if (session()->has('id')) {
   <!-- Footer Start -->
   <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
     <div class="row px-xl-5 pt-5">
-      <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-        <h5 class="text-secondary text-uppercase mb-4">Get In Touch</h5>
-        <p class="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor. Rebum tempor no vero est magna amet no</p>
-        <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i> Jln. Ganetri IV No. 4 DPS 80237 Bali; Jln. Sari Dana I No. 1 DPS 80116 Bali</p>
-        <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>patners@katalogindonesia.com</p>
-        <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+62-8786-5309-966</p>
-      </div>
       <div class="col-lg-8 col-md-12">
         <div class="row">
           <div class="col-md-4 mb-5">
             <h5 class="text-secondary text-uppercase mb-4">Quick Shop</h5>
             <div class="d-flex flex-column justify-content-start">
               <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
+              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Barang</a>
+              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Jasa</a>
               <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
             </div>
           </div>
@@ -250,30 +245,23 @@ if (session()->has('id')) {
             <h5 class="text-secondary text-uppercase mb-4">My Account</h5>
             <div class="d-flex flex-column justify-content-start">
               <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
+              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Wishlist</a>
               <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-              <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-              <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
             </div>
           </div>
           <div class="col-md-4 mb-5">
-            <h5 class="text-secondary text-uppercase mb-4">Newsletter</h5>
-            <p>Duo stet tempor ipsum sit amet magna ipsum tempor est</p>
-            <form action="">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Your Email Address">
-                <div class="input-group-append">
-                  <button class="btn btn-primary">Sign Up</button>
-                </div>
-              </div>
-            </form>
+             </form>
+             <div class="col-md-6 px-xl-0 text-center text-md-right">
+        <img class="img-fluid" src="<?= base_url(); ?>user/img/payments.png" alt="">
+      </div>
             <h6 class="text-secondary text-uppercase mt-4 mb-3">Follow Us</h6>
-            <div class="d-flex">
-              <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
-              <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
-              <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
-              <a class="btn btn-primary btn-square" href="#"><i class="fab fa-instagram"></i></a>
+            <div class="d-flex ">
+                <a class="btn btn-primary btn-square mr-2" href="mailto:kataloggindonesia@gmail.com"><i class="fas fa-envelope"></i></a>
+                <a class="btn btn-primary btn-square mr-2" href="https://www.facebook.com/profile.php?id=61564551196320&locale=id_ID"><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a class="btn btn-primary btn-square mr-2" href="https://www.instagram.com/katalog_idn?igsh=MnRyN2M0NWV3bGFw"><i class="fab fa-instagram"></i></a>
+                <a class="btn btn-primary btn-square mr-2" href="https://www.youtube.com/@katalog.indonesia"><i class="fab fa-youtube"></i></a>
+                <a class="btn btn-primary btn-square" href="https://www.tiktok.com/@katalog_idn"><i class="fab fa-tiktok"></i></a>
             </div>
           </div>
         </div>
@@ -282,13 +270,9 @@ if (session()->has('id')) {
     <div class="row border-top mx-xl-5 py-4" style="border-color: rgba(256, 256, 256, .1) !important;">
       <div class="col-md-6 px-xl-0">
         <p class="mb-md-0 text-center text-md-left text-secondary">
-          &copy; <a class="text-primary" href="#">Domain</a>. All Rights Reserved. Designed
-          by
-          <a class="text-primary" href="https://htmlcodex.com">HTML Codex</a>
+          &copy; <a class="text-primary" href="#">Katalog Indonesia</a>. Hak Cipta Dilindungi
+          <a class="text-primary" href="https://www.katalogindonesia.com/"></a>
         </p>
-      </div>
-      <div class="col-md-6 px-xl-0 text-center text-md-right">
-        <img class="img-fluid" src="<?= base_url(); ?>user/img/payments.png" alt="">
       </div>
     </div>
   </div>

@@ -145,3 +145,4 @@ $routes->group('myaccount', function($routes) {
     $routes->get('orders/(:num)', 'Account::orderDetail/$1'); // Detail Pesanan
     $routes->get('settings', 'Account::settings'); // Pengaturan Akun
 });
+
