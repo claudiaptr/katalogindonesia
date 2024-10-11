@@ -8,16 +8,15 @@ class WishlistModel extends Model
 {
     protected $table = 'wishlist';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['id_user', 'id_barang', 'jumlah_barang', 'created_at', 'updated_at'];
+    protected $allowedFields = ['id_user', 'id_barang', 'created_at', 'updated_at'];
 
     public function getWishlistByUser($userId)
-    {
-        return $this->select('wishlist.*, barang.judul_barang, barang.harga_barang, wishlist.jumlah_barang')
-                    ->join('barang', 'barang.id = wishlist.id_barang')
-                    ->where('wishlist.id_user', $userId)
-                    ->findAll();
-    }
-
+{
+    return $this->select('wishlist.*, barang.judul_barang, barang.harga_barang, barang.jumlah_barang') // Pastikan ada kolom yang sesuai di tabel barang
+                ->join('barang', 'barang.id = wishlist.id_barang') // Gabungkan tabel barang
+                ->where('wishlist.id_user', $userId)
+                ->findAll();
+}
     public function addToWishlist($data)
     {
         if (empty($data['id_user']) || empty($data['id_barang'])) {
@@ -30,6 +29,7 @@ class WishlistModel extends Model
     {
         return $this->where(['id_user' => $userId, 'id_barang' => $productId])->first() !== null;
     }
+
 
     public function removeFromWishlist($id)
     {
