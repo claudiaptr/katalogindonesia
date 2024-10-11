@@ -26,6 +26,11 @@ class Wishlist extends Migration
                 'constraint'     => 20,
                 'unsigned'       => true,
             ],
+            'nama_toko' => [  // Kolom baru untuk nama toko
+                'type'       => 'VARCHAR',
+                'constraint' => '100',
+                'null' => true, // bisa null jika tidak ada
+            ],
             'created_at' => [
                 'type'    => 'TIMESTAMP',
                 'default' => new RawSql('CURRENT_TIMESTAMP'),

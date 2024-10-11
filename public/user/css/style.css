@@ -273,6 +273,12 @@ h1 {
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Shadow effect on focus */
 }
 
+.wishlist-image {
+  width: 100px; 
+  height: 100px; 
+  object-fit: cover; 
+  border-radius: 5px; 
+}
 
 
 [tabindex="-1"]:focus:not(:focus-visible) {

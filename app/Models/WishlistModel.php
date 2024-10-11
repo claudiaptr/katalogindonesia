@@ -12,17 +12,31 @@ class WishlistModel extends Model
 
     public function getWishlistByUser($userId)
 {
-    return $this->select('wishlist.*, barang.judul_barang, barang.harga_barang, barang.jumlah_barang') // Pastikan ada kolom yang sesuai di tabel barang
+    return $this->select('wishlist.*, barang.foto_barang, barang.judul_barang, barang.harga_barang, barang.pemilik') // Pastikan ada kolom yang sesuai di tabel barang
                 ->join('barang', 'barang.id = wishlist.id_barang') // Gabungkan tabel barang
                 ->where('wishlist.id_user', $userId)
                 ->findAll();
 }
-    public function addToWishlist($data)
+    public function addToWishlist($userId, $barangId)
     {
-        if (empty($data['id_user']) || empty($data['id_barang'])) {
-            return false; // Atau throw exception sesuai kebutuhan
+        // Ambil informasi barang berdasarkan ID
+        $barang = $this->db->table('barang')->select('pemilik')->where('id', $barangId)->get()->getRow();
+
+        // Ambil nama toko berdasarkan pemilik
+        if ($barang) {
+            $pemilikId = $barang->pemilik;
+            $toko = $this->db->table('user')->select('nama_toko')->where('id', $pemilikId)->get()->getRow();
+            
+            $data = [
+                'id_user' => $userId,
+                'id_barang' => $barangId,
+                'nama_toko' => $toko ? $toko->nama_toko : null, // Mengisi nama_toko
+            ];
+            
+            return $this->db->table('wishlist')->insert($data);
         }
-        return $this->insert($data);
+
+        return false;
     }
 
     public function isInWishlist($userId, $productId)
@@ -31,8 +45,14 @@ class WishlistModel extends Model
     }
 
 
-    public function removeFromWishlist($id)
-    {
-        return $this->delete($id);
-    }
+    public function delete_wishlist($id)
+{
+    $wishlistModel = new WishlistModel();
+    
+    // Pastikan hanya item wishlist milik user yang dihapus
+    $wishlistModel->where('id', $id)->delete();
+
+    return redirect()->to('user/wishlist')->with('message', 'Produk berhasil dihapus dari wishlist!');
+}
+
 }

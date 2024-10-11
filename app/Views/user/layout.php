@@ -33,7 +33,7 @@ if (session()->has('id')) {
   <meta content="Free HTML Templates" name="description">
 
   <!-- Favicon -->
-  <link href="img/favicon.ico" rel="icon">
+  <link rel="icon" href="<?= base_url('favicon.png') ?>" type="image/png">
 
   <!-- Google Web Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com">

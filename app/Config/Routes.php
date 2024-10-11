@@ -149,6 +149,7 @@ $routes->group('myaccount', function($routes) {
 $routes->get('user/wishlist', 'UserController::wishlist');
 
 $routes->post('user/add_to_wishlist/(:num)', 'UserController::addToWishlist/$1');
-$routes->get('user/remove_from_wishlist/(:num)', 'UserController::removeFromWishlist/$1');
+$routes->get('user/delete_wishlist/(:num)', 'UserController::delete_wishlist/$1');
+
 
 
