@@ -18,7 +18,7 @@ $routes->post('/admin/update_iklan_carausel/(:num)', 'AdminController::update_ik
 
 $routes->get('/admin/view_iklan_tetap', 'IklanController::view_iklan_tetap');
 $routes->post('/admin/store_iklan_tetap', 'IklanController::store_iklan_tetap');
-// $routes->get('/admin/add_iklan_tetap', 'IklanController::add_iklan_tetap');
+$routes->get('/admin/add_iklan_tetap', 'IklanController::add_iklan_tetap');
 $routes->delete('/admin/delete_iklan_tetap/(:num)', 'IklanController::delete_iklan_tetap/$1');
 
 $routes->get('/admin/edit_iklan_tetap/(:any)', 'IklanController::edit_iklan_tetap/$1');
@@ -145,4 +145,10 @@ $routes->group('myaccount', function($routes) {
     $routes->get('orders/(:num)', 'Account::orderDetail/$1'); // Detail Pesanan
     $routes->get('settings', 'Account::settings'); // Pengaturan Akun
 });
+
+$routes->get('user/wishlist', 'UserController::wishlist');
+
+$routes->post('user/add_to_wishlist/(:num)', 'UserController::addToWishlist/$1');
+$routes->get('user/remove_from_wishlist/(:num)', 'UserController::removeFromWishlist/$1');
+
 

@@ -105,6 +105,30 @@ body {
   display: block;
 }
 
+.sidebar {
+  width: 250px;
+  background-color: #333;
+  color: white;
+  position: fixed;
+  height: 100%;
+  padding-top: 20px;
+}
+.sidebar a {
+  padding: 10px 15px;
+  text-decoration: none;
+  color: white;
+  display: block;
+}
+.sidebar a:hover {
+  background-color: #575757;
+}
+.collapse {
+  display: none;
+  padding-left: 20px;
+}
+.toggle {
+  cursor: pointer;
+}
 
 .custom-login-btn {
   background-color: transparent; 

@@ -12,6 +12,7 @@ use App\Models\IklanTetap;
 use App\Models\Transaksi;
 use App\Models\Model_Auth;
 use App\Models\CartModel;
+use App\Models\WishlistModel;
 use Google_Client;
 
 class UserController extends BaseController
@@ -20,6 +21,7 @@ class UserController extends BaseController
     protected $fotoBarang;
     protected $kategori, $variasi, $opsi, $iklancarausel;
     protected $iklantetap, $cart, $session, $transaksi;
+    protected $wishlistModel;
 
 
     public function __construct()
@@ -55,32 +57,29 @@ class UserController extends BaseController
     }
 
     public function myaccount()
-    {
-        $userId = session()->get('user_id');
+{
+    $userId = session()->get('user_id');
 
-        $cartModel = new CartModel();
-        $userModel = new Model_Auth();
+    $cartModel = new CartModel();
+    $userModel = new Model_Auth();
 
-        $total_cart = 0;
-        if ($userId) {
-            $total_cart = $cartModel->totalItemsByUser($userId);
-        }
-
-        // Ambil kategori untuk ditampilkan di view
-        $kategori = $this->kategori->getSubKategori();
-
-        $data = [
-            'user' => $userModel->getLogin($userId),
-            'total_cart' => $total_cart,
-            'kategori' => $kategori,
-            'menu' => 'myaccount', // Menambahkan menu ke data
-        ];
-
-        return view('user/layout', $data);
+    $total_cart = 0;
+    if ($userId) {
+        $total_cart = $cartModel->totalItemsByUser($userId);
     }
 
+    // Ambil kategori untuk ditampilkan di view
+    $kategori = $this->kategori->getSubKategori();
 
+    $data = [
+        'user' => $userModel->getLogin($userId),
+        'total_cart' => $total_cart,
+        'kategori' => $kategori,
+        'menu' => 'myaccount', // Menambahkan menu ke data
+    ];
 
+    return view('user/myaccount', $data); // Panggil view myaccount
+}
 
     public function detail($id)
     {
@@ -288,4 +287,44 @@ class UserController extends BaseController
         session()->setFlashdata('pesan', 'Pesanan berhasil dibuat');
         return redirect()->to('cart');
     }
-}
+
+        public function wishlist()
+        {
+            $wishlistModel = new WishlistModel();
+            $id_user = session()->get('id');
+            $wishlist = $wishlistModel->getWishlistByUser($id_user);
+
+            return view('user/wishlist', [
+                'wishlist' => $wishlist,
+                'kategori' => $this->kategori->getSubKategori(),
+                'menu' => 'wishlist',
+            ]);
+        }
+
+        public function addToWishlist($id_barang)
+        {
+            $wishlistModel = new WishlistModel();
+            $id_user = session()->get('id');
+
+            // Pastikan data yang diperlukan ada
+            if ($id_user && $id_barang) {
+                $wishlistModel->insert([
+                    'id_user' => $id_user,
+                    'id_barang' => $id_barang,
+                ]);
+
+                return redirect()->to('user/wishlist')->with('message', 'Product added to wishlist!');
+            }
+
+                return redirect()->to('user/wishlist')->with('error', 'Failed to add product to wishlist.');
+            }
+
+
+            public function removeFromWishlist($id)
+            {
+                $wishlistModel = new WishlistModel();
+                $wishlistModel->removeFromWishlist($id);
+                return redirect()->to('user/wishlist')->with('message', 'Product removed from wishlist!');
+            }
+    }
+

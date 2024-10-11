@@ -169,7 +169,7 @@ if (session()->has('id')) {
                         </div>
 
                         <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
-    <a href="#" class="btn px-0">
+    <a href="<?= base_url(); ?>user/wishlist" class="btn px-0">
         <i class="fas fa-heart text-primary"></i>
     </a>
     <a href="<?= base_url(); ?>cart" class="btn px-0 ml-3">

@@ -38,46 +38,59 @@
                       <small class="pt-1">(99 Reviews)</small>
                   </div>
 
-                  <form id="variasiForm" method="POST" action="<?= base_url(); ?>add_chart">
-                      <input type="hidden" id="harga_barang_awal" name="harga_barang_awal" value="<?= $barang['harga_barang']; ?>">
-                      <input type="hidden" id="harga_barang" name="harga_barang" value="<?= $barang['harga_barang']; ?>">
-                      <input type="hidden" name="judul_barang" value="<?= $barang['judul_barang']; ?>">
-                      <input type="hidden" name="id" value="<?= $barang['id']; ?>">
-                      <input type="hidden" name="id_barang" value="<?= $barang['id']; ?>">
-                      <input type="hidden" name="foto_barang" value="<?= $barang['foto_barang']; ?>">
-                      <input type="hidden" name="id_user" value="<?= session()->get('id'); ?>">
-                      <h3 id="harga_barang_text" class="font-weight-semi-bold mb-4">Rp. <?= number_format($barang['harga_barang'], 0, ',', '.'); ?></h3>
-                      <p class="mb-4"><?= $barang['deskripsi_barang']; ?></p>
-                      <?php foreach ($variasi as $vsi) : ?>
-                          <div class="d-flex mb-3">
-                              <strong class="text-dark mr-3"><?= $vsi['variasi_nama']; ?>:</strong>
-                              <input type="hidden" name="variasi[]" value="<?= $vsi['variasi_nama']; ?>">
-                              <?php foreach ($vsi['opsi'] as $ops) : ?>
-                                  <div class="custom-control custom-radio custom-control-inline">
-                                      <input type="radio" class="custom-control-input" id="<?= $ops['nama_opsi']; ?>" name="<?= $vsi['variasi_nama']; ?>" value="<?= $ops['nama_opsi']; ?>">
-                                      <label class="custom-control-label" for="<?= $ops['nama_opsi']; ?>"><?= $ops['nama_opsi']; ?></label>
-                                  </div>
-                              <?php endforeach; ?>
-                          </div>
-                      <?php endforeach; ?>
+                  <form id="variasiForm" method="POST">
+                        <input type="hidden" id="harga_barang_awal" name="harga_barang_awal" value="<?= $barang['harga_barang']; ?>">
+                        <input type="hidden" id="harga_barang" name="harga_barang" value="<?= $barang['harga_barang']; ?>">
+                        <input type="hidden" name="judul_barang" value="<?= $barang['judul_barang']; ?>">
+                        <input type="hidden" name="id" value="<?= $barang['id']; ?>">
+                        <input type="hidden" name="id_barang" value="<?= $barang['id']; ?>">
+                        <input type="hidden" name="foto_barang" value="<?= $barang['foto_barang']; ?>">
+                        <input type="hidden" name="id_user" value="<?= session()->get('id'); ?>">
+                        
+                        <h3 id="harga_barang_text" class="font-weight-semi-bold mb-4">Rp. <?= number_format($barang['harga_barang'], 0, ',', '.'); ?></h3>
+                        <p class="mb-4"><?= $barang['deskripsi_barang']; ?></p>
 
-                      <div class="d-flex align-items-center mb-4 pt-2">
-                          <div class="input-group quantity mr-3" style="width: 130px;">
-                              <div class="input-group-btn">
-                                  <button type="button" class="btn btn-primary btn-minus">
-                                      <i class="fa fa-minus"></i>
-                                  </button>
-                              </div>
-                              <input type="text" class="form-control bg-secondary border-0 text-center" value="1" name="jumlah">
-                              <div class="input-group-btn">
-                                  <button type="button" class="btn btn-primary btn-plus">
-                                      <i class="fa fa-plus"></i>
-                                  </button>
-                              </div>
-                          </div>
-                          <button type="submit" class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To
-                              Cart</button>
-                  </form>
+                        <?php foreach ($variasi as $vsi) : ?>
+                            <div class="d-flex mb-3">
+                                <strong class="text-dark mr-3"><?= $vsi['variasi_nama']; ?>:</strong>
+                                <input type="hidden" name="variasi[]" value="<?= $vsi['variasi_nama']; ?>">
+                                <?php foreach ($vsi['opsi'] as $ops) : ?>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input" id="<?= $ops['nama_opsi']; ?>" name="<?= $vsi['variasi_nama']; ?>" value="<?= $ops['nama_opsi']; ?>">
+                                        <label class="custom-control-label" for="<?= $ops['nama_opsi']; ?>"><?= $ops['nama_opsi']; ?></label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endforeach; ?>
+
+                        <div class="d-flex align-items-center mb-4 pt-2">
+                            <div class="input-group quantity mr-3" style="width: 130px;">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-primary btn-minus">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <input type="text" class="form-control bg-secondary border-0 text-center" value="1" name="jumlah">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-primary btn-plus">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Add To Cart Button -->
+                            <button type="submit" name="action" value="cart" formaction="<?= base_url(); ?>add_chart" class="btn btn-primary px-3">
+                                <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
+                            </button>
+
+                            <!-- Add To Wishlist Button -->
+                            <button type="submit" name="action" value="wishlist" formaction="<?= base_url('user/add_to_wishlist/' . $barang['id']); ?>" class="btn btn-warning px-3 ml-2">
+                                <i class="fa fa-heart mr-1"></i> Add To Wishlist
+                            </button>
+
+                        </div>
+                    </form>
+
               </div>
               <div class="d-flex pt-2">
                   <strong class="text-dark mr-2">Share on:</strong>
