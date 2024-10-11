@@ -320,11 +320,19 @@ class UserController extends BaseController
             }
 
 
-            public function removeFromWishlist($id)
+            public function delete_wishlist($id)
             {
                 $wishlistModel = new WishlistModel();
-                $wishlistModel->removeFromWishlist($id);
-                return redirect()->to('user/wishlist')->with('message', 'Product removed from wishlist!');
+                $id_user = session()->get('id');
+
+                // Ensure the wishlist item belongs to the logged-in user
+                if ($wishlistModel->where(['id' => $id, 'id_user' => $id_user])->first()) {
+                    $wishlistModel->delete($id);
+                    return redirect()->to('user/wishlist')->with('message', 'Product removed from wishlist!');
+                }
+
+                return redirect()->to('user/wishlist')->with('error', 'Failed to remove product from wishlist.');
             }
+
     }
 
