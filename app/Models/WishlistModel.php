@@ -11,12 +11,13 @@ class WishlistModel extends Model
     protected $allowedFields = ['id_user', 'id_barang', 'created_at', 'updated_at'];
 
     public function getWishlistByUser($userId)
-{
-    return $this->select('wishlist.*, barang.foto_barang, barang.judul_barang, barang.harga_barang, barang.pemilik') // Pastikan ada kolom yang sesuai di tabel barang
-                ->join('barang', 'barang.id = wishlist.id_barang') // Gabungkan tabel barang
-                ->where('wishlist.id_user', $userId)
-                ->findAll();
-}
+    {
+        return $this->select('wishlist.*, barang.judul_barang, barang.harga_barang, barang.foto_barang, user.nama_toko')
+                    ->join('barang', 'wishlist.id_barang = barang.id')
+                    ->join('user', 'barang.pemilik = user.id') // join ke tabel user untuk mendapatkan nama_toko
+                    ->where('wishlist.id_user', $userId)
+                    ->findAll();
+    }
     public function addToWishlist($userId, $barangId)
     {
         // Ambil informasi barang berdasarkan ID
