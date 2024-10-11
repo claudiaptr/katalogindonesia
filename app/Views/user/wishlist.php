@@ -33,7 +33,7 @@
                     <?php foreach ($wishlist as $item): ?>
                         <tr>
                             <td>
-                                <img src="<?= base_url('uploads/foto_barang/' . esc($item['foto_barang'])); ?>" alt="<?= esc($item['judul_barang']); ?>" width="100" height="100">
+                                <img src="<?= base_url('barang/' . esc($item['foto_barang'])); ?>" alt="<?= esc($item['judul_barang']); ?>" width="100" height="100">
                             </td>
                             <td><?= esc($item['judul_barang']); ?></td>
                             <td>Rp <?= number_format($item['harga_barang'], 2, ',', '.'); ?></td>
