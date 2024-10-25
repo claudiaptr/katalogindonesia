@@ -15,28 +15,13 @@
                                 <a href="#">Profile</a>
                             </li>
                             <li class="list-group-item">
-                                <a href="#">Bank & Card</a>
-                            </li>
-                            <li class="list-group-item">
                                 <a href="#">Addresses</a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="#">Change Password</a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="#">Notification Settings</a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="#">Privacy Settings</a>
                             </li>
                             <li class="list-group-item">
                                 <a href="#">My Orders</a>
                             </li>
                             <li class="list-group-item">
                                 <a href="#">Vouchers</a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="#">My Coins</a>
                             </li>
                         </ul>
                     </div>
@@ -53,7 +38,7 @@
                         <form>
                             <div class="form-group">
                                 <label for="username">Username</label>
-                                <input type="text" id="username" class="form-control"  disabled>
+                                <input type="text" id="username" class="form-control" value="<?= esc($username); ?>" disabled>
                             </div>
                             <div class="form-group">
                                 <label for="name">Name</label>

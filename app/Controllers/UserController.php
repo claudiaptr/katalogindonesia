@@ -13,6 +13,7 @@ use App\Models\Transaksi;
 use App\Models\Model_Auth;
 use App\Models\CartModel;
 use App\Models\WishlistModel;
+use App\Models\UserModel;
 use Google_Client;
 
 class UserController extends BaseController
@@ -76,6 +77,7 @@ class UserController extends BaseController
         'total_cart' => $total_cart,
         'kategori' => $kategori,
         'menu' => 'myaccount', // Menambahkan menu ke data
+        'username' => $userModel,
     ];
 
     return view('user/myaccount', $data); // Panggil view myaccount
@@ -332,6 +334,16 @@ class UserController extends BaseController
                 }
 
                 return redirect()->to('user/wishlist')->with('error', 'Failed to remove product from wishlist.');
+            }
+
+            public function profile()
+            {
+                // Assuming you have a model to get user data
+                $userModel = new UserModel();
+                $userId = session()->get('user_id'); // Adjust this according to how you get the user ID
+                $user = $userModel->find($userId);
+
+                return view('user/profile', ['username' => $user['username']]);
             }
 
     }
