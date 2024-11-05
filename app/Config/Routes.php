@@ -7,6 +7,14 @@ use CodeIgniter\Router\RouteCollection;
  */
 
 //Admin
+
+// Routes for Admin
+$routes->get('/admin/auth/login', 'AdminController::login');
+$routes->post('/admin/auth/cek_login', 'AdminController::cek_login');
+$routes->get('/admin/auth/register', 'AdminController::register');
+$routes->post('/admin/auth/save_register', 'AdminController::save_register');
+$routes->get('/admin/auth/logout', 'AdminController::logout');
+
 $routes->get('/admin/dashboard', 'Home::index');
 $routes->get('/admin/view_iklan_carausel', 'AdminController::view_iklan_carausel');
 $routes->post('/admin/store_iklan_carausel', 'AdminController::store_iklan_carausel');
@@ -63,13 +71,12 @@ $routes->get('/admin/view_transfer', 'AdminController::view_transfer');
 $routes->get('/admin/add_transfer/(:num)', 'AdminController::add_transfer/$1');
 $routes->post('/admin/store_saldo/(:num)', 'AdminController::store_transfer/$1');
 
-// login dan register admin
+
 $routes->get('/auth/login', 'Auth::login');
 $routes->get('/auth/register', 'Auth::register');
 $routes->add('/auth/save_register', 'Auth::save_register');
 $routes->add('/auth/cek_login', 'Auth::cek_login');
 $routes->get('/auth/register_google', 'Auth::register_google');
-//Auth
 
 
 $routes->get('/user/detail/(:num)', 'UserController::detail/$1');

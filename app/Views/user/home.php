@@ -317,9 +317,9 @@
             <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
                 <div class="product-item bg-light mb-4">
                     <a href="<?= base_url(); ?>user/detail/<?= $bk['id']; ?>" class="d-block text-decoration-none">
-                        <div class="product-img position-relative overflow-hidden">
-                            <img class="" style="object-fit: scale-down !important; width: 280px; height: 280px;" src="<?= base_url(); ?>barang/<?= $bb['foto_barang']; ?>" alt="">
-                        </div>
+                    <div class="product-img position-relative overflow-hidden d-flex justify-content-center align-items-center" style="height: 324px; width: 324px;">
+                        <img style="object-fit: scale-down; width: 100%; height: 100%;" src="<?= base_url(); ?>barang/<?= $bb['foto_barang']; ?>" alt="">
+                    </div>
                         <div class="text-center py-4">
                             <a class="h6 text-decoration-none text-truncate" href=""><?= $bb['judul_barang']; ?></a>
                             <div class="d-flex align-items-center justify-content-center mt-2">

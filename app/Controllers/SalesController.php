@@ -12,6 +12,7 @@ use App\Models\Pernarikan;
 use App\Models\SubKategori;
 use App\Models\Transaksi;
 use App\Models\Variasi;
+use App\Models\Diskon;
 
 class SalesController extends BaseController
 {
@@ -508,17 +509,16 @@ class SalesController extends BaseController
 
         return view('sales/diskon/view_diskon', $data);
     }
-    public function add_diskon()
+        public function add_diskon()
     {
         $data = [
-            'validation' => \Config\Services::validation(),
-            'kategori' => $this->kategori->findAll(),
-            'sub_ketgori' => $this->sub_kategori->findAll(),
-            'menu' => 'barang',
+            'barang' => $this->barang->findAll(), // Fetch products from the barang model
+            'validation' => \Config\Services::validation(), // Load validation service
         ];
 
         return view('sales/diskon/add_diskon', $data);
     }
+    
     public function add_penarikan()
     {
         $data = [
@@ -568,4 +568,27 @@ class SalesController extends BaseController
             return redirect()->back();
         }
     }
+
+    public function save_diskon()
+{
+    // Validate the input
+    if (!$this->validate([
+        'id_barang' => 'required',
+        'diskon' => 'required|numeric|greater_than_equal_to[0]',
+    ])) {
+        return redirect()->back()->withInput()->with('validation', \Config\Services::validation());
+    }
+
+    // Save the discount logic here
+    $data = [
+        'id_barang' => $this->request->getPost('id_barang'),
+        'diskon' => $this->request->getPost('diskon'),
+    ];
+
+    // Insert into your discount table logic (assumes you have a model for it)
+    $this->diskon->insert($data);
+
+    return redirect()->to(base_url('sales/data_diskon'))->with('message', 'Diskon berhasil ditambahkan.');
+}
+
 }

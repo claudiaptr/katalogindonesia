@@ -31,7 +31,7 @@
                                     <th>Kategori Barang</th>
                                     <th>Harga Awal</th>
                                     <th>Harga Akhir</th>
-                                    <th>Dsikon</th>
+                                    <th>Diskon</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>

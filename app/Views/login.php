@@ -14,17 +14,15 @@
   <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?= base_url(); ?>asset/dists/css/adminlte.min.css">
+  <link href="<?= base_url(); ?>asset/dists/css/login.css" rel="stylesheet">
 </head>
 
 <body class="hold-transition login-page">
   <div class="login-box">
-    <div class="login-logo">
-      <a href="<?= base_url(); ?>asset/index2.html"><b>Katalog </b>Indonesia</a>
-    </div>
-    <!-- /.login-logo -->
-    <div class="card">
+
       <div class="card-body login-card-body">
-      <?php $errors = session()->getFlashdata('errors') ?>
+        
+        <?php $errors = session()->getFlashdata('errors') ?>
         <?php if (!empty($errors)) : ?>
           <div class="alert alert-danger" role="alert">
             <ul>
@@ -35,28 +33,30 @@
           </div>
         <?php endif ?>
 
-        <?php
-        if (session()->getFlashdata('pesan')) {
-          echo ' <div class="alert alert-success" role="alert">';
-          echo session()->getFlashdata('pesan');
-          echo '</div>';
-        }
-        ?>
-        <?php
-        if (session()->getFlashdata('error')) {
-          echo ' <div class="alert alert-danger" role="alert">';
-          echo session()->getFlashdata('error');
-          echo '</div>';
-        }
-        ?>
-        <p class="login-box-msg">Sign in to start your session</p>
+        <?php if (session()->getFlashdata('pesan')) : ?>
+          <div class="alert alert-success" role="alert">
+            <?= session()->getFlashdata('pesan'); ?>
+          </div>
+        <?php endif ?>
+
+        <?php if (session()->getFlashdata('error')) : ?>
+          <div class="alert alert-danger" role="alert">
+            <?= session()->getFlashdata('error'); ?>
+          </div>
+        <?php endif ?>
+
+        <div class="login-logo">
+      <a>
+        <img src="<?= base_url('img/logokatalog.png'); ?>" alt="Logo" style="height: 50px;">
+      </a>
+        </div>
 
         <?php echo form_open('auth/cek_login') ?>
         <div class="input-group mb-3">
           <input type="email" name="email" class="form-control" placeholder="Email">
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
+              <span class="fas fa-envelope icon-custom-color"></span>
             </div>
           </div>
         </div>
@@ -64,28 +64,23 @@
           <input type="password" name="password" class="form-control" placeholder="Password">
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-lock"></span>
+              <span class="fas fa-lock icon-custom-color"></span>
             </div>
           </div>
         </div>
         <div class="row">
-          
-          <!-- /.col -->
           <div class="col">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button type="submit" class="btn btn-signin btn-block">Sign In</button>
           </div>
-          <!-- /.col -->
         </div>
         <?php echo form_close() ?>
 
         <div class="social-auth-links text-center mb-3">
           <p>- OR -</p>
-         
-          <a href="<?= $link; ?>" class="btn btn-block btn-danger">
+          <a href="<?= $link; ?>" class="btn btn-danger btn-block">
             <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
           </a>
         </div>
-        <!-- /.social-auth-links -->
 
         <p class="mb-1">
           <a href="forgot-password.html">I forgot my password</a>
@@ -94,10 +89,7 @@
           <a href="register" class="text-center">Register a new membership</a>
         </p>
       </div>
-      <!-- /.login-card-body -->
-    </div>
   </div>
-  <!-- /.login-box -->
 
   <!-- jQuery -->
   <script src="<?= base_url(); ?>asset/plugins/jquery/jquery.min.js"></script>

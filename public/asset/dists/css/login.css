@@ -1,0 +1,142 @@
+/* Komputer */
+body.login-page {
+    background-color: #ffd333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; 
+    margin: 0;
+}
+
+.login-box {
+    max-width: 400px; /* Lebar maksimum untuk box */
+    width: 100%; /* Lebar penuh pada layar kecil */
+    padding: 20px;
+    box-shadow: 0 20px 30px rgba(4, 3, 3, 0.7);
+    background-color: #3d464d;
+    border-radius: 30px;
+    border: none;
+}
+
+.login-card-body {
+    padding: 20px;
+    background-color: #3d464d;
+    border-radius: 30px;
+}
+
+.login-logo a strong {
+    color: #ffd333;
+    font-size: 28px;
+}
+
+.btn-signin {
+    background-color: #ffd333;
+    border-color: #ffd333;
+    color: #3d464d;
+    width: 100%;
+}
+
+.icon-custom-color {
+    color: #ffd333;
+}
+
+.input-group .form-control {
+    background-color: #3d464d;
+    color: #ffd333;
+}
+
+.input-group .form-control::placeholder {
+    color: #ffd333; 
+    opacity: 1;
+}
+
+.input-group .input-group-text {
+    background-color: #3d464d;
+    color: #ffd333;
+}
+
+.mb-1 a,
+.mb-0 a {
+    color: #ffd333; 
+    text-decoration: none; 
+}
+
+.mb-1 a:hover,
+.mb-0 a:hover {
+    color: #f78c09; 
+}
+
+/* Center align untuk link 'Register' */
+.text-center {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* layar minimize*/
+@media (max-width: 768px) {
+    .input-group .form-control,
+    .input-group .input-group-text {
+        background-color: #3d464d; 
+        color: #ffd333;
+    }
+
+    .input-group .form-control::placeholder {
+        color: #ffd333; 
+    }
+}
+
+@media (max-width: 576px) {
+    .input-group .form-control,
+    .input-group .input-group-text {
+        background-color: #3d464d;
+        color: #ffd333;
+    }
+
+    .input-group .form-control::placeholder {
+        color: #ffd333;
+    }
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+    .login-box {
+        width: 75%; 
+    }
+
+    .login-card-body {
+        padding: 15px;
+        border-radius: 20px; 
+    }
+
+    .btn-signin {
+        font-size: 14px; 
+    }
+}
+
+/* HP */
+
+@media (max-width: 576px) {
+    .login-box {
+        width: 90%; 
+        margin: 20px auto; 
+    }
+
+    .login-card-body {
+        padding: 10px;
+        border-radius: 15px;
+    }
+
+    .btn-signin {
+        font-size: 13px;
+        padding: 10px 0;
+    }
+
+    .input-group .form-control {
+        font-size: 14px; 
+    }
+
+    .login-logo a strong {
+        font-size: 24px; 
+    }
+}
