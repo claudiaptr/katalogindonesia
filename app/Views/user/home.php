@@ -256,9 +256,9 @@
         <?php foreach ($barang as $bk) : ?>
             <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
                 <div class="product-item bg-light mb-4">
-                    <a href="<?= base_url(); ?>user/detail/<?= $bk['id']; ?>" class="d-block text-decoration-none">
-                        <div class="product-img position-relative overflow-hidden">
-                            <img class="" style="object-fit: scale-down !important; width: 280px; height: 280px;" src="<?= base_url(); ?>barang/<?= $bk['foto_barang']; ?>" alt="">
+                    <a href="<?= base_url(); ?>user/detail/<?= $bk['id']; ?>" class="d-block text-decoration-none" >
+                        <div class="product-img position-relative overflow-hidden" style="height: 324px; width: 324px;">
+                            <img class="" style="object-fit: scale-down !important; width: 324px; height: 324px;" src="<?= base_url(); ?>barang/<?= $bk['foto_barang']; ?>" alt="">
                         </div>
                         <div class="text-center py-4 ">
                             <p class="h6 text-decoration-none text-truncate"><?= $bk['judul_barang']; ?></p>

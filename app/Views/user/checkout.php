@@ -55,6 +55,15 @@
          <div class="col-lg-4">
              <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Order Total</span></h5>
              <div class="bg-light p-30 mb-5">
+
+                <div class="text-center mt-4">
+                    <h6 class="text-uppercase">Scan to Pay</h6>
+                    <img src="<?= base_url('img/qriscode.png'); ?>" alt="QRIS Code" style="max-width: 280px;" class="img-fluid">
+                </div>
+
+                <br>
+                <br>
+                            
                  <div class="border-bottom">
                      <h6 class="mb-3">Products</h6>
                      <?php foreach ($keranjang as $krng) : ?>

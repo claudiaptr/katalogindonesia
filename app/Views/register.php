@@ -14,15 +14,18 @@
     <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url(); ?>asset/dists/css/adminlte.min.css">
+    <link href="<?= base_url(); ?>asset/dists/css/signup.css" rel="stylesheet">
 </head>
 
 <body class="hold-transition register-page">
     <div class="register-box">
-        <div class="register-logo">
-            <a href="<?= base_url(); ?>asset/index2.html"><b>Katalog </b>Indonesia</a>
+    <div class="register-logo">
+      <a>
+        <img src="<?= base_url('img/logokatalog.png'); ?>" alt="Logo" style="height: 50px;">
+      </a>
         </div>
 
-        <div class="card">
+
             <div class="card-body register-card-body">
                 <!-- <p class="login-box-msg">Register a new membership</p> -->
                 <?php $errors = session()->getFlashdata('errors') ?>
@@ -97,7 +100,7 @@
                     </div>
                     <!-- /.col -->
                     <div class="col-4">
-                        <button type="submit" class="btn btn-primary btn-block">Register</button>
+                        <button type="submit" class="btn btn-register btn-block">Register</button>
                     </div>
                     <!-- /.col -->
                 </div>
@@ -115,10 +118,12 @@
                     </a>
                 </div> -->
 
-                <a href="<?= base_url(); ?>auth/login" class="text-center">I already have a membership</a>
-            </div>
+                <p class="mb-1">
+                <a href="<?= base_url(); ?>auth/login">I already have a membership</a>
+                </p>
+
             <!-- /.form-box -->
-        </div><!-- /.card -->
+        </div>
     </div>
     <!-- /.register-box -->
 

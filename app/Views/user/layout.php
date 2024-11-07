@@ -116,7 +116,7 @@ if (session()->has('id')) {
             <div class="col-lg-4 d-flex justify-content-end">
                 <a class="btn btn-primary btn-square mr-2" href="mailto:kataloggindonesia@gmail.com"><i class="fas fa-envelope"></i></a>
                 <a class="btn btn-primary btn-square mr-2" href="https://www.facebook.com/profile.php?id=61564551196320&locale=id_ID"><i class="fab fa-facebook-f"></i></a>
-                <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a class="btn btn-primary btn-square mr-2" href="https://www.linkedin.com/in/katalog-indonesia-047670325"><i class="fab fa-linkedin-in"></i></a>
                 <a class="btn btn-primary btn-square mr-2" href="https://www.instagram.com/katalog_idn?igsh=MnRyN2M0NWV3bGFw"><i class="fab fa-instagram"></i></a>
                 <a class="btn btn-primary btn-square mr-2" href="https://www.youtube.com/@katalog.indonesia"><i class="fab fa-youtube"></i></a>
                 <a class="btn btn-primary btn-square" href="https://www.tiktok.com/@katalog_idn"><i class="fab fa-tiktok"></i></a>
@@ -258,7 +258,7 @@ if (session()->has('id')) {
             <div class="d-flex ">
                 <a class="btn btn-primary btn-square mr-2" href="mailto:kataloggindonesia@gmail.com"><i class="fas fa-envelope"></i></a>
                 <a class="btn btn-primary btn-square mr-2" href="https://www.facebook.com/profile.php?id=61564551196320&locale=id_ID"><i class="fab fa-facebook-f"></i></a>
-                <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a class="btn btn-primary btn-square mr-2" href="https://www.linkedin.com/in/katalog-indonesia-047670325"><i class="fab fa-linkedin-in"></i></a>
                 <a class="btn btn-primary btn-square mr-2" href="https://www.instagram.com/katalog_idn?igsh=MnRyN2M0NWV3bGFw"><i class="fab fa-instagram"></i></a>
                 <a class="btn btn-primary btn-square mr-2" href="https://www.youtube.com/@katalog.indonesia"><i class="fab fa-youtube"></i></a>
                 <a class="btn btn-primary btn-square" href="https://www.tiktok.com/@katalog_idn"><i class="fab fa-tiktok"></i></a>
