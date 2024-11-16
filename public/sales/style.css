@@ -1,0 +1,69 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.content-wrapper {
+    min-height: calc(100vh - 140px); 
+    padding-bottom: 40px; 
+}
+
+.main-footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    background-color: #f8f9fa;
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Product Offer */
+
+/* Kontainer gambar */
+.product-img {
+    width: 100%; /* Penuhi lebar kartu */
+    height: 200px; /* Tinggi tetap */
+    overflow: hidden; /* Sembunyikan bagian gambar yang meluap */
+    position: relative;
+    background-color: #f8f9fa; /* Opsional: latar belakang */
+}
+
+/* Gambar */
+.product-img img {
+    width: 100%; /* Pastikan gambar memenuhi lebar */
+    height: 100%; /* Pastikan gambar memenuhi tinggi */
+    object-fit: cover; /* Potong gambar untuk sesuai dengan dimensi */
+    object-position: center; /* Fokuskan ke tengah */
+}
+
+/* Kartu */
+.product-item {
+    height: 100%; /* Pastikan kartu memiliki tinggi seragam */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-item:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+    .product-img {
+        height: 180px;
+    }
+}
+
+@media (max-width: 576px) {
+    .product-img {
+        height: 150px;
+    }
+}
+

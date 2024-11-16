@@ -20,7 +20,9 @@ class Barang extends Model
         'judul_barang', 
         'harga_barang', 
         'pemilik', 
-        'jumlah_barang'
+        'jumlah_barang',
+        'diskon', 
+        'harga_setelah_diskon'
     ];
 
     // Dates

@@ -29,10 +29,17 @@ class Model_Auth extends Model
                        ->get()
                        ->getRowArray();   
    }
-   public function getLogin($data)
-   {
-      return $this->db->table('user')->where([
-         'id' => $data
-      ])->get()->getRowArray();
-   }
+   public function getLogin($userId)
+{
+
+    return $this->db->table('user')
+                    ->where('id', $userId)
+                    ->get()
+                    ->getRowArray();  
+}
+
+public function getUserData()
+{
+    return $this->findAll();
+}
 }

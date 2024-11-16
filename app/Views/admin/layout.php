@@ -46,6 +46,8 @@ $jumlah_blm_penarikan = $penarikan->where('verifikasi_penarikan', 1)->countAllRe
     <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+    <link href="<?= base_url(); ?>sales/style.css" rel="stylesheet">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -238,6 +240,15 @@ $jumlah_blm_penarikan = $penarikan->where('verifikasi_penarikan', 1)->countAllRe
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url(); ?>admin/data_pengguna" class="nav-link <?= $menu == 'ketegori' ? 'active' : ''  ?>">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>
+                                    Data Pengguna
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                         <li class="nav-item <?= $menu == 'iklan' ? 'menu-open' : ''  ?>">
                             <a href="#" class="nav-link  <?= $menu == 'iklan' ? 'active' : ''  ?>">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -397,16 +408,17 @@ $jumlah_blm_penarikan = $penarikan->where('verifikasi_penarikan', 1)->countAllRe
         </aside>
 
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper ">
+        <div class="content-wrapper">
             <div class="flash_data" data-flashdata="<?= session()->getFlashdata('pesan'); ?>"></div>
             <?= $this->renderSection('content'); ?>
         </div>
         <!-- /.content-wrapper -->
+
+        <!-- Footer -->
         <footer class="main-footer">
-            <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+            <strong>Copyright &copy; 2022 <a href="https://adminlte.io">Katalog Indoonesia</a>.</strong>
             All rights reserved.
             <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 3.2.0
             </div>
         </footer>
 

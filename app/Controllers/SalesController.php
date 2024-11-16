@@ -12,12 +12,12 @@ use App\Models\Pernarikan;
 use App\Models\SubKategori;
 use App\Models\Transaksi;
 use App\Models\Variasi;
-use App\Models\Diskon;
+use App\Models\AlamatToko;
 
 class SalesController extends BaseController
 {
     protected $barang;
-    protected $fotoBarang, $kategori, $sub_kategori, $variasi, $opsi, $transaksi, $penarikan, $user;
+    protected $fotoBarang, $kategori, $sub_kategori, $variasi, $opsi, $transaksi, $penarikan, $user, $alamat_toko;
     public function __construct()
     {
         $this->barang = new Barang();
@@ -29,6 +29,7 @@ class SalesController extends BaseController
         $this->transaksi = new Transaksi();
         $this->penarikan = new Pernarikan();
         $this->user = new Model_Auth();
+        $this->alamat_toko= new AlamatToko();
         session();
     }
     public function home()
@@ -168,11 +169,15 @@ class SalesController extends BaseController
         session()->setFlashdata('pesan', 'data berhasil ditambah');
         return redirect()->to('/sales/view_barang');
     }
-    public function edit_barang($id)
+        public function edit_barang($id)
     {
-
         $barang = $this->barang->find($id);
+
         $barang['harga_barang'] = number_format($barang['harga_barang'], 0, ',', '.');
+   
+        $barang['harga_setelah_diskon'] = isset($barang['harga_setelah_diskon']) ? 
+            number_format($barang['harga_setelah_diskon'], 0, ',', '.') : 0;
+
         $data = [
             'barang' => $barang,
             'kategori' => $this->kategori->findAll(),
@@ -185,72 +190,91 @@ class SalesController extends BaseController
 
         return view('sales/barang/edit_barang', $data);
     }
+
     public function update_barang($id)
-    {
-        // Validasi input
+{
+    
+    $diskon = $this->request->getVar('diskon');
+    $harga_barang = $this->request->getVar('harga_barang'); 
 
-        // Mengunggah gambar utama jika ada
-        $foto_barang = $this->request->getFile('foto_barang');
-        if ($foto_barang && $foto_barang->isValid() && !$foto_barang->hasMoved()) {
-            $nama_foto = $foto_barang->getRandomName();
-            $foto_barang->move('barang', $nama_foto);
-        } else {
-            $nama_foto = $this->request->getVar('existing_foto_barang'); // Gambar sebelumnya
-        }
-        // Memperbarui data barang
-        $this->barang->update($id, [
-            'pemilik' => $this->request->getVar('pemilik'),
-            'judul_barang' => $this->request->getVar('judul_barang'),
-            'harga_barang' => $this->request->getVar('harga_barang'),
-            'id_kategori_barang' =>  $this->request->getVar('id_kategori_barang'),
-            'id_sub_kategori_barang' =>  $this->request->getVar('id_sub_kategori_barang'),
-            'foto_barang' =>  $nama_foto,
-            'jumlah_barang' =>  $this->request->getVar('jumlah_barang'),
-            'deskripsi_barang' =>  $this->request->getVar('deskripsi_barang'),
-        ]);
+    // Perhitungan harga setelah diskon
+    if ($diskon) {
+        
+        $harga_setelah_diskon = $harga_barang - ($harga_barang * ($diskon / 100));
+    } else {
+        
+        $harga_setelah_diskon = $harga_barang;
+    }
 
-        // Mengunggah dan memperbarui gambar detail
-        $fotoDetails = $this->request->getFiles();
-        if (isset($fotoDetails['foto_detail'])) {
-            foreach ($fotoDetails['foto_detail'] as $index => $fotoDetail) {
-                if ($fotoDetail && $fotoDetail->isValid() && !$fotoDetail->hasMoved()) {
-                    $newName = $fotoDetail->getRandomName();
-                    $fotoDetail->move('fotobarang', $newName);
+   
+    $foto_barang = $this->request->getFile('foto_barang');
+    if ($foto_barang && $foto_barang->isValid() && !$foto_barang->hasMoved()) {
+        $nama_foto = $foto_barang->getRandomName();
+        $foto_barang->move('barang', $nama_foto);
+    } else {
+        
+        $nama_foto = $this->request->getVar('existing_foto_barang'); // Gambar sebelumnya
+    }
 
-                    // Check if this is an existing photo or a new one
-                    $foto_detail_id = $this->request->getPost('foto_detail_id')[$index] ?? null;
-                    if ($foto_detail_id) {
-                        $this->fotoBarang->update($foto_detail_id, ['foto_barang_lain' => $newName]);
-                    } else {
-                        $this->fotoBarang->insert([
-                            'id_barang' => $id,
-                            'foto_barang_lain' => $newName,
-                        ]);
-                    }
-                }
-            }
-        }
+    
+    $this->barang->update($id, [
+        'pemilik' => $this->request->getVar('pemilik'),
+        'judul_barang' => $this->request->getVar('judul_barang'),
+        'harga_barang' => $harga_barang,
+        'harga_setelah_diskon' => $harga_setelah_diskon, // Simpan harga setelah diskon
+        'id_kategori_barang' => $this->request->getVar('id_kategori_barang'),
+        'id_sub_kategori_barang' => $this->request->getVar('id_sub_kategori_barang'),
+        'foto_barang' => $nama_foto,
+        'jumlah_barang' => $this->request->getVar('jumlah_barang'),
+        'deskripsi_barang' => $this->request->getVar('deskripsi_barang'),
+        'diskon' => $diskon, // Simpan diskon
+    ]);
 
-        // Handle variasi update
-        $variasiNames = $this->request->getPost('nama_variasi');
-        $variasiIds = $this->request->getPost('variasi_id');
-        if ($variasiNames) {
-            foreach ($variasiNames as $index => $nama_variasi) {
-                $variasi_id = $variasiIds[$index] ?? null;
-                if ($variasi_id) {
-                    $this->variasi->update($variasi_id, ['nama_variasi' => $nama_variasi]);
+    
+    $fotoDetails = $this->request->getFiles();
+    if (isset($fotoDetails['foto_detail'])) {
+        foreach ($fotoDetails['foto_detail'] as $index => $fotoDetail) {
+            if ($fotoDetail && $fotoDetail->isValid() && !$fotoDetail->hasMoved()) {
+                $newName = $fotoDetail->getRandomName();
+                $fotoDetail->move('fotobarang', $newName);
+
+                // Cek apakah ini foto detail lama atau baru
+                $foto_detail_id = $this->request->getPost('foto_detail_id')[$index] ?? null;
+                if ($foto_detail_id) {
+                    // Update foto detail yang ada
+                    $this->fotoBarang->update($foto_detail_id, ['foto_barang_lain' => $newName]);
                 } else {
-                    $this->variasi->insert([
+                    // Insert foto detail baru
+                    $this->fotoBarang->insert([
                         'id_barang' => $id,
-                        'nama_variasi' => $nama_variasi,
+                        'foto_barang_lain' => $newName,
                     ]);
                 }
             }
         }
-        session()->setFlashdata('pesan', 'data berhasil diupdate');
-
-        return redirect()->to('/sales/view_barang')->with('success', 'Data barang berhasil diperbarui.');
     }
+
+    $variasiNames = $this->request->getPost('nama_variasi');
+    $variasiIds = $this->request->getPost('variasi_id');
+    if ($variasiNames) {
+        foreach ($variasiNames as $index => $nama_variasi) {
+            $variasi_id = $variasiIds[$index] ?? null;
+            if ($variasi_id) {
+                $this->variasi->update($variasi_id, ['nama_variasi' => $nama_variasi]);
+            } else {
+                $this->variasi->insert([
+                    'id_barang' => $id,
+                    'nama_variasi' => $nama_variasi,
+                ]);
+            }
+        }
+    }
+
+    session()->setFlashdata('pesan', 'Data berhasil diupdate');
+    return redirect()->to('/sales/view_barang')->with('success', 'Data barang berhasil diperbarui.');
+}
+
+
     public function delete_foto_lain($id)
     {
         $foto = $this->fotoBarang->find($id);
@@ -569,26 +593,54 @@ class SalesController extends BaseController
         }
     }
 
-    public function save_diskon()
-{
-    // Validate the input
-    if (!$this->validate([
-        'id_barang' => 'required',
-        'diskon' => 'required|numeric|greater_than_equal_to[0]',
-    ])) {
-        return redirect()->back()->withInput()->with('validation', \Config\Services::validation());
+    public function daftar_penjual()
+    {
+        return view('daftar_penjual');
     }
 
-    // Save the discount logic here
-    $data = [
-        'id_barang' => $this->request->getPost('id_barang'),
-        'diskon' => $this->request->getPost('diskon'),
-    ];
+    // Add seller details
+    public function add_penjual()
+    {
+        if ($this->validate([
+            'nama_toko' => [
+                'label' => 'Nama Toko',
+                'rules' => 'required',
+                'errors' => ['required' => 'You must choose a Nama Toko.']
+            ],
+            'alamat' => [
+                'label' => 'Alamat',
+                'rules' => 'required',
+                'errors' => ['required' => 'You must choose a Alamat.']
+            ]
+        ])) {
+            $id = session()->get('id');
+            $data = [
+                'nama_toko' => $this->request->getPost('nama_toko'),
+                'alamat' => $this->request->getPost('alamat'),
+                'level' => 2, // Level penjual
+            ];
 
-    // Insert into your discount table logic (assumes you have a model for it)
-    $this->diskon->insert($data);
+            // Update penjual data
+            $this->user->update_register($data, $id);
 
-    return redirect()->to(base_url('sales/data_diskon'))->with('message', 'Diskon berhasil ditambahkan.');
-}
+            // Save alamat toko
+            $this->alamat_toko->save([
+                'provinsi' => $this->request->getPost('provinsi'),
+                'kabupaten' => $this->request->getPost('kabupaten'),
+                'kecamatan' => $this->request->getPost('kecamatan'),
+                'kelurahan' => $this->request->getPost('kelurahan'),
+                'user' => $id,
+            ]);
+
+            // Set success flash message and redirect to dashboard
+            session()->setFlashdata('pesan', 'Pendaftaran Berhasil, Anda sekarang menjadi penjual!');
+            return redirect()->to(base_url('sales/home'));
+        } else {
+            // If validation fails, show errors
+            session()->setFlashdata('errors', \Config\Services::validation()->getErrors());
+            return redirect()->to(base_url('sales/daftar_penjual'));
+        }
+    }
+
 
 }

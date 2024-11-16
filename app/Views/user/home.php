@@ -251,19 +251,21 @@
 
 <!-- Produk start -->
 <div class="container-fluid pt-5 pb-3">
-    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Produk Unggulan</span></h2>
+    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
+        <span class="bg-secondary pr-3">Produk Unggulan</span>
+    </h2>
     <div class="row px-xl-5">
         <?php foreach ($barang as $bk) : ?>
             <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
                 <div class="product-item bg-light mb-4">
-                    <a href="<?= base_url(); ?>user/detail/<?= $bk['id']; ?>" class="d-block text-decoration-none" >
-                        <div class="product-img position-relative overflow-hidden" style="height: 324px; width: 324px;">
-                            <img class="" style="object-fit: scale-down !important; width: 324px; height: 324px;" src="<?= base_url(); ?>barang/<?= $bk['foto_barang']; ?>" alt="">
+                    <a href="<?= base_url(); ?>user/detail/<?= $bk['id']; ?>" class="d-block text-decoration-none">
+                        <div class="product-img position-relative overflow-hidden">
+                            <img src="<?= base_url(); ?>barang/<?= $bk['foto_barang']; ?>" alt="">
                         </div>
-                        <div class="text-center py-4 ">
-                            <p class="h6 text-decoration-none text-truncate"><?= $bk['judul_barang']; ?></p>
-                            <div class="justify-content-center mt-2">
-                                <h5 class="mb-0 ">Rp. <?= number_format($bk['harga_barang'], 0, ',', '.'); ?></h5>
+                        <div class="text-center py-4">
+                            <p class="h6 text-truncate"><?= $bk['judul_barang']; ?></p>
+                            <div class="mt-2">
+                                <h5 class="mb-0">Rp. <?= number_format($bk['harga_barang'], 0, ',', '.'); ?></h5>
                             </div>
                             <small style="color: darkgray;"><?= $bk['kabupaten']; ?></small>
                         </div>
@@ -273,6 +275,8 @@
         <?php endforeach; ?>
     </div>
 </div>
+
+
 <!-- Produk end -->
 
 

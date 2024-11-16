@@ -565,4 +565,64 @@ class AdminController extends BaseController
         session()->setFlashdata('pesan', 'data berhasil ditolak');
         return redirect()->to('/admin/verifikasi_blm_penarikan');
     }
+
+    public function dataPengguna()
+    {
+        $userModel = new Model_Auth();
+
+        $users = $userModel->findAll();
+
+        foreach ($users as &$user) {
+            switch ($user['level']) {
+                case '1':
+                    $user['role'] = 'Admin';
+                    break;
+                case '2':
+                    $user['role'] = 'Penjual';
+                    break;
+                case '3':
+                    $user['role'] = 'Pembeli';
+                    break;
+                default:
+                    $user['role'] = 'Unknown';
+                    break;
+            }
+        }
+
+        
+        $data = [
+            'users' => $users,  
+            'menu' => 'data_pengguna',
+            'sub_menu' => '',
+            'jumlah_verifikasi' => $this->barang->where('verifikasi', 1)->countAllResults()
+        ];
+
+        $perPage = 8;
+        $data['users'] = $userModel->paginate($perPage);
+        $data['pager'] = $userModel->pager;
+
+        return view('admin/data_pengguna/data_pengguna', $data);
+    }
+
+    public function updateDataPengguna()
+{
+    $userModel = new Model_Auth();
+
+    // Ambil data dari form
+    $data = [
+        'id'    => $this->request->getPost('id'),
+        'level' => $this->request->getPost('level') // Hanya level yang diperbarui
+    ];
+
+    // Perbarui data pengguna berdasarkan ID
+    if ($userModel->update($data['id'], $data)) {
+        session()->setFlashdata('success', 'Data pengguna berhasil diperbarui!');
+    } else {
+        session()->setFlashdata('error', 'Gagal memperbarui data pengguna!');
+    }
+
+    return redirect()->to('/admin/data_pengguna');
 }
+}
+
+

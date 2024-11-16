@@ -71,6 +71,9 @@ $routes->get('/admin/view_transfer', 'AdminController::view_transfer');
 $routes->get('/admin/add_transfer/(:num)', 'AdminController::add_transfer/$1');
 $routes->post('/admin/store_saldo/(:num)', 'AdminController::store_transfer/$1');
 
+$routes->get('admin/data_pengguna', 'AdminController::dataPengguna');
+$routes->post('/admin/data_pengguna/update', 'AdminController::updateDataPengguna');
+
 
 $routes->get('/auth/login', 'Auth::login');
 $routes->get('/auth/register', 'Auth::register');
@@ -116,8 +119,8 @@ $routes->get('/user/email/send', 'EmailController::send');
 $routes->add('/logout', 'Auth::logout');
 
 // penjual
-$routes->get('/daftar/penjual', 'Auth::daftar_penjual');
-$routes->add('/store/penjual', 'Auth::add_penjual');
+$routes->get('daftar/penjual', 'SalesController::daftar_penjual'); 
+$routes->post('store/penjual', 'SalesController::add_penjual');
 $routes->get('/sales/home', 'SalesController::home');
 $routes->get('/sales/view_barang',  'SalesController::view_barang');
 $routes->get('/sales/view_diskon', 'SalesController::view_diskon');

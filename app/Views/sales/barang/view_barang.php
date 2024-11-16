@@ -24,48 +24,54 @@
                        
                     </div><!-- /.box-header -->
                     <div class="box-body">
-                        <table id="example1" class="table table-bordered table-striped">
-                            <thead>
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Foto Barang</th>
+                                <th>Judul Barang</th>
+                                <th>Kategori Barang</th>
+                                <th>Sub Kategori Barang</th>
+                                <th>Jumlah Barang</th>
+                                <th>Diskon (%)</th>
+                                <th>Harga Asli</th>
+                                <th>Harga Setelah Diskon</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($barang as $bk) : ?>
                                 <tr>
-                                    <th>Foto Barang</th>
-                                    <th>Judul barang</th>
-                                    <th>Kategori Barang</th>
-                                    <th>Sub Katgori Barang</th>
-                                    <th>Jumlah Barang</th>
-                                    <th>Status</th>
-                                    <th>Aksi</th>
+                                    <td><img width="70px" src="<?= base_url(); ?>barang/<?= $bk['foto_barang']; ?>" alt=""></td>
+                                    <td><?= $bk['judul_barang']; ?></td>
+                                    <td><?= $bk['kategori_name']; ?></td>
+                                    <td><?= $bk['sub_kategori_name']; ?></td>
+                                    <td><?= $bk['jumlah_barang']; ?></td>
+                                    <td><?= $bk['diskon'] ? $bk['diskon'] . "%" : "0"; ?></td>
+                                    <td><?= number_format($bk['harga_barang'], 0, ',', '.'); ?></td>
+                                    <td><?= number_format($bk['harga_setelah_diskon'], 0, ',', '.'); ?></td>
+                                    <td>
+                                        <?php if ($bk['verifikasi']==1) : ?>
+                                            <span class="label label-warning">Pending</span>
+                                        <?php elseif($bk['verifikasi']==2) : ?>
+                                            <span class="label label-danger">Ditolak</span>
+                                        <?php elseif($bk['verifikasi']==3) : ?>
+                                            <span class="label label-success">Diterima</span>
+                                        <?php endif ?>
+                                    </td>
+                                    <td style="display: flex;">
+                                        <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/edit_barang/<?= $bk['id']; ?>" class="btn btn-primary mr-3">Edit</a>
+                                        <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/view_tambah_variasi/<?= $bk['id']; ?>" class="btn btn-success mr-3">Variasi</a>
+                                        <form class="delete" style=" margin-left: 10px;" action="<?= base_url(); ?>/sales/delete_barang/<?= $bk['id']; ?>" method="post">
+                                            <?= csrf_field(); ?>
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button class="btn btn-danger ">Hapus</button>
+                                        </form>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($barang as $bk) : ?>
-                                    <tr>
-                                        <td><img width="70px" src="<?= base_url(); ?>barang/<?= $bk['foto_barang']; ?>" alt=""></td>
-                                        <td><?= $bk['judul_barang']; ?></td>
-                                        <td><?= $bk['kategori_name']; ?></td>
-                                        <td><?= $bk['sub_kategori_name']; ?></td>
-                                        <td><?= $bk['jumlah_barang']; ?></td>
-                                        <td>
-                                            <?php if ($bk['verifikasi']==1) : ?>
-                                                <span class="label label-warning">Pending</span>
-                                            <?php elseif($bk['verifikasi']==2) : ?>
-                                                <span class="label label-danger">Ditolak</span>
-                                            <?php elseif($bk['verifikasi']==3) : ?>
-                                                <span class="label label-success">Diterima</span>
-                                            <?php endif ?>
-                                        </td>
-                                        <td style="display: flex;">
-                                            <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/edit_barang/<?= $bk['id']; ?>" class="btn btn-primary mr-3">Edit </a>
-                                            <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/view_tambah_variasi/<?= $bk['id']; ?>" class="btn btn-success mr-3"> Variasi</a>
-                                            <form class="delete" style=" margin-left: 10px;" action="<?= base_url(); ?>/sales/delete_barang/<?= $bk['id']; ?>" method="post">
-                                                <?= csrf_field(); ?>
-                                                <input type="hidden" name="_method" value="DELETE">
-                                                <button class="btn btn-danger ">Hapus </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
             </div><!-- /.col -->

@@ -42,7 +42,7 @@
                 }
                 ?>
 
-                <form action="<?= base_url(); ?>/store/penjual" method="post" enctype="multipart/form-data">
+                    <form action="<?= base_url('store/penjual') ?>" method="post" enctype="multipart/form-data">
                     <?= csrf_field(); ?>
 
                     <!-- Nama Toko -->

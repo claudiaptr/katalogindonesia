@@ -61,6 +61,8 @@ class UserController extends BaseController
 {
     $userId = session()->get('user_id');
 
+    
+
     $cartModel = new CartModel();
     $userModel = new Model_Auth();
 
@@ -69,19 +71,28 @@ class UserController extends BaseController
         $total_cart = $cartModel->totalItemsByUser($userId);
     }
 
-    // Ambil kategori untuk ditampilkan di view
     $kategori = $this->kategori->getSubKategori();
 
-    $data = [
-        'user' => $userModel->getLogin($userId),
-        'total_cart' => $total_cart,
-        'kategori' => $kategori,
-        'menu' => 'myaccount', // Menambahkan menu ke data
-        'username' => $userModel,
-    ];
+    $user = $userModel->getLogin($userId);
 
-    return view('user/myaccount', $data); // Panggil view myaccount
+
+    var_dump($user);  // Memeriksa struktur data yang diterima
+    exit;
+    // if ($user === null) {
+    //     return redirect()->to('/error');  
+    // }
+
+    // $data = [
+    //     'user' => $user,               
+    //     'total_cart' => $total_cart,  
+    //     'kategori' => $kategori,      
+    //     'menu' => 'myaccount',     
+    //     'username' => $user['username'], 
+    // ];
+
+    // return view('user/myaccount', $data);
 }
+
 
     public function detail($id)
     {
@@ -292,6 +303,11 @@ class UserController extends BaseController
 
         public function wishlist()
         {
+
+            if (!session()->has('id')) {
+                return redirect()->to('/auth/login');
+            }
+
             $wishlistModel = new WishlistModel();
             $id_user = session()->get('id');
             $wishlist = $wishlistModel->getWishlistByUser($id_user);
