@@ -71,9 +71,9 @@ $routes->get('/admin/view_transfer', 'AdminController::view_transfer');
 $routes->get('/admin/add_transfer/(:num)', 'AdminController::add_transfer/$1');
 $routes->post('/admin/store_saldo/(:num)', 'AdminController::store_transfer/$1');
 
-$routes->get('admin/data_pengguna', 'AdminController::dataPengguna');
-$routes->post('/admin/data_pengguna/update', 'AdminController::updateDataPengguna');
-
+$routes->get('admin/data_pengguna', 'AdminController::dataPengguna'); // Halaman daftar pengguna
+$routes->get('admin/data_pengguna/edit/(:num)', 'AdminController::editDataPengguna/$1'); // Halaman edit pengguna berdasarkan ID
+$routes->post('admin/data_pengguna/update', 'AdminController::updateDataPengguna'); // Proses update data pengguna
 
 $routes->get('/auth/login', 'Auth::login');
 $routes->get('/auth/register', 'Auth::register');

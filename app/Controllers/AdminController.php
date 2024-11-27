@@ -511,7 +511,7 @@ class AdminController extends BaseController
         $saldoPengurangan = $id_user_penarikan['jumlah_penarikan'];
         $pengguna = $this->user->find($id_user);
         $saldoBaru = $pengguna['saldo'] - $saldoPengurangan;
-        
+
         $bukti_penarikan = $this->request->getFile('bukti_penarikan');
         $nama_foto = $bukti_penarikan->getRandomName();
         $bukti_penarikan->move('penarikan', $nama_foto);
@@ -525,7 +525,7 @@ class AdminController extends BaseController
             'id' => $pengguna['id'],
             'saldo' => $saldoBaru,
         ]);
- 
+
         session()->setFlashdata('pesan', 'data berhasil diverifikasi');
         return redirect()->to('admin/verifikasi_blm_penarikan');
     }
@@ -570,8 +570,13 @@ class AdminController extends BaseController
     {
         $userModel = new Model_Auth();
 
-        $users = $userModel->findAll();
+        // Set pagination per page
+        $perPage = 8;
 
+        // Get the paginated users list
+        $users = $userModel->paginate($perPage);
+
+        // Modify the user data to add 'role' field
         foreach ($users as &$user) {
             switch ($user['level']) {
                 case '1':
@@ -589,40 +594,63 @@ class AdminController extends BaseController
             }
         }
 
-        
+        // Prepare data to pass to view
         $data = [
-            'users' => $users,  
+            'users' => $users,
             'menu' => 'data_pengguna',
             'sub_menu' => '',
-            'jumlah_verifikasi' => $this->barang->where('verifikasi', 1)->countAllResults()
+            'jumlah_verifikasi' => $this->barang->where('verifikasi', 1)->countAllResults(),
+            'pager' => $userModel->pager,  // Pass the pager to the view for pagination
         ];
-
-        $perPage = 8;
-        $data['users'] = $userModel->paginate($perPage);
-        $data['pager'] = $userModel->pager;
 
         return view('admin/data_pengguna/data_pengguna', $data);
     }
 
-    public function updateDataPengguna()
-{
-    $userModel = new Model_Auth();
+    public function editDataPengguna($id)
+    {
+        $userModel = new Model_Auth();
 
-    // Ambil data dari form
-    $data = [
-        'id'    => $this->request->getPost('id'),
-        'level' => $this->request->getPost('level') // Hanya level yang diperbarui
-    ];
+        // Ambil data pengguna berdasarkan ID
+        $user = $userModel->find($id);
 
-    // Perbarui data pengguna berdasarkan ID
-    if ($userModel->update($data['id'], $data)) {
-        session()->setFlashdata('success', 'Data pengguna berhasil diperbarui!');
-    } else {
-        session()->setFlashdata('error', 'Gagal memperbarui data pengguna!');
+        if (!$user) {
+            session()->setFlashdata('error', 'Pengguna tidak ditemukan!');
+            return redirect()->to('/admin/data_pengguna');
+        }
+
+        // Data untuk ditampilkan di halaman edit
+        $data = [
+            'user' => $user,
+            'menu' => 'data_pengguna',
+            'sub_menu' => '',
+            'jumlah_verifikasi' => $this->barang->where('verifikasi', 1)->countAllResults(),
+        ];
+
+        return view('admin/data_pengguna/edit_data_pengguna', $data);
     }
 
-    return redirect()->to('/admin/data_pengguna');
-}
-}
 
 
+    public function updateDataPengguna()
+    {
+        $userModel = new Model_Auth();
+
+        // Get form data
+        $id = $this->request->getPost('id');
+        $level = $this->request->getPost('level');
+
+        // Prepare the data for updating
+        $data = [
+            'level' => $level,
+        ];
+
+        // Update the user data based on ID
+        if ($userModel->update($id, $data)) {
+            session()->setFlashdata('success', 'Data pengguna berhasil diperbarui!');
+        } else {
+            session()->setFlashdata('error', 'Gagal memperbarui data pengguna!');
+        }
+
+        return redirect()->to('/admin/data_pengguna');
+    }
+}

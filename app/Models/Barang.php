@@ -10,8 +10,8 @@ class Barang extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = false; // Change to true if you implement soft deletes
-    protected $protectFields    = false; // Change to true if you want to protect certain fields
+    protected $useSoftDeletes   = false; 
+    protected $protectFields    = false; 
     protected $allowedFields    = [
         'foto_barang', 
         'deskripsi_barang', 

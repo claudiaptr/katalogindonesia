@@ -37,6 +37,9 @@ $jumlah_blm_penarikan = $penarikan->where('verifikasi_penarikan', 1)->countAllRe
     <!-- sweat alart -->
     <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="<?= base_url(); ?>asset/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Daterange picker -->
