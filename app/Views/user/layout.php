@@ -152,14 +152,7 @@ if (session()->has('id')) {
         </nav>
       </div>
       <div class="col-lg-9">
-        <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
-        <div class="d-flex align-items-center">
-          <img class="mr-2" width="35px" src="<?= base_url(); ?>user/img/katalog1.png" alt="K Logo" style="height: 40px;">
-          <a href="#" class="text-decoration-none d-flex align-items-center">
-              <span class="h3 text-uppercase text-warning bg-dark px-2 mb-0" style="line-height: 1;">atalog</span>
-              <span class="h3 text-uppercase text-dark bg-warning px-2 mb-0" style="line-height: 1;">Indonesia</span>
-          </a>
-      </div>   
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0"> 
           <button type="bp;utton" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
           </button>

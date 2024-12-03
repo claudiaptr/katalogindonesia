@@ -42,4 +42,20 @@ public function getUserData()
 {
     return $this->findAll();
 }
+
+
+public function getPendingSellers()
+{
+    return $this->db->table('user')
+                    ->where('status', 'pending')
+                    ->get()
+                    ->getResultArray();
+}
+
+public function updateSellerStatus($id, $status)
+{
+    return $this->db->table('user')
+                    ->where('id', $id)
+                    ->update(['status' => $status]);
+}
 }

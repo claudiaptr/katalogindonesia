@@ -162,4 +162,16 @@ $routes->post('user/add_to_wishlist/(:num)', 'UserController::addToWishlist/$1')
 $routes->get('user/delete_wishlist/(:num)', 'UserController::delete_wishlist/$1');
 
 
+$routes->get('/user/detail/(:num)', 'UserController::detail/$1');
+$routes->post('/user/review/(:any)', 'UserController::review/$1');
 
+
+$routes->group('admin', function($routes) {
+    $routes->get('daftar-penjual', 'AdminController::daftarPenjual');
+    
+    // Rute untuk verifikasi penjual
+    $routes->get('verifikasiPenjual/(:num)', 'AdminController::verifikasiPenjual/$1');
+    
+    // Rute untuk menolak penjual
+    $routes->get('tolakPenjual/(:num)', 'AdminController::tolakPenjual/$1');
+});

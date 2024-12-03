@@ -252,6 +252,14 @@ $jumlah_blm_penarikan = $penarikan->where('verifikasi_penarikan', 1)->countAllRe
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="<?= base_url(); ?>admin/daftar-penjual" class="nav-link <?= $menu == 'ketegori' ? 'active' : ''  ?>">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>
+                                    Pendaftaran Penjual
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                         <li class="nav-item <?= $menu == 'iklan' ? 'menu-open' : ''  ?>">
                             <a href="#" class="nav-link  <?= $menu == 'iklan' ? 'active' : ''  ?>">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>

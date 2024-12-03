@@ -32,50 +32,28 @@ class Barang extends Model
     protected $updatedField  = 'updated_at'; // Field for update timestamp
     protected $deletedField  = 'deleted_at'; // Field for soft delete
 
-
     // Callbacks
     protected $allowCallbacks = true; // Enable or disable callbacks
     // You can define your callbacks here
 
     /**
-     * Get all products that are verified and belong to the 'barang' category.
+     * Get all products that are verified and belong to a category by name.
      *
-     * @param string|null $provinsi
-     * @param string|null $kabupaten
-     * @param string|null $kecamatan
-     * @param string|null $kelurahan
+     * @param string $kategoriNama
      * @return array
      */
-
-     public function getBarangByKategori($kategoriId)
+    public function getBarangByNamaKategori($kategoriNama)
     {
         $builder = $this->db->table($this->table);
         $builder->select('barang.*, alamat_toko.id AS id_alamat, alamat_toko.provinsi, alamat_toko.kabupaten, alamat_toko.kecamatan, alamat_toko.kelurahan');
         $builder->join('alamat_toko', 'barang.pemilik = alamat_toko.user');
+        $builder->join('kategori', 'kategori.id = barang.id_kategori_barang'); // Join with kategori table
         $builder->where('barang.verifikasi', 3);
-        $builder->where('barang.id_kategori_barang', $kategoriId); // Filter by kategori
+        $builder->where('LOWER(kategori.nama_kategori)', strtolower($kategoriNama)); // Case insensitive match
         $builder->orderBy('RAND()'); // Optional: Random order
 
         $query = $builder->get();
         return $query->getResultArray(); // Return as an array
-    }
-
-     
-
-    public function getBarang($provinsi = null, $kabupaten = null, $kecamatan = null, $kelurahan = null)
-    {
-        $builder = $this->db->table($this->table);
-        $builder->select('barang.*, alamat_toko.id AS id_alamat, alamat_toko.provinsi, alamat_toko.kabupaten, alamat_toko.kecamatan, alamat_toko.kelurahan');
-        $builder->join('alamat_toko', 'barang.pemilik = alamat_toko.user');
-        $builder->where('barang.verifikasi', 3); // Assuming 3 means verified
-        $builder->where('barang.id_kategori_barang', 1); // Only include items from 'barang' category
-        
-        if ($provinsi) {
-            $builder->where('alamat_toko.provinsi', $provinsi);
-        }
-        // Add additional filters if needed
-        $builder->orderBy('RAND()'); // Randomize results
-        return $builder->get()->getResultArray();
     }
 
     /**
@@ -112,14 +90,32 @@ class Barang extends Model
      * @param int $limit
      * @return array
      */
-    public function getAlamatToko($limit = 6)
-    {
-        $builder = $this->db->table($this->table);
-        $builder->select('barang.*, alamat_toko.id AS id_alamat, alamat_toko.provinsi, alamat_toko.kabupaten, alamat_toko.kecamatan, alamat_toko.kelurahan');
-        $builder->join('alamat_toko', 'barang.pemilik = alamat_toko.user');
-        $builder->where('barang.verifikasi', 3);
-        $builder->orderBy('RAND()');
-        $builder->limit($limit);
-        return $builder->get()->getResultArray();
-    }
+    public function getBarangWithAlamat($limit)
+{
+    return $this->select('barang.*, alamat_toko.kelurahan')
+                ->join('user', 'barang.pemilik = user.id', 'inner')
+                ->join('alamat_toko', 'user.id = alamat_toko.user', 'inner')
+                ->limit($limit)
+                ->findAll();
 }
+
+public function getBarangWithAlamatPaginated($limit = 12, $page = 1)
+{
+    // Count the total records for pagination
+    $totalRecords = $this->db->table('barang')->countAllResults();
+
+    // Get the data with limit and offset
+    $barang = $this->db->table('barang')
+        ->join('alamat_toko', 'barang.pemilik = alamat_toko.user', 'left')
+        ->join('user', 'barang.pemilik = user.id', 'left')
+        ->limit($limit, ($page - 1) * $limit)  // Pagination: offset
+        ->get()->getResultArray();
+
+    // Return both the results and total records for pagination
+    return [
+        'barang' => $barang,
+        'total' => $totalRecords
+    ];
+}
+}
+

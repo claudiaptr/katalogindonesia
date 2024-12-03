@@ -94,21 +94,46 @@
                             <div class="col-md-3 mb-4">
                                 <div class="product-item bg-light text-center p-3">
                                     <a href="<?= base_url('user/detail/' . $bk['id']); ?>" class="text-decoration-none">
-                                        <img src="<?= base_url('barang/' . $bk['foto_barang']); ?>" 
-                                             alt="<?= $bk['judul_barang']; ?>" 
-                                             class="img-fluid" 
-                                             onerror="this.src='path/to/default-image.png';" 
-                                             style="width: 100%; height: 200px; object-fit: cover;">
+                                        <img src="<?= base_url('barang/' . $bk['foto_barang']); ?>" alt="<?= $bk['judul_barang']; ?>"
+                                            class="img-fluid"
+                                            onerror="this.src='path/to/default-image.png';"
+                                            style="width: 100%; height: 200px; object-fit: cover;">
                                         <div class="text-center py-2">
                                             <h6 class="text-truncate"><?= $bk['judul_barang']; ?></h6>
                                             <p class="mb-0">Rp. <?= number_format($bk['harga_barang'], 0, ',', '.'); ?></p>
-                                            <small><?= $bk['id']; ?></small>
+
+                                            <!-- Bagian rating bintang -->
+                                            <div class="rating">
+                                                <?php
+                                                // Ambil rating dari array, jika tidak ada, set 0
+                                                $rating_value = isset($rating[$bk['id']]) ? $rating[$bk['id']] : 0;
+
+                                                // Loop untuk menampilkan 5 bintang
+                                                for ($i = 1; $i <= 5; $i++) {
+                                                    if ($i <= floor($rating_value)) {
+                                                        // Bintang penuh jika nilainya sesuai rating (bintang terang)
+                                                        echo '<i class="fa fa-star text-warning"></i>';
+                                                    } elseif ($i == ceil($rating_value) && $rating_value - floor($rating_value) > 0) {
+                                                        // Bintang setengah jika ada desimal di rating
+                                                        echo '<i class="fa fa-star-half-alt text-warning"></i>';
+                                                    } else {
+                                                        // Bintang tidak terang untuk sisanya
+                                                        echo '<i class="fa fa-star" style="color: #ccc"></i>';
+                                                    }
+                                                }
+                                                ?>
+                                            </div>
+
                                         </div>
                                     </a>
                                 </div>
                             </div>
                         <?php endforeach; ?>
                     </div>
+
+
+
+
 
                     <!-- Pagination -->
                     <div class="col-12">

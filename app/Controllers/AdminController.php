@@ -653,4 +653,44 @@ class AdminController extends BaseController
 
         return redirect()->to('/admin/data_pengguna');
     }
+
+    public function daftarPenjual()
+    {
+
+        $data = [
+            'users' => $this->user->where('level', 3)->findAll(),
+            'menu' => 'data_pengguna',
+            'sub_menu' => '',
+            'jumlah_verifikasi' => $this->barang->where('verifikasi', 2)->countAllResults(),
+        ];
+        return view('admin/daftar-penjual', $data);
+    }
+
+    public function verifikasiPenjual($id)
+{
+    // Mengupdate level pengguna menjadi 2 (penjual) setelah diverifikasi
+    $this->user->update($id, ['level' => 2]);
+
+    // Memberikan flash message setelah verifikasi berhasil
+    session()->setFlashdata('pesan', 'Pengguna telah diverifikasi dan menjadi penjual.');
+
+    // Redirect ke halaman daftar penjual setelah verifikasi
+    return redirect()->to('/admin/daftar-penjual');
+}
+
+public function tolakPenjual($id)
+{
+    // Menghapus pendaftaran penjual dari tabel pendaftaran penjual (misalnya pendaftaran gagal)
+    $this->user->where('id', $id)->delete();
+
+    // Mengubah status level pengguna menjadi 3 (pendaftar yang ditolak)
+    $this->user->update($id, ['level' => 3]);
+
+    // Menambahkan pesan bahwa pengguna ditolak
+    session()->setFlashdata('pesan', 'Pengguna ditolak.');
+
+    // Redirect kembali ke halaman daftar penjual setelah ditolak
+    return redirect()->to('/admin/daftar-penjual');
+}
+
 }

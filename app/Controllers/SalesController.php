@@ -617,12 +617,12 @@ class SalesController extends BaseController
             $data = [
                 'nama_toko' => $this->request->getPost('nama_toko'),
                 'alamat' => $this->request->getPost('alamat'),
-                'level' => 2, // Level penjual
+                'level' => 3, // Level pendaftar (tetap level 3 saat pendaftaran)
             ];
-
+    
             // Update penjual data
             $this->user->update_register($data, $id);
-
+    
             // Save alamat toko
             $this->alamat_toko->save([
                 'provinsi' => $this->request->getPost('provinsi'),
@@ -631,16 +631,11 @@ class SalesController extends BaseController
                 'kelurahan' => $this->request->getPost('kelurahan'),
                 'user' => $id,
             ]);
-
-            // Set success flash message and redirect to dashboard
-            session()->setFlashdata('pesan', 'Pendaftaran Berhasil, Anda sekarang menjadi penjual!');
-            return redirect()->to(base_url('sales/home'));
-        } else {
-            // If validation fails, show errors
-            session()->setFlashdata('errors', \Config\Services::validation()->getErrors());
-            return redirect()->to(base_url('sales/daftar_penjual'));
+    
+            session()->setFlashdata('pesan', 'Pendaftaran Penjual berhasil! Menunggu verifikasi admin.');
+    
+            // Redirect ke halaman beranda atau halaman lainnya
+            return redirect()->to('user/home'); // Sesuaikan URL sesuai rute yang sesuai
         }
     }
-
-
 }

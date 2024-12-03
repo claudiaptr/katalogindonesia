@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use CodeIgniter\Model;
@@ -12,13 +11,18 @@ class AlamatToko extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = false;
-    protected $allowedFields    = [];
+
+    // Menambahkan user sebagai kolom untuk menghubungkan dengan tabel user
+    protected $allowedFields    = [
+        'user',       // Menggunakan 'user' sebagai kolom yang menghubungkan dengan ID pengguna
+        'kelurahan',
+        'kecamatan',
+        'kabupaten',
+        'provinsi',
+    ];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
-
-    protected array $casts = [];
-    protected array $castHandlers = [];
 
     // Dates
     protected $useTimestamps = false;
@@ -27,4 +31,9 @@ class AlamatToko extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
+    // Method untuk mengambil alamat berdasarkan user
+    public function getAlamatByUser($userId)
+    {
+        return $this->where('user', $userId)->first();
+    }
 }
