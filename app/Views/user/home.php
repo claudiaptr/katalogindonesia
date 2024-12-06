@@ -175,6 +175,7 @@
     <!-- Previous Button -->
     <div class="pagination-arrow" 
          <?= ($currentPage == 1) ? 'style="pointer-events: none; opacity: 0.5;"' : '' ?>>
+         <a href="<?= ($currentPage > 1) ? site_url('/user/home?page=' . ($currentPage - 1)) : '#' ?>">
         <svg width="18" height="18">
             <use xlink:href="#left" />
         </svg>
@@ -182,15 +183,17 @@
     </div>
 
     <!-- Loop to display page numbers -->
+     <br>
     <?php for ($i = 1; $i <= $totalPages; $i++): ?>
         <div class="pagination-number <?= ($currentPage == $i) ? 'pagination-active' : '' ?>">
-            <a href="<?= site_url('/home?page=' . $i) ?>"><?= $i ?></a>
+            <a href="<?= site_url('/user/home?page=' . $i) ?>"><?= $i ?></a>
         </div>
     <?php endfor; ?>
 
     <!-- Next Button -->
     <div class="pagination-arrow" 
          <?= ($currentPage == $totalPages) ? 'style="pointer-events: none; opacity: 0.5;"' : '' ?>>
+         <a href="<?= ($currentPage < $totalPages) ? site_url('/user/home?page=' . ($currentPage + 1)) : '#' ?>">
         <svg width="18" height="18">
             <use xlink:href="#right" />
         </svg>
@@ -207,7 +210,7 @@
     align-items: center;
     justify-content: center;
     margin-top: 20px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* Ubah menjadi nowrap untuk memastikan elemen tidak membungkus */
 }
 
 .pagination-number {
@@ -263,19 +266,12 @@
     justify-content: center;
     cursor: pointer;
     padding: 10px;
-    margin: 0 15px;
+    margin: 0 8px; /* Sesuaikan margin agar seimbang */
     transition: all 0.3s ease;
+    white-space: nowrap; /* Pastikan teks tetap dalam satu baris */
 }
 
-.pagination-arrow:hover {
-    background-color: #f1f1f1;
-    transform: translateY(-3px);
-}
 
-.pagination-arrow:active {
-    background-color: #ddd;
-    transform: translateY(1px);
-}
 
 .pagination-arrow svg {
     width: 20px;

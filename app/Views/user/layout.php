@@ -100,17 +100,17 @@ if (session()->has('id')) {
                 </div>
             </div>
             <div class="col-lg-4 col-4 text-left">
-                <form action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products">
-                        <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
-                                <i class="fa fa-search"></i>
-                            </span>
-                        </div>
-                    </div>
-                </form>
+    <form method="GET" action="<?= site_url('product/search'); ?>">
+        <div class="input-group">
+            <input type="text" name="title" class="form-control" placeholder="Search for products" value="<?= esc($title ?? ''); ?>">
+            <div class="input-group-append">
+                <button type="submit" class="input-group-text bg-transparent text-primary">
+                    <i class="fa fa-search"></i>
+                </button>
             </div>
+        </div>
+    </form>
+</div>            
 
             <!-- Social Media Icons Right Aligned -->
             <div class="col-lg-4 d-flex justify-content-end">

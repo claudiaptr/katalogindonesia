@@ -99,10 +99,13 @@ class Barang extends Model
                 ->findAll();
 }
 
-public function getBarangWithAlamatPaginated($limit = 12, $page = 1)
+public function getBarangWithAlamatPaginated($limit = 4, $page = 1)
 {
     // Count the total records for pagination
     $totalRecords = $this->db->table('barang')->countAllResults();
+
+    // Calculate the total pages
+    $totalPages = ceil($totalRecords / $limit);
 
     // Get the data with limit and offset
     $barang = $this->db->table('barang')
@@ -111,11 +114,31 @@ public function getBarangWithAlamatPaginated($limit = 12, $page = 1)
         ->limit($limit, ($page - 1) * $limit)  // Pagination: offset
         ->get()->getResultArray();
 
-    // Return both the results and total records for pagination
+    // Return both the results, total records, and total pages for pagination
     return [
         'barang' => $barang,
-        'total' => $totalRecords
+        'total' => $totalRecords,
+        'totalPages' => $totalPages,
     ];
 }
+
+
+public function searchProductsByTitle($title = '')
+{
+    
+    $builder = $this->db->table('barang')  
+        ->select('barang.*, kategori.nama_kategori')
+        ->join('kategori', 'barang.id_kategori_barang = kategori.id');
+
+   
+    if (!empty($title)) {
+        $builder->like('judul_barang', $title); 
+    }
+
+    // Mengambil hasil pencarian sebagai array
+    return $builder->get()->getResultArray();
+}
+
+
 }
 

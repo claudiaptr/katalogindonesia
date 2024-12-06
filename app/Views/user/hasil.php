@@ -133,7 +133,18 @@
 
 
 
+<!-- Search Product Start -->
+<div class="product-list">
+    <?php if (!empty($barang) && is_array($barang)): ?>
+        <ul>
+        </ul>
+    <?php else: ?>
+        <p>Mohon maaf, barang/jasa dengan judul "<strong><?= esc($title ?? ''); ?></strong>" tidak ada.</p>
+    <?php endif; ?>
+</div>
 
+
+<!-- Search Product End -->
 
 
                     <!-- Pagination -->

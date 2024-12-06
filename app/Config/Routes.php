@@ -175,3 +175,6 @@ $routes->group('admin', function($routes) {
     // Rute untuk menolak penjual
     $routes->get('tolakPenjual/(:num)', 'AdminController::tolakPenjual/$1');
 });
+
+$routes->post('product/search', 'UserController::search');
+$routes->get('product/search', 'UserController::search');

@@ -50,8 +50,8 @@ class UserController extends BaseController
     {
         // Pagination setup
         $pager = \Config\Services::pager();  // Make sure pager is available
-        $currentPage = $this->request->getVar('page') ? $this->request->getVar('page') : 1;  // Current page, default is 1
-        $perPage = 12;  // Limit 12 items per page
+        $currentPage = $this->request->getVar('page') ? $this->request->getVar('page') : 1; 
+        $perPage = 4; 
     
         // Get paginated data
         $barangData = $this->barang->getBarangWithAlamatPaginated($perPage, $currentPage); // Call the model for pagination
@@ -78,9 +78,6 @@ class UserController extends BaseController
                 if (!$alamat) {
                     $alamat = [
                         'kelurahan' => 'Alamat tidak tersedia',
-                        'kecamatan' => 'Alamat tidak tersedia',
-                        'kabupaten' => 'Alamat tidak tersedia',
-                        'provinsi' => 'Alamat tidak tersedia'
                     ];
                 }
                 $value['alamat'] = $alamat;
@@ -107,8 +104,6 @@ class UserController extends BaseController
     
         return view('user/home', $data);
     }
-    
-
 
 
     public function myaccount()
@@ -498,6 +493,28 @@ class UserController extends BaseController
 
                 return view('user/profile', ['username' => $user['username']]);
             }
-
-    }
+            public function search()
+            {
+                // Membuat instance dari model Barang
+                $barang = new Barang();
+            
+                // Ambil input pencarian dari form
+                $title = $this->request->getVar('title');
+            
+                // Ambil hasil pencarian berdasarkan judul
+                $barang = !empty($title) ? $barang->searchProductsByTitle($title) : [];
+            
+                $data = [
+                    'kategori' => $this->kategori->getSubKategori(),
+                    'menu' => 'cart',
+                    'barang' => $barang,
+                    'title'=> $title,
+                ];
+            
+                // Return view dengan data pencarian
+                return view('user/hasil', $data);
+            }
+            
+            
+}
 
