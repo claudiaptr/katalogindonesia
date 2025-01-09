@@ -82,7 +82,7 @@ $routes->add('/auth/cek_login', 'Auth::cek_login');
 $routes->get('/auth/register_google', 'Auth::register_google');
 
 
-$routes->get('/user/detail/(:num)', 'UserController::detail/$1');
+$routes->get('user/detail/(:num)', 'UserController::detail/$1');
 
 $routes->get('/user/contact', 'UserController::contact');
 $routes->get('/checkout', 'UserController::checkout');

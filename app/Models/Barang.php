@@ -64,14 +64,20 @@ class Barang extends Model
         }
     }
 
+    /**
+     * Get the products .by sub kategori
+     *
+     * @param int $limit
+     * @return array
+     */
     public function getProductsBySubkategori($subkategoriNama)
-    {
-        return $this->db->table('barang')
-                        ->join('sub_kategori', 'sub_kategori.id = barang.id_sub_kategori_barang', 'left')
-                        ->where('sub_kategori.nama_sub_kategori', $subkategoriNama)
-                        ->get()
-                        ->getResultArray();
-    }
+        {
+            return $this->db->table('barang')
+                ->join('sub_kategori', 'sub_kategori.id = barang.id_sub_kategori_barang', 'left')
+                ->where('sub_kategori.nama_sub_kategori', $subkategoriNama)
+                ->get()
+                ->getResultArray();
+        }
 
     /**
      * Get the newest products with a limit.

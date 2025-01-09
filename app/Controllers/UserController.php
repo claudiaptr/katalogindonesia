@@ -49,25 +49,22 @@ class UserController extends BaseController
 
     public function home() 
 {
-    // Fetch all products without pagination
-    $barang = $this->barang->findAll();  // Get all items without pagination
     
-    // If there are no products, you can set $barang to an empty array
+    $barang = $this->barang->findAll();  
+    
     if (!$barang) {
         $barang = [];
     }
 
-    // Fetch ratings and addresses for each product
     $ratingBarang = [];
     $jumlahRating = [];
 
     foreach ($barang as &$value) {
-        // Process ratings
         $avgRating = $this->db->table('ratingbarang')->where('idbarang', $value['id'])->selectAvg('rating')->get()->getRowArray();
         $ratingBarang[$value['id']] = isset($avgRating['rating']) ? round($avgRating['rating'] * 2) / 2 : 0;
         $jumlahRating[$value['id']] = $this->db->table('ratingbarang')->where('idbarang', $value['id'])->countAllResults();
 
-        // Process addresses
+
         $alamat = $this->alamat->getAlamatByUser($value['pemilik']);
         if (!$alamat) {
             $alamat = [
@@ -178,14 +175,12 @@ public function detail($id)
 {
     $barang = $this->barang->find($id);
 
-    // Mengambil data rating barang
     $ratingData = $this->db->table('ratingbarang')
         ->select('AVG(rating) as avg_rating, COUNT(*) as total_review')
         ->where('idbarang', $id)
         ->get()
         ->getRowArray();
 
-    // Menangani jika ada data rating
     if ($ratingData) {
         $rating = isset($ratingData['avg_rating']) ? round($ratingData['avg_rating'] * 2) / 2 : 0;
         $totalReview = isset($ratingData['total_review']) ? $ratingData['total_review'] : 0;
@@ -194,32 +189,28 @@ public function detail($id)
         $totalReview = 0;
     }
 
-    // Mengambil data rating terperinci
     $dataRating = $this->db->table('ratingbarang')
         ->where('idbarang', $id)
         ->orderBy('created_at', 'DESC')
         ->get()
         ->getResult();
 
-    // Mengambil foto barang, menggunakan gambar default jika tidak ada
     $fotoBarang = $this->fotoBarang->where('id_barang', $id)->findAll();
     if (empty($fotoBarang)) {
         $fotoBarang = [['foto' => 'default-placeholder.jpg']]; // Gambar placeholder
     }
 
-    // Memeriksa variasi barang (jika ada)
     $variasi = $this->variasi->data_opsi($id);
 
-    // Mengambil kategori produk
     $kategori = $this->kategori->getSubKategori();
 
-    // Menyusun data untuk dikirim ke view
+
     $data = [
         'barang' => $barang,
-        'rating' => $rating,           // Nilai rating, 0 jika tidak ada
-        'totalReview' => $totalReview, // Total review, 0 jika tidak ada
+        'rating' => $rating,         
+        'totalReview' => $totalReview, 
         'foto_barang' => $fotoBarang,
-        'variasi' => $variasi, // Variasi produk
+        'variasi' => $variasi, 
         'kategori' => $kategori,
         'cart' => \Config\Services::cart(),
         'menu' => 'shop',
@@ -267,54 +258,52 @@ public function detail($id)
 
     public function shop()
     {
-        $provinsi = strtolower(str_replace(["PROVINSI", "+"], ["", " "], $this->request->getGet('provinsi')));
-        $kabupaten = strtolower(str_replace(["KABUPATEN", "+"], ["", " "], $this->request->getGet('kabupaten')));
-        $kecamatan = strtolower(str_replace(["KECAMATAN", "+"], ["", " "], $this->request->getGet('kecamatan')));
-        $kelurahan = strtolower(str_replace(["KELURAHAN", "+"], ["", " "], $this->request->getGet('kelurahan')));
+
+        $provinsi = trim(ucwords(strtolower(str_replace(["PROVINSI", "+"], ["", " "], $this->request->getGet('provinsi')))));
+        $kabupaten = trim(ucwords(strtolower(str_replace(["KABUPATEN", "+"], ["", " "], $this->request->getGet('kabupaten')))));
+        $kecamatan = trim(ucwords(strtolower(str_replace(["KECAMATAN", "+"], ["", " "], $this->request->getGet('kecamatan')))));
+        $kelurahan = trim(ucwords(strtolower(str_replace(["KELURAHAN", "+"], ["", " "], $this->request->getGet('kelurahan')))));
     
-        $provinsi = trim(ucwords(strtolower($provinsi)));
-        $kabupaten = trim(ucwords(strtolower($kabupaten)));
-        $kecamatan = trim(ucwords(strtolower($kecamatan)));
-        $kelurahan = trim(ucwords(strtolower($kelurahan)));
-    
-        if ($provinsi && $kabupaten && $kecamatan && $kelurahan) {
-            // If location filters are provided, use getBarangByWilayah
-            $data['barang'] = $this->barang->getBarangByWilayah($provinsi, $kabupaten, $kecamatan, $kelurahan);
-        } else {
-            // Otherwise, fetch all products (you can use getBarangWithAlamat or similar)
-            $data['barang'] = $this->barang->getNewBarang(10); // Adjust the limit as needed
-        }
-    
-        // Fetch barang items berdasarkan nama kategori 'barang'
-        $kategoriNama = 'barang'; 
+        $kategoriNama = 'barang';
         $barang = $this->barang->getBarangByNamaKategori($kategoriNama);
     
-        // Ambil rating semua barang yang relevan sekaligus
-        $barangIds = array_column($barang, 'id'); 
-        $ratings = $this->db->table('ratingbarang')
-            ->whereIn('idbarang', $barangIds)
-            ->select('idbarang, AVG(rating) as avg_rating')
-            ->groupBy('idbarang')
-            ->get()
-            ->getResultArray();
-    
-        // Buat array rating dengan ID barang sebagai key
+        if ($provinsi && $kabupaten && $kecamatan && $kelurahan) {
+            $barang = array_filter($barang, function ($item) use ($provinsi, $kabupaten, $kecamatan, $kelurahan) {
+                return (
+                    strtolower($item['provinsi']) === strtolower($provinsi) &&
+                    strtolower($item['kabupaten']) === strtolower($kabupaten) &&
+                    strtolower($item['kecamatan']) === strtolower($kecamatan) &&
+                    strtolower($item['kelurahan']) === strtolower($kelurahan)
+                );
+            });
+        }
+
+        $barangIds = array_column($barang, 'id');
         $rating = [];
-        foreach ($ratings as $r) {
-            // Bulatkan rating ke terdekat 0.5
-            $rating[$r['idbarang']] = round($r['avg_rating'] * 2) / 2;
+    
+        if (!empty($barangIds)) {
+            $ratings = $this->db->table('ratingbarang')
+                ->whereIn('idbarang', $barangIds)
+                ->select('idbarang, AVG(rating) as avg_rating')
+                ->groupBy('idbarang')
+                ->get()
+                ->getResultArray();
+    
+            foreach ($ratings as $r) {
+                $rating[$r['idbarang']] = round($r['avg_rating'] * 2) / 2; // Bulatkan ke 0.5
+            }
         }
     
-        // Prepare data for view
+
         $data = [
-            'barang' => $data['barang'], // Data barang
+            'barang' => $barang,
             'kategori' => $this->kategori->getSubKategori(),
             'cart' => \Config\Services::cart(),
             'menu' => 'shop',
             'rating' => $rating,
         ];
     
-        // Return the view with data
+
         return view('user/shop', $data);
     }
     
@@ -687,14 +676,13 @@ public function jasa()
             {
                 $subkategoriNama = $this->request->getGet('subkategori_nama');
                 
-                // Query the database for products based on subkategoriNama
                 $barang = $this->barang->getProductsBySubkategori($subkategoriNama);
             
-                // Prepare the data to be passed to the view
                 $data = [
                     'kategori' => $this->kategori->getSubKategori(),
-                    'menu' => 'hasil_pencarian',
+                    'menu' => 'cart',
                     'barang' => $barang,
+                    
                 ];
             
                 return view('user/hasil_pencarian', $data);
