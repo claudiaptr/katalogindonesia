@@ -108,12 +108,6 @@
                 </style>
 
 
-                <!-- Menampilkan Nama Toko -->
-                <p><strong>Nama Toko:</strong> <?= esc($pemilik_barang['nama_toko']) ?></p>
-
-                <!-- Menampilkan Alamat -->
-                <p><strong>Alamat:</strong> <?= esc($barang['alamat']['kelurahan']) ?></p>
-
             <form id="variasiForm" method="POST" action="<?= base_url(); ?>add_chart">
                 <input type="hidden" id="harga_barang_awal" name="harga_barang_awal" value="<?= $barang['harga_barang']; ?>">
                 <input type="hidden" id="jumlah_barang" name="jumlah_barang" value="<?= $barang['jumlah_barang']; ?>">
@@ -215,6 +209,10 @@
 <div class="row px-xl-5">
     <div class="col">
         <div class="bg-light p-30">
+            
+            <p><strong>Nama Toko:</strong> <?= esc($pemilik_barang['nama_toko']) ?></p>
+            <p><strong>Alamat:</strong> <?= esc($barang['alamat']['kelurahan']) ?></p>
+
             <div class="nav nav-tabs mb-4">
                 <a class="nav-item nav-link text-dark active" data-toggle="tab" href="#tab-pane-1">Description</a>
                 <a class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-3">Reviews (<?= $totalReview; ?>)</a>
