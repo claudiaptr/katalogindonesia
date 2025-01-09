@@ -64,20 +64,30 @@ class Barang extends Model
         }
     }
 
-    /**
-     * Get the products .by sub kategori
-     *
-     * @param int $limit
-     * @return array
-     */
     public function getProductsBySubkategori($subkategoriNama)
-        {
-            return $this->db->table('barang')
-                ->join('sub_kategori', 'sub_kategori.id = barang.id_sub_kategori_barang', 'left')
-                ->where('sub_kategori.nama_sub_kategori', $subkategoriNama)
-                ->get()
-                ->getResultArray();
-        }
+{
+    // Menambahkan pengecekan apakah parameter valid
+    if (empty($subkategoriNama)) {
+        return []; // Mengembalikan array kosong jika subkategoriNama kosong
+    }
+
+    $builder = $this->db->table('barang');
+    
+    // Melakukan join dengan tabel sub_kategori
+    $builder->join('sub_kategori', 'sub_kategori.id = barang.id_sub_kategori_barang', 'left');
+    $builder->where('sub_kategori.nama_sub_kategori', $subkategoriNama);
+    
+    // Mengeksekusi query dan mengembalikan hasil dalam bentuk array
+    $result = $builder->get()->getResultArray();
+
+    // Mengecek apakah hasil query ada dan valid
+    if (isset($result) && !empty($result)) {
+        return $result; // Jika ada data, kembalikan hasilnya
+    } else {
+        // Jika tidak ada data ditemukan, kembalikan array kosong
+        return [];
+    }
+}
 
     /**
      * Get the newest products with a limit.

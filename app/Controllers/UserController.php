@@ -93,133 +93,156 @@ class UserController extends BaseController
     return view('user/home', $data);
 }
 
-public function myaccount()
-{
+    public function myaccount()
+    {
 
-    $userId = session()->get('id'); 
-    $user   = $this->user->getLogin($userId);
+        $userId = session()->get('id'); 
+        $user   = $this->user->getLogin($userId);
 
-    
-    if (!$user) {
-        return redirect()->to('/auth/login')->with('error', 'Pengguna tidak ditemukan. Silakan login kembali.');
-    }
-
-
-    return view('user/myaccount', [
-        'user' => $user,
-        'kategori' => $this->kategori->getSubKategori(),
-        'menu' => 'myaccount', 
-    ]);
-}
-
-
-public function updateProfile()
-{
-    $userId = session()->get('id'); // ID user dari session
-
-    // Validasi input
-    $validation = \Config\Services::validation();
-    $validation->setRules([
-        'username'   => 'required|min_length[3]|max_length[50]',
-        'email'      => 'required|valid_email|max_length[100]',
-        'no_hp'      => 'required|max_length[15]|numeric',
-        'alamat'     => 'permit_empty|max_length[255]',
-        'foto_profil'=> 'permit_empty|is_image[foto_profil]|max_size[foto_profil,1024]|mime_in[foto_profil,image/jpg,image/jpeg,image/png]',
-    ]);
-
-    if (!$this->validate($validation->getRules())) {
-        return redirect()->back()->withInput()->with('error', $validation->listErrors());
-    }
-
-    // Ambil data pengguna saat ini
-    $user = $this->user->getLogin($userId);
-    if (!$user) {
-        return redirect()->to('/auth/login')->with('error', 'Pengguna tidak ditemukan. Silakan login kembali.');
-    }
-
-    // Proses upload gambar profil jika ada
-    $fotoProfil = $this->request->getFile('foto_profil');
-    $newFileName = $user['foto_profil']; // Default to the current profile picture
-
-    if ($fotoProfil->isValid() && !$fotoProfil->hasMoved()) {
-        // Generate a new file name if the upload is valid
-        $newFileName = $fotoProfil->getRandomName();
-
-        // Move the uploaded file to the 'uploads/profiles' directory
-        $fotoProfil->move('uploads/profiles', $newFileName);
-
-        // Hapus gambar lama jika ada
-        if ($user['foto_profil'] && file_exists('uploads/profiles/' . $user['foto_profil'])) {
-            unlink('uploads/profiles/' . $user['foto_profil']);
+        
+        if (!$user) {
+            return redirect()->to('/auth/login')->with('error', 'Pengguna tidak ditemukan. Silakan login kembali.');
         }
+
+
+        return view('user/myaccount', [
+            'user' => $user,
+            'kategori' => $this->kategori->getSubKategori(),
+            'menu' => 'myaccount', 
+        ]);
     }
 
-    // Data untuk diperbarui
-    $data = [
-        'username'    => $this->request->getPost('username'),
-        'email'       => $this->request->getPost('email'),
-        'no_hp'       => $this->request->getPost('no_hp'),
-        'alamat'      => $this->request->getPost('alamat'),
-        'foto_profil' => $newFileName, // Update with the new file name
-    ];
 
-    // Update ke database
-    $this->user->update_register($data, $userId);
+    public function updateProfile()
+    {
+        $userId = session()->get('id'); // ID user dari session
 
-    // Redirect dengan pesan sukses
-    return redirect()->to('/myaccount')->with('success', 'Profil berhasil diperbarui.');
-}
+        // Validasi input
+        $validation = \Config\Services::validation();
+        $validation->setRules([
+            'username'   => 'required|min_length[3]|max_length[50]',
+            'email'      => 'required|valid_email|max_length[100]',
+            'no_hp'      => 'required|max_length[15]|numeric',
+            'alamat'     => 'permit_empty|max_length[255]',
+            'foto_profil'=> 'permit_empty|is_image[foto_profil]|max_size[foto_profil,1024]|mime_in[foto_profil,image/jpg,image/jpeg,image/png]',
+        ]);
 
+        if (!$this->validate($validation->getRules())) {
+            return redirect()->back()->withInput()->with('error', $validation->listErrors());
+        }
 
-public function detail($id)
-{
-    $barang = $this->barang->find($id);
+        // Ambil data pengguna saat ini
+        $user = $this->user->getLogin($userId);
+        if (!$user) {
+            return redirect()->to('/auth/login')->with('error', 'Pengguna tidak ditemukan. Silakan login kembali.');
+        }
 
-    $ratingData = $this->db->table('ratingbarang')
-        ->select('AVG(rating) as avg_rating, COUNT(*) as total_review')
-        ->where('idbarang', $id)
-        ->get()
-        ->getRowArray();
+        // Proses upload gambar profil jika ada
+        $fotoProfil = $this->request->getFile('foto_profil');
+        $newFileName = $user['foto_profil']; // Default to the current profile picture
 
-    if ($ratingData) {
-        $rating = isset($ratingData['avg_rating']) ? round($ratingData['avg_rating'] * 2) / 2 : 0;
-        $totalReview = isset($ratingData['total_review']) ? $ratingData['total_review'] : 0;
-    } else {
-        $rating = 0;
-        $totalReview = 0;
+        if ($fotoProfil->isValid() && !$fotoProfil->hasMoved()) {
+            // Generate a new file name if the upload is valid
+            $newFileName = $fotoProfil->getRandomName();
+
+            // Move the uploaded file to the 'uploads/profiles' directory
+            $fotoProfil->move('uploads/profiles', $newFileName);
+
+            // Hapus gambar lama jika ada
+            if ($user['foto_profil'] && file_exists('uploads/profiles/' . $user['foto_profil'])) {
+                unlink('uploads/profiles/' . $user['foto_profil']);
+            }
+        }
+
+        // Data untuk diperbarui
+        $data = [
+            'username'    => $this->request->getPost('username'),
+            'email'       => $this->request->getPost('email'),
+            'no_hp'       => $this->request->getPost('no_hp'),
+            'alamat'      => $this->request->getPost('alamat'),
+            'foto_profil' => $newFileName, // Update with the new file name
+        ];
+
+        // Update ke database
+        $this->user->update_register($data, $userId);
+
+        // Redirect dengan pesan sukses
+        return redirect()->to('/myaccount')->with('success', 'Profil berhasil diperbarui.');
     }
 
-    $dataRating = $this->db->table('ratingbarang')
-        ->where('idbarang', $id)
-        ->orderBy('created_at', 'DESC')
-        ->get()
-        ->getResult();
 
-    $fotoBarang = $this->fotoBarang->where('id_barang', $id)->findAll();
-    if (empty($fotoBarang)) {
-        $fotoBarang = [['foto' => 'default-placeholder.jpg']]; // Gambar placeholder
+    public function detail($id)
+    {
+        // Ambil data barang
+        $barang = $this->barang->find($id);
+    
+        // Ambil rating barang
+        $ratingData = $this->db->table('ratingbarang')
+            ->select('AVG(rating) as avg_rating, COUNT(*) as total_review')
+            ->where('idbarang', $id)
+            ->get()
+            ->getRowArray();
+    
+        // Proses rating dan total review
+        $rating = $ratingData ? round($ratingData['avg_rating'] * 2) / 2 : 0;
+        $totalReview = $ratingData ? $ratingData['total_review'] : 0;
+    
+        // Ambil daftar rating
+        $dataRating = $this->db->table('ratingbarang')
+            ->where('idbarang', $id)
+            ->orderBy('created_at', 'DESC')
+            ->get()
+            ->getResult();
+    
+        // Ambil foto barang
+        $fotoBarang = $this->fotoBarang->where('id_barang', $id)->findAll();
+        if (empty($fotoBarang)) {
+            $fotoBarang = [['foto' => 'default-placeholder.jpg']]; // Gambar placeholder
+        }
+    
+        // Ambil variasi produk
+        $variasi = $this->variasi->data_opsi($id);
+    
+        // Ambil kategori produk
+        $kategori = $this->kategori->getSubKategori();
+    
+        // Ambil informasi pemilik toko
+        $pemilikBarang = $this->db->table('user')
+            ->select('nama_toko')
+            ->where('id', $barang['pemilik'])
+            ->get()
+            ->getRowArray();
+    
+        // Ambil alamat berdasarkan pemilik
+        $alamat = $this->alamat->getAlamatByUser($barang['pemilik']);
+        if (!$alamat) {
+            $alamat = [
+                'kelurahan' => 'Alamat tidak tersedia',
+            ];
+        }
+    
+        // Gabungkan alamat ke dalam barang
+        $barang['alamat'] = $alamat;
+    
+        // Data untuk dikirim ke view
+        $data = [
+            'barang' => $barang,
+            'rating' => $rating,
+            'totalReview' => $totalReview,
+            'foto_barang' => $fotoBarang,
+            'variasi' => $variasi,
+            'kategori' => $kategori,
+            'cart' => \Config\Services::cart(),
+            'menu' => 'shop',
+            'dataRating' => $dataRating,
+            'pemilik_barang' => $pemilikBarang, // Tambahkan data pemilik barang
+        ];
+    
+        // Tampilkan view dengan data
+        return view('user/detail', $data);
     }
-
-    $variasi = $this->variasi->data_opsi($id);
-
-    $kategori = $this->kategori->getSubKategori();
-
-
-    $data = [
-        'barang' => $barang,
-        'rating' => $rating,         
-        'totalReview' => $totalReview, 
-        'foto_barang' => $fotoBarang,
-        'variasi' => $variasi, 
-        'kategori' => $kategori,
-        'cart' => \Config\Services::cart(),
-        'menu' => 'shop',
-        'dataRating' => $dataRating, // Daftar review
-    ];
-
-    return view('user/detail', $data);
-}
-
+    
+    
 
 
 
@@ -675,16 +698,14 @@ public function jasa()
             public function subkategori()
             {
                 $subkategoriNama = $this->request->getGet('subkategori_nama');
-                
                 $barang = $this->barang->getProductsBySubkategori($subkategoriNama);
-            
+
                 $data = [
                     'kategori' => $this->kategori->getSubKategori(),
                     'menu' => 'cart',
                     'barang' => $barang,
-                    
                 ];
-            
+
                 return view('user/hasil_pencarian', $data);
             }
             
