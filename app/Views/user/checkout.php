@@ -76,7 +76,7 @@ $keranjang = $cart->contentsByUser($id_user);
                         <?php endforeach; ?>
                         <div class="col-md-12 form-group">
                             <label>Nomor Telp</label>
-                            <input class="form-control" name="nomortelp" type="number" placeholder="08*****">
+                            <input class="form-control" name="nomortelp" type="tel" placeholder="08*****" pattern="^\+?\d{0,13}" title="Masukkan nomor telepon yang valid">
                         </div>
                         <div class="col-md-12 form-group">
                             <label>Alamat</label>

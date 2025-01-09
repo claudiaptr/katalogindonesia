@@ -26,6 +26,7 @@
                                 <tr>
                                     <th>Foto Barang</th>
                                     <th>Nama barang</th>
+                                    <th>Variasi</th>
                                     <th>Kategori Barang</th>
                                     <th>Sub Katgori Barang</th>
                                     <th>Jumlah Barang Dibeli</th>
@@ -42,6 +43,7 @@
                                         <tr>
                                             <td><img width="70px" src="<?= base_url(); ?>barang/<?= $bk['foto_barang']; ?>" alt=""></td>
                                             <td><?= $bk['judul_barang']; ?></td>
+                                            <td><?= $bk['variasi']; ?></td> 
                                             <td><?= $bk['kategori_name']; ?></td>
                                             <td><?= $bk['sub_kategori_name']; ?></td>
                                             <td><?= $bk['jumlah']; ?></td>
@@ -56,12 +58,14 @@
                                                 <?php endif ?>
                                             </td>
                                             <td style="display: flex;">
-                                                <a style=" margin-left: 10px;" href="<?= base_url(); ?>#" class="btn btn-success mr-3"> Kirim </a>
-                                                <form class="delete" style=" margin-left: 10px;" action="<?= base_url(); ?>#">
+                                                <form action="<?= base_url('sales/kemas/' . $bk['transaksi_id']); ?>" method="POST">
+                                                    <button type="submit" style=" margin-left: 10px;" class="btn btn-success mr-3"> Kemas </button>
+                                                </form>
+                                                <!-- <form class="delete" style=" margin-left: 10px;" action="<?= base_url(); ?>#">
                                                     <?= csrf_field(); ?>
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     <button class="btn btn-danger ">Selesai </button>
-                                                </form>
+                                                </form> -->
                                             </td>
                                         </tr>
                                     <?php endif ?>

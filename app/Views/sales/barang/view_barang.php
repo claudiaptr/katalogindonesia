@@ -20,7 +20,7 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <a href="<?= base_url(); ?>sales/add_barang" class="btn btn-primary">Tambah Barang</a>
+                        <a href="<?= base_url(); ?>sales/barang/add_barang" class="btn btn-primary">Tambah Barang</a>
                        
                     </div><!-- /.box-header -->
                     <div class="box-body">
@@ -28,9 +28,8 @@
                         <thead>
                             <tr>
                                 <th>Foto Barang</th>
-                                <th>Judul Barang</th>
-                                <th>Kategori Barang</th>
                                 <th>Sub Kategori Barang</th>
+                                <th>Judul Barang</th>
                                 <th>Jumlah Barang</th>
                                 <th>Diskon (%)</th>
                                 <th>Harga Asli</th>
@@ -43,9 +42,8 @@
                             <?php foreach ($barang as $bk) : ?>
                                 <tr>
                                     <td><img width="70px" src="<?= base_url(); ?>barang/<?= $bk['foto_barang']; ?>" alt=""></td>
-                                    <td><?= $bk['judul_barang']; ?></td>
-                                    <td><?= $bk['kategori_name']; ?></td>
                                     <td><?= $bk['sub_kategori_name']; ?></td>
+                                    <td><?= $bk['judul_barang']; ?></td>
                                     <td><?= $bk['jumlah_barang']; ?></td>
                                     <td><?= $bk['diskon'] ? $bk['diskon'] . "%" : "0"; ?></td>
                                     <td><?= number_format($bk['harga_barang'], 0, ',', '.'); ?></td>
@@ -60,7 +58,7 @@
                                         <?php endif ?>
                                     </td>
                                     <td style="display: flex;">
-                                        <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/edit_barang/<?= $bk['id']; ?>" class="btn btn-primary mr-3">Edit</a>
+                                        <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/barang/edit_barang/<?= $bk['id']; ?>" class="btn btn-primary mr-3">Edit</a>
                                         <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/view_tambah_variasi/<?= $bk['id']; ?>" class="btn btn-success mr-3">Variasi</a>
                                         <form class="delete" style=" margin-left: 10px;" action="<?= base_url(); ?>/sales/delete_barang/<?= $bk['id']; ?>" method="post">
                                             <?= csrf_field(); ?>

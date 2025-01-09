@@ -10,18 +10,18 @@ class Barang extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = false; 
-    protected $protectFields    = false; 
+    protected $useSoftDeletes   = false;
+    protected $protectFields    = false;
     protected $allowedFields    = [
-        'foto_barang', 
-        'deskripsi_barang', 
-        'id_kategori_barang', 
-        'id_sub_kategori_barang', 
-        'judul_barang', 
-        'harga_barang', 
-        'pemilik', 
+        'foto_barang',
+        'deskripsi_barang',
+        'id_kategori_barang',
+        'id_sub_kategori_barang',
+        'judul_barang',
+        'harga_barang',
+        'pemilik',
         'jumlah_barang',
-        'diskon', 
+        'diskon',
         'harga_setelah_diskon'
     ];
 
@@ -53,7 +53,24 @@ class Barang extends Model
         $builder->orderBy('RAND()'); // Optional: Random order
 
         $query = $builder->get();
-        return $query->getResultArray(); // Return as an array
+        $result = $query->getResultArray();
+
+        // Add check to ensure the result is valid
+        if (isset($result) && !empty($result)) {
+            return $result;
+        } else {
+            // Handle the case where no data is found
+            return [];
+        }
+    }
+
+    public function getProductsBySubkategori($subkategoriNama)
+    {
+        return $this->db->table('barang')
+                        ->join('sub_kategori', 'sub_kategori.id = barang.id_sub_kategori_barang', 'left')
+                        ->where('sub_kategori.nama_sub_kategori', $subkategoriNama)
+                        ->get()
+                        ->getResultArray();
     }
 
     /**
@@ -70,7 +87,14 @@ class Barang extends Model
         $builder->where('barang.verifikasi', 3);
         $builder->orderBy('created_at', 'DESC');
         $builder->limit($limit);
-        return $builder->get()->getResultArray();
+
+        $result = $builder->get()->getResultArray();
+
+        if (isset($result) && !empty($result)) {
+            return $result;
+        } else {
+            return [];
+        }
     }
 
     /**
@@ -81,7 +105,14 @@ class Barang extends Model
      */
     public function getProduct($id)
     {
-        return $this->where('id', $id)->first();
+        $product = $this->where('id', $id)->first();
+
+        if ($product === null) {
+            // Handle error or return default values
+            return [];
+        }
+
+        return $product;
     }
 
     /**
@@ -91,54 +122,99 @@ class Barang extends Model
      * @return array
      */
     public function getBarangWithAlamat($limit)
-{
-    return $this->select('barang.*, alamat_toko.kelurahan')
-                ->join('user', 'barang.pemilik = user.id', 'inner')
-                ->join('alamat_toko', 'user.id = alamat_toko.user', 'inner')
-                ->limit($limit)
-                ->findAll();
-}
+    {
+        $result = $this->select('barang.*, alamat_toko.kelurahan')
+            ->join('user', 'barang.pemilik = user.id', 'inner')
+            ->join('alamat_toko', 'user.id = alamat_toko.user', 'inner')
+            ->limit($limit)
+            ->findAll();
 
-public function getBarangWithAlamatPaginated($limit = 4, $page = 1)
-{
-    // Count the total records for pagination
-    $totalRecords = $this->db->table('barang')->countAllResults();
-
-    // Calculate the total pages
-    $totalPages = ceil($totalRecords / $limit);
-
-    // Get the data with limit and offset
-    $barang = $this->db->table('barang')
-        ->join('alamat_toko', 'barang.pemilik = alamat_toko.user', 'left')
-        ->join('user', 'barang.pemilik = user.id', 'left')
-        ->limit($limit, ($page - 1) * $limit)  // Pagination: offset
-        ->get()->getResultArray();
-
-    // Return both the results, total records, and total pages for pagination
-    return [
-        'barang' => $barang,
-        'total' => $totalRecords,
-        'totalPages' => $totalPages,
-    ];
-}
-
-
-public function searchProductsByTitle($title = '')
-{
-    
-    $builder = $this->db->table('barang')  
-        ->select('barang.*, kategori.nama_kategori')
-        ->join('kategori', 'barang.id_kategori_barang = kategori.id');
-
-   
-    if (!empty($title)) {
-        $builder->like('judul_barang', $title); 
+        if (isset($result) && !empty($result)) {
+            return $result;
+        } else {
+            return [];
+        }
     }
 
-    // Mengambil hasil pencarian sebagai array
-    return $builder->get()->getResultArray();
-}
+    /**
+     * Get the paginated results for barang with alamat.
+     *
+     * @param int $limit
+     * @param int $page
+     * @return array
+     */
+    public function getBarangByWilayah($provinsi = null, $kabupaten = null, $kecamatan = null, $kelurahan = null)
+    {
+        // Inisialisasi query builder
+        $builder = $this->db->table($this->table);
+
+        // Seleksi kolom yang diperlukan
+        $builder->select('
+        barang.*,
+        alamat_toko.id AS id_alamat,
+        alamat_toko.provinsi,
+        alamat_toko.kabupaten,
+        alamat_toko.kecamatan,
+        alamat_toko.kelurahan
+        ');
+
+        // Join tabel alamat_toko dengan tabel barang
+        $builder->join('alamat_toko', 'barang.pemilik = alamat_toko.user');
+
+        // Tambahkan kondisi barang yang sudah diverifikasi
+        $builder->where('barang.verifikasi', 3);
+
+        $builder->where('barang.id_kategori_barang', 1);
+
+
+        // Tambahkan filter wilayah jika parameter diberikan
+        if (!empty($provinsi)) {
+            $builder->where('alamat_toko.provinsi', $provinsi);
+        }
+        if (!empty($kabupaten)) {
+            $builder->where('alamat_toko.kabupaten', $kabupaten);
+        }
+        if (!empty($kecamatan)) {
+            $builder->where('alamat_toko.kecamatan', $kecamatan);
+        }
+        if (!empty($kelurahan)) {
+            $builder->where('alamat_toko.kelurahan', $kelurahan);
+        }
+
+        // Acak hasil untuk variasi tampilan
+        $builder->orderBy('RAND()');
+
+        // Eksekusi query dan kembalikan hasil sebagai array
+        $result = $builder->get()->getResultArray();
+
+        return $result;
+    }
+
+    /**
+     * Search products by title.
+     *
+     * @param string $title
+     * @return array
+     */
+    public function searchProductsByTitle($title = '')
+    {
+        $builder = $this->db->table('barang')
+            ->select('barang.*, kategori.nama_kategori')
+            ->join('kategori', 'barang.id_kategori_barang = kategori.id');
+
+        if (!empty($title)) {
+            $builder->like('judul_barang', $title);
+        }
+
+        // Get results as an array
+        $result = $builder->get()->getResultArray();
+
+        if (isset($result) && !empty($result)) {
+            return $result;
+        } else {
+            return [];
+        }
+    }
 
 
 }
-

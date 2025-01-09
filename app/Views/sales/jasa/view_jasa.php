@@ -4,8 +4,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Data Tables
-            <small>advanced tables</small>
+            Tabel Jasa
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -20,30 +19,34 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <a href="<?= base_url(); ?>sales/add_jasa" class="btn btn-primary">Tambah jasa</a>
+                        <a href="<?= base_url(); ?>sales/add_jasa" class="btn btn-primary">Tambah Jasa</a>
                        
                     </div><!-- /.box-header -->
                     <div class="box-body">
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Foto jasa</th>
-                                    <th>Judul jasa</th>
-                                    <th>Kategori jasa</th>
-                                    <th>Sub Katgori jasa</th>
-                                    <th>Jumlah jasa</th>
+                                    <th>Foto Jasa</th>
+                                    <th>Sub Katgori Jasa</th>
+                                    <th>Nama Jasa</th>
+                                    <th>Jumlah Jasa</th>
+                                    <th>Diskon (%)</th>
+                                    <th>Harga Asli</th>
+                                    <th>Harga Setelah Diskon</th>
                                     <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($jasa as $bk) : ?>
+                                <?php foreach ($barang as $bk) : ?>
                                     <tr>
-                                        <td><img width="70px" src="<?= base_url(); ?>jasa/<?= $bk['foto_jasa']; ?>" alt=""></td>
-                                        <td><?= $bk['judul_jasa']; ?></td>
-                                        <td><?= $bk['kategori_name']; ?></td>
+                                        <td><img width="70px" src="<?= base_url(); ?>barang/<?= $bk['foto_barang']; ?>" alt=""></td>
                                         <td><?= $bk['sub_kategori_name']; ?></td>
-                                        <td><?= $bk['jumlah_jasa']; ?></td>
+                                        <td><?= $bk['judul_barang']; ?></td>
+                                        <td><?= $bk['jumlah_barang']; ?></td>
+                                        <td><?= $bk['diskon'] ? $bk['diskon'] . "%" : "0"; ?></td>
+                                        <td><?= number_format($bk['harga_barang'], 0, ',', '.'); ?></td>
+                                        <td><?= number_format($bk['harga_setelah_diskon'], 0, ',', '.'); ?></td>
                                         <td>
                                             <?php if ($bk['verifikasi']==1) : ?>
                                                 <span class="label label-warning">Pending</span>
@@ -54,7 +57,7 @@
                                             <?php endif ?>
                                         </td>
                                         <td style="display: flex;">
-                                            <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/edit_jasa/<?= $bk['id']; ?>" class="btn btn-primary mr-3">Edit </a>
+                                            <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/jasa/edit_jasa/<?= $bk['id']; ?>" class="btn btn-primary mr-3">Edit </a>
                                             <a style=" margin-left: 10px;" href="<?= base_url(); ?>sales/view_tambah_variasi/<?= $bk['id']; ?>" class="btn btn-success mr-3"> Variasi</a>
                                             <form class="delete" style=" margin-left: 10px;" action="<?= base_url(); ?>/sales/delete_jasa/<?= $bk['id']; ?>" method="post">
                                                 <?= csrf_field(); ?>

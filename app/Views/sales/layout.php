@@ -279,8 +279,8 @@ $user = $userModel->find($id);
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="<?= base_url(); ?>sales/dists/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                                <span class="hidden-xs"><?= session()->get('username'); ?></span>
+                            <img src="<?= base_url('uploads/profiles/' . ($user['foto_profil'] ?? 'default.jpg')) ?>" class="img-circle" alt="User Image" style="width: 28px; height: 28px; object-fit: cover;">                                    
+                            <span class=<p><?= $user['username'] ?></p></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
@@ -331,11 +331,13 @@ $user = $userModel->find($id);
 
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel">
-                    <div class="pull-left image">
-                        <img src="<?= base_url(); ?>sales/dists/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                    </div>
+                <div class="pull-left image">
+                <!-- Menampilkan foto profil yang baru -->
+                <img src="<?= base_url('uploads/profiles/' . ($user['foto_profil'] ?? 'default.jpg')) ?>" class="img-circle" alt="User Image" style="width: 45px; height: 45px; object-fit: cover;">
+                </div>
+                    
                     <div class="pull-left info">
-                        <p><?= session()->get('username'); ?></p>
+                    <p><?= $user['username'] ?></p>
                         <!-- Status -->
                         <p>Rp. <?= number_format($user['saldo'], 0, ',', '.'); ?></p>
                     </div>
@@ -353,23 +355,78 @@ $user = $userModel->find($id);
                 <!-- /.search form -->
 
                 <!-- Sidebar Menu -->
-                <ul class="sidebar-menu">
-                    <li class="header">HEADER</li>
-                    <!-- Optionally, you can add icons to the links -->
-                    <li class=" <?= $menu == 'dashboard' ? 'active' : ''  ?>"><a href="<?= base_url(); ?>sales/home"><i class="fa fa-th-large"></i> <span>Dashboard</span></a></li>
-                    <li class=" <?= $menu == 'barang' ? 'active' : ''  ?>"><a href="<?= base_url(); ?>sales/view_barang"><i class="fa fa-cube"></i> <span>Barang</span></a></li>
-                    <li class=" <?= $menu == 'pesanan' ? 'active' : ''  ?>"><a href="<?= base_url(); ?>sales/view_pesanan"><i class="fa fa-cube"></i> <span>Pesanan</span></a></li>
-                    <li class=" <?= $menu == 'penarikan' ? 'active' : ''  ?>"><a href="<?= base_url(); ?>sales/view_penarikan"><i class="fa fa-dollar"></i> <span>Penarikan</span></a></li>
-                    <li class="treeview">
-                        <a href="#"><i class="fa fa-link"></i> <span>Proses Pesanan</span> <i class="fa fa-angle-left pull-right"></i></a>
+<ul class="sidebar-menu">
+    <li class="header">HEADER</li>
+    
+
+    <li class="<?= $menu == 'dashboard' ? 'active' : '' ?>">
+        <a href="<?= base_url(); ?>sales/home">
+            <i class="fa fa-th-large"></i> 
+            <span>Dashboard</span>
+        </a>
+    </li>
+
+
+    <li class="<?= $menu == 'profile' ? 'active' : '' ?>">
+        <a href="<?= base_url(); ?>sales/profilepenjual">
+            <i class="fa fa-user icon"></i> 
+            <span>Profile Penjual</span> 
+            <i class="fa fa-angle"></i>
+        </a>
+    </li>
+
+    <li class="<?= $menu == 'barang' ? 'active' : '' ?>">
+        <a href="<?= base_url(); ?>sales/barang/view_barang">
+            <i class="fa fa-cube"></i> 
+            <span>Barang</span>
+        </a>
+    </li>
+
+    <li class=" <?= $menu == 'barang' ? 'active' : ''  ?>">
+        <a href="<?= base_url(); ?>sales/jasa/view_jasa">
+            <i class="fa fa-cube"></i> 
+            <span>Jasa</span>
+        </a>
+    </li>
+
+
+    <li class="<?= $menu == 'pesanan' ? 'active' : '' ?>">
+        <a href="<?= base_url(); ?>sales/view_pesanan">
+            <i class="fa fa-cube"></i> 
+            <span>Pesanan</span>
+        </a>
+    </li>
+
+ 
+    <li class="<?= $menu == 'penarikan' ? 'active' : '' ?>">
+        <a href="<?= base_url(); ?>sales/view_penarikan">
+            <i class="fa fa-dollar"></i> 
+            <span>Penarikan</span>
+        </a>
+    </li>
+
+  
+    
+        <li class="treeview">
+                        <a href="#"><i class="fa fa-link"></i> <span>Proses Pesanan Barang</span> <i class="fa fa-angle-left pull-right"></i></a>
                         <ul class="treeview-menu">
                             <li><a href="<?= base_url(); ?>sales/kemas_pesanan">Barang di Kemas</a></li>
                             <li><a href="<?= base_url(); ?>sales/kirim_pesanan">Barang di Kirim</a></li>
+                            <li><a href="<?= base_url(); ?>sales/selesai_pesanan">Barang Selesai</a></li>
                         </ul>
                     </li>
-                </ul><!-- /.sidebar-menu -->
-            </section>
-            <!-- /.sidebar -->
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-link"></i> <span>Proses Pesanan Jasa</span> <i class="fa fa-angle-left pull-right"></i></a>
+                        <ul class="treeview-menu">
+                            <li><a href="<?= base_url(); ?>sales/kemas_jasa">Jasa di Kemas</a></li>
+                            <li><a href="<?= base_url(); ?>sales/kiriman_jasa">Jasa di Kirim</a></li>
+                            <li><a href="<?= base_url(); ?>sales/selesai_jasa">Jasa Selesai</a></li>
+                        </ul>
+                    </li>
+
+</ul>
+<!-- /.sidebar-menu -->
+
         </aside>
 
         <!-- Content Wrapper. Contains page content -->

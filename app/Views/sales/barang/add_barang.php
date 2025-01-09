@@ -36,74 +36,73 @@
                         <div class="box-body">
                             <!-- text input -->
                             <input type="hidden" name="pemilik" value="<?= session()->get('id'); ?>">
-                            <div class="form-group col-md-6  <?= ($validation->hasError('judul_barang')) ? 'has-error' : ''; ?>">
-                                <label>Judul Barang</label>
-                                <input type="text" class="form-control " name="judul_barang" placeholder="Enter Judul Barang">
-                                <?php if ($validation->hasError('judul_barang')) : ?>
-                                    <label id="judul_barang-error" class="error invalid-feedback" for="judul_barang"><?= $validation->getError('judul_barang'); ?></label>
-                                <?php endif; ?>
-                            </div>
                             <div class="form-group col-md-6 <?= ($validation->hasError('id_kategori_barang')) ? 'has-error' : ''; ?>">
-                                <label>Kategori Barang</label>
-                                <select class="form-control" name="id_kategori_barang" id="id_kategori" data-placeholder="Select a Kategori Barang">
-                                    <option value="">Pilih Barang</option>
-                                    <?php foreach ($kategori as $kt) : ?>
-                                        <option value="<?= $kt['id']; ?>"> <?= $kt['nama_kategori']; ?> </option>
-                                    <?php endforeach; ?>
-                                </select>
+                                <label>Kategori</label>
+                                <input type="text" class="form-control" value="<?= $kategori['nama_kategori']; ?>" readonly>
                                 <?php if ($validation->hasError('id_kategori_barang')) : ?>
                                     <label id="id_kategori_barang-error" class="error invalid-feedback" for="id_kategori_barang"><?= $validation->getError('id_kategori_barang'); ?></label>
                                 <?php endif; ?>
                             </div>
                             <div class="form-group col-md-6 <?= ($validation->hasError('id_sub_kategori_barang')) ? 'has-error' : ''; ?>">
                                 <label>Sub Kategori Barang</label>
-                                <select class="form-control" name="id_sub_kategori_barang" id="id_sub_kategori" data-placeholder="Select a Kategori Barang">
-
+                                <select class="form-control" name="id_sub_kategori_barang" id="id_sub_kategori" data-placeholder="Select a Sub Kategori">
+                                    <option value="">Pilih Sub Kategori</option>
+                                    <?php foreach ($sub_kategori as $sub) : ?>
+                                        <option value="<?= $sub['id']; ?>" <?= (old('id_sub_kategori_barang') == $sub['id']) ? 'selected' : ''; ?>>
+                                            <?= $sub['nama_sub_kategori']; ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                                 <?php if ($validation->hasError('id_sub_kategori_barang')) : ?>
                                     <label id="id_sub_kategori_barang-error" class="error invalid-feedback" for="id_sub_kategori_barang"><?= $validation->getError('id_sub_kategori_barang'); ?></label>
                                 <?php endif; ?>
                             </div>
+
+                            <div class="form-group col-md-6  <?= ($validation->hasError('judul_barang')) ? 'has-error' : ''; ?>">
+                                <label>Nama </label>
+                                <input type="text" class="form-control " name="judul_barang" placeholder="Enter Judul Barang">
+                                <?php if ($validation->hasError('judul_barang')) : ?>
+                                    <label id="judul_barang-error" class="error invalid-feedback" for="judul_barang"><?= $validation->getError('judul_barang'); ?></label>
+                                <?php endif; ?>
+                            </div>
                             <div class="form-group col-md-6 <?= ($validation->hasError('foto_barang')) ? 'has-error' : ''; ?>">
-                                <label>Foto Barang</label>
+                                <label>Foto </label>
                                 <input type="file" class="form-control" name="foto_barang" placeholder="Enter Judul Barang" accept="image/*">
                                 <?php if ($validation->hasError('foto_barang')) : ?>
                                     <label id="foto_barang-error" class="error invalid-feedback" for="foto_barang"><?= $validation->getError('foto_barang'); ?></label>
                                 <?php endif; ?>
                             </div>
                             <div class="form-group col-md-6 <?= ($validation->hasError('harga_barang')) ? 'has-error' : ''; ?>">
-                                <label>Harga Barang</label>
+                                <label>Harga</label>
                                 <input type="text" class="form-control" name="harga_barang" placeholder="Enter Harga Barang" id="rupiah-input" oninput="formatRupiah(this)">
                                 <?php if ($validation->hasError('harga_barang')) : ?>
                                     <label id="harga_barang-error" class="error invalid-feedback" for="harga_barang"><?= $validation->getError('harga_barang'); ?></label>
                                 <?php endif; ?>
                             </div>
                             <div class="form-group col-md-6 <?= ($validation->hasError('jumlah_barang')) ? 'has-error' : ''; ?>">
-                                <label>Jumlah Barang</label>
+                                <label>Jumlah</label>
                                 <input type="number" class="form-control" name="jumlah_barang" placeholder="Enter Judul Barang">
                                 <?php if ($validation->hasError('jumlah_barang')) : ?>
                                     <label id="jumlah_barang-error" class="error invalid-feedback" for="jumlah_barang"><?= $validation->getError('jumlah_barang'); ?></label>
                                 <?php endif; ?>
                             </div>
+                           
                             <!-- tambahkan input lainnya -->
 
                             <!-- textarea -->
                             <div class="form-group col-md-12 <?= ($validation->hasError('deskripsi_barang')) ? 'has-error' : ''; ?>">
-                                <label>Deskripsi Barang</label>
+                                <label>Deskripsi</label>
                                 <textarea class="form-control summernote" name="deskripsi_barang" rows="3" placeholder="Enter Deskripsi Barang"></textarea>
                                 <?php if ($validation->hasError('deskripsi_barang')) : ?>
                                     <label id="deskripsi_barang-error" class="error invalid-feedback" for="deskripsi_barang"><?= $validation->getError('deskripsi_barang'); ?></label>
                                 <?php endif; ?>
                             </div>
-                            <!-- /.box-header -->
-                            <!-- tambahkan input foto lainnya -->
+                          
 
-                        </div><!-- /.box-body -->
-                    </div><!-- /.box -->
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-
-            <!-- tambahkan input foto utama barang -->
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-md-12">
@@ -133,49 +132,8 @@
 
                             </div>
                             <div class="add-more-data">
-
-
                             </div>
-
-                            <!-- <div class="table table-striped files" id="previews">
-                                <div id="template" class="row mt-2">
-                                    <div class="col-auto">
-                                        <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
-                                    </div>
-                                    <div class="col d-flex align-items-center">
-                                        <p class="mb-0">
-                                            <span class="lead" data-dz-name></span>
-                                            (<span data-dz-size></span>)
-                                        </p>
-                                        <strong class="error text-danger" data-dz-errormessage></strong>
-                                    </div>
-                                    <div class="col-4 d-flex align-items-center">
-                                        <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                                            <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-auto d-flex align-items-center">
-                                        <div class="btn-group">
-                                            <button class="btn btn-primary start">
-                                                <i class="fas fa-upload"></i>
-                                                <span>Start</span>
-                                            </button>
-                                            <button data-dz-remove class="btn btn-warning cancel">
-                                                <i class="fas fa-times-circle"></i>
-                                                <span>Cancel</span>
-                                            </button>
-                                            <button data-dz-remove class="btn btn-danger delete">
-                                                <i class="fas fa-trash"></i>
-                                                <span>Delete</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
                         </div>
-
-                        <!-- /.card-body -->
-
                     </div>
                     <div class="box box-default">
                         <div class="box-header">
@@ -192,58 +150,15 @@
 
                                     </div>
                                 </div>
-
-
-
                             </div>
                             <div class="add-more-variasi">
-
                             </div>
-
-                            <!-- <div class="table table-striped files" id="previews">
-                                <div id="template" class="row mt-2">
-                                    <div class="col-auto">
-                                        <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
-                                    </div>
-                                    <div class="col d-flex align-items-center">
-                                        <p class="mb-0">
-                                            <span class="lead" data-dz-name></span>
-                                            (<span data-dz-size></span>)
-                                        </p>
-                                        <strong class="error text-danger" data-dz-errormessage></strong>
-                                    </div>
-                                    <div class="col-4 d-flex align-items-center">
-                                        <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                                            <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-auto d-flex align-items-center">
-                                        <div class="btn-group">
-                                            <button class="btn btn-primary start">
-                                                <i class="fas fa-upload"></i>
-                                                <span>Start</span>
-                                            </button>
-                                            <button data-dz-remove class="btn btn-warning cancel">
-                                                <i class="fas fa-times-circle"></i>
-                                                <span>Cancel</span>
-                                            </button>
-                                            <button data-dz-remove class="btn btn-danger delete">
-                                                <i class="fas fa-trash"></i>
-                                                <span>Delete</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
                         </div>
                         <div class="box-footer">
                             <p class="">* Untuk Menambahkan Opsi klik enter </p>
                         </div>
 
-                        <!-- /.card-body -->
-
                     </div>
-                    <!-- /.card -->
 
                 </div>
 

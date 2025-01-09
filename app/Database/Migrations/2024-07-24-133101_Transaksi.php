@@ -30,6 +30,10 @@ class Transaksi extends Migration
                 'constraint'     => 20,
                 'unsigned'       => true,
             ],
+            'variasi' => [ 
+                'type'       => 'VARCHAR',
+                'constraint' => '250',
+            ],
             'id_user' => [
                 'type'           => 'BIGINT',
                 'constraint'     => 20,
@@ -49,9 +53,8 @@ class Transaksi extends Migration
             'options' => [
                 'type'           => 'TEXT',
             ],
-            'verifikasi' => [
-                'type' => 'ENUM',
-                'constraint' => ['1', '2', '3'],
+            'verifikasi' => [  
+                'constraint' => ['1', '2', '3', '4', '5'],
                 'default' => '1',
             ],
             'created_at' => [
@@ -63,8 +66,11 @@ class Transaksi extends Migration
                 'default' => new RawSql('CURRENT_TIMESTAMP'),
             ],
         ]);
+        
+        // Add the primary key
         $this->forge->addKey('id', true);
-        $this->forge->createTable('transaksi');
+        $this->forge->createTable('transaksi', true);
+
         $this->db->query('ALTER TABLE `transaksi` ADD CONSTRAINT `my_fk_transaksiuser` FOREIGN KEY (`id_user`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE');
         $this->db->query('ALTER TABLE `transaksi` ADD CONSTRAINT `my_fk_transaksibarang` FOREIGN KEY (`id_barang`) REFERENCES `barang`(`id`) ON DELETE CASCADE ON UPDATE CASCADE');
     }

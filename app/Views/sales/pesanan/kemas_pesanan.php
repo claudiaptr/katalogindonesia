@@ -5,7 +5,7 @@
     <section class="content-header">
         <h1>
             Data Tables
-            <small>Kemas Pesanan</small>
+            <small>advanced tables</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -25,42 +25,52 @@
                             <thead>
                                 <tr>
                                     <th>Foto Barang</th>
-                                    <th>Judul barang</th>
+                                    <th>Nama barang</th>
+                                    <th>Variasi</th>
                                     <th>Kategori Barang</th>
                                     <th>Sub Katgori Barang</th>
-                                    <th>Jumlah Barang</th>
+                                    <th>Jumlah Barang Dibeli</th>
+                                    <th>Nama Pembeli</th>
+                                    <th>Nomor Telp</th>
+                                    <th>Alamat</th>
                                     <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($barang as $bk) : ?>
-                                    <tr>
-                                        <td><img width="70px" src="<?= base_url(); ?>barang/<?= $bk['foto_barang']; ?>" alt=""></td>
-                                        <td><?= $bk['judul_barang']; ?></td>
-                                        <td><?= $bk['kategori_name']; ?></td>
-                                        <td><?= $bk['sub_kategori_name']; ?></td>
-                                        <td><?= $bk['jumlah_barang']; ?></td>
-                                        <td>
-                                            <!-- <?php if ($bk['verifikasi'] == 1) : ?>
-                                                <span class="label label-warning">Pending</span>
-                                            <?php elseif ($bk['verifikasi'] == 2) : ?>
-                                                <span class="label label-danger">Ditolak</span>
-                                            <?php elseif ($bk['verifikasi'] == 3) : ?>
-                                                <span class="label label-success">Diterima</span>
-                                            <?php endif ?> -->
-                                            <a style="background-color: beige;" href="" class="btn btn-secondary mr-3">Sudah Bayar</a>
-                                        </td>
-                                        <td style="display: flex;">
-                                            <!-- <a style=" margin-left: 10px;" href="<?= base_url(); ?>#" class="btn btn-primary mr-3">Kemas </a>
-                                            <a style=" margin-left: 10px;" href="<?= base_url(); ?>#" class="btn btn-success mr-3"> Kirim </a> -->
-                                            <form class="delete" style=" margin-left: 10px;" action="<?= base_url(); ?>#">
-                                                <?= csrf_field(); ?>
-                                                <input type="hidden" name="_method" value="DELETE">
-                                                <button class="btn btn-danger ">Selesai </button>
-                                            </form>
-                                        </td>
-                                    </tr>
+                                    <?php if ($bk['verifikasi_transaksi'] == 2) : ?>
+                                        <tr>
+                                            <td><img width="70px" src="<?= base_url(); ?>barang/<?= $bk['foto_barang']; ?>" alt=""></td>
+                                            <td><?= $bk['judul_barang']; ?></td>
+                                            <td><?= $bk['variasi']; ?></td>
+                                            <td><?= $bk['kategori_name']; ?></td>
+                                            <td><?= $bk['sub_kategori_name']; ?></td>
+                                            <td><?= $bk['jumlah']; ?></td> 
+                                            <td><?= $bk['username']; ?></td>
+                                            <td><?= $bk['nomortelp']; ?></td>
+                                            <td><?= $bk['alamat']; ?></td>
+                                            <td>
+                                                <?php if ($bk['verifikasi_transaksi'] == 1) : ?>
+                                                    <span class="label label-warning">Diproses</span>
+                                                <?php elseif ($bk['verifikasi_transaksi'] == 3) : ?>
+                                                    <span class="label label-success">Sudah Bayar</span>
+                                                <?php elseif ($bk['verifikasi_transaksi'] == 2) : ?>
+                                                    <span class="label label-success">Pesanan Dikemas</span>
+                                                <?php endif ?>
+                                            </td>
+                                            <td style="display: flex;">
+                                                <form action="<?= base_url('sales/kirim/' . $bk['transaksi_id']); ?>" method="POST">
+                                                    <button type="submit" style=" margin-left: 10px;" class="btn btn-success mr-3"> Kirim </button>
+                                                </form>
+                                                <!-- <form class="delete" style=" margin-left: 10px;" action="<?= base_url(); ?>#">
+                                                    <?= csrf_field(); ?>
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                    <button class="btn btn-danger ">Selesai </button>
+                                                </form> -->
+                                            </td>
+                                        </tr>
+                                    <?php endif ?>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>

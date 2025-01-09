@@ -85,13 +85,14 @@
 <!-- Produk start -->
 <div class="container-fluid pt-5 pb-3">
     <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
-        <span class="bg-secondary pr-3">Produk Unggulan</span>
+        <span class="bg-secondary pr-3">Produk 
+        </span>
     </h2>
     <div class="row px-xl-5">
         <?php foreach ($barang as $bk) : ?>
             <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
                 <div class="product-item bg-light mb-4">
-                    <a href="<?= base_url(); ?>user/detail/<?= $bk['id']; ?>" class="d-block text-decoration-none">
+                <a href="<?= base_url('user/detail/' . $bk['id']); ?>" class="text-decoration-none">
                         <div class="product-img position-relative overflow-hidden">
                             <img class="" style="width: 100%; height: 250px; object-fit: cover" 
                                  src="<?= base_url(); ?>barang/<?= $bk['foto_barang']; ?>" alt="">
@@ -170,37 +171,6 @@
 </div>
 <!-- Produk end -->
 
-<!-- Pagination Start -->
-<div class="pagination-container">
-    <!-- Previous Button -->
-    <div class="pagination-arrow" 
-         <?= ($currentPage == 1) ? 'style="pointer-events: none; opacity: 0.5;"' : '' ?>>
-         <a href="<?= ($currentPage > 1) ? site_url('/user/home?page=' . ($currentPage - 1)) : '#' ?>">
-        <svg width="18" height="18">
-            <use xlink:href="#left" />
-        </svg>
-        <span class="arrow-text">Previous</span>
-    </div>
-
-    <!-- Loop to display page numbers -->
-     <br>
-    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-        <div class="pagination-number <?= ($currentPage == $i) ? 'pagination-active' : '' ?>">
-            <a href="<?= site_url('/user/home?page=' . $i) ?>"><?= $i ?></a>
-        </div>
-    <?php endfor; ?>
-
-    <!-- Next Button -->
-    <div class="pagination-arrow" 
-         <?= ($currentPage == $totalPages) ? 'style="pointer-events: none; opacity: 0.5;"' : '' ?>>
-         <a href="<?= ($currentPage < $totalPages) ? site_url('/user/home?page=' . ($currentPage + 1)) : '#' ?>">
-        <svg width="18" height="18">
-            <use xlink:href="#right" />
-        </svg>
-        <span class="arrow-text">Next</span>
-    </div>
-</div>
-<!-- Pagination End -->
 
 
 

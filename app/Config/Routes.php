@@ -103,6 +103,7 @@ $routes->get('/user/contact', 'EmailController::index');
 $routes->get('/tracking', 'UserController::tracking');
 $routes->post('user/filter', 'UserController::filter_toko');
 $routes->get('myaccount', 'UserController::myAccount');
+$routes->get('user/hasil_pencarian', 'UserController::subkategori');
 
 
 $routes->post('/user/harga_barang', 'UserController::harga_barang');
@@ -119,18 +120,28 @@ $routes->get('/user/email/send', 'EmailController::send');
 $routes->add('/logout', 'Auth::logout');
 
 // penjual
-$routes->get('daftar/penjual', 'SalesController::daftar_penjual'); 
+$routes->get('daftar/penjual', 'SalesController::daftar_penjual');
 $routes->post('store/penjual', 'SalesController::add_penjual');
 $routes->get('/sales/home', 'SalesController::home');
-$routes->get('/sales/view_barang',  'SalesController::view_barang');
+$routes->get('/sales/barang/view_barang',  'SalesController::view_barang');
 $routes->get('/sales/view_diskon', 'SalesController::view_diskon');
+$routes->get('/sales/view_pesanan', 'SalesController::view_pesanan');
 $routes->get('/sales/view_pesanan', 'SalesController::view_pesanan');
 $routes->get('/sales/kemas_pesanan', 'SalesController::kemas_pesanan');
 $routes->get('/sales/kirim_pesanan', 'SalesController::kirim_pesanan');
-$routes->get('/sales/add_barang',  'SalesController::add_barang');
-$routes->get('/sales/add_jasa',  'SalesController::add_jasa');
+$routes->get('/sales/selesai_pesanan', 'SalesController::selesai_pesanan');
+$routes->post('/sales/kemas/(:any)', 'SalesController::kemas/$1');
+$routes->post('/sales/kirim/(:any)', 'SalesController::kirim/$1');
+$routes->post('/sales/selesai/(:any)', 'SalesController::selesai/$1');
+$routes->get('/sales/barang/add_barang',  'SalesController::add_barang');
+$routes->get('/sales/jasa/view_jasa',  'SalesController::view_jasa');
+$routes->get('/sales/jasa/edit_jasa/(:num)',  'SalesController::edit_jasa/$1');
+$routes->post('/sales/jasa/update_jasa/(:num)',  'SalesController::update_jasa/$1');
+$routes->get('/sales/jasa/add_jasa',  'SalesController::add_jasa');
+$routes->post('/sales/jasa/store_jasa',  'SalesController::store_jasa');
+$routes->delete('/sales/jasa/delete_jasa/(:num)',  'SalesController::delete_jasa/$1');
 $routes->get('/sales/add_diskon', 'SalesController::add_diskon');
-$routes->get('/sales/edit_barang/(:num)',  'SalesController::edit_barang/$1');
+$routes->get('/sales/barang/edit_barang/(:num)',  'SalesController::edit_barang/$1');
 $routes->post('/sales/update_barang/(:num)',  'SalesController::update_barang/$1');
 $routes->get('/sales/delete_foto_lain/(:num)', 'SalesController::delete_foto_lain/$1');
 $routes->get('/sales/view_tambah_variasi/(:num)',  'SalesController::view_tambah_variasi/$1');
@@ -148,14 +159,6 @@ $routes->get('sales/add_penarikan', 'SalesController::add_penarikan');
 $routes->post('/sales/store_penarikan',  'SalesController::store_penarikan');
 $routes->get('/sales/foto_bukti/(:num)', 'SalesController::foto_bukti/$1');
 
-// user
-$routes->group('myaccount', function($routes) {
-    $routes->get('', 'Account::index'); // Dashboard
-    $routes->get('orders', 'Account::orders'); // Halaman Pesanan
-    $routes->get('orders/(:num)', 'Account::orderDetail/$1'); // Detail Pesanan
-    $routes->get('settings', 'Account::settings'); // Pengaturan Akun
-});
-
 $routes->get('user/wishlist', 'UserController::wishlist');
 
 $routes->post('user/add_to_wishlist/(:num)', 'UserController::addToWishlist/$1');
@@ -166,15 +169,35 @@ $routes->get('/user/detail/(:num)', 'UserController::detail/$1');
 $routes->post('/user/review/(:any)', 'UserController::review/$1');
 
 
-$routes->group('admin', function($routes) {
+$routes->group('admin', function ($routes) {
     $routes->get('daftar-penjual', 'AdminController::daftarPenjual');
-    
+
     // Rute untuk verifikasi penjual
     $routes->get('verifikasiPenjual/(:num)', 'AdminController::verifikasiPenjual/$1');
-    
+
     // Rute untuk menolak penjual
     $routes->get('tolakPenjual/(:num)', 'AdminController::tolakPenjual/$1');
 });
 
 $routes->post('product/search', 'UserController::search');
 $routes->get('product/search', 'UserController::search');
+
+$routes->get('/sales/profilepenjual', 'SalesController::profilepenjual');
+$routes->post('/sales/profilepenjual', 'SalesController::updateProfile');
+
+
+$routes->get('shop', 'UserController::filter');
+
+$routes->get('/sales/kemas_jasa', 'SalesController::kemasan_jasa');
+$routes->get('/sales/kiriman_jasa', 'SalesController::kiriman_jasa');
+$routes->post('/sales/kiriman/(:any)', 'SalesController::kiriman/$1');
+$routes->get('/sales/selesai_jasa', 'SalesController::selesai_jasa');
+$routes->post('/sales/selesaian/(:any)', 'SalesController::selesaian/$1');
+
+$routes->get('myaccount', 'UserController::myaccount');
+$routes->post('myaccount/update_profile', 'UserController::updateProfile');
+
+
+$routes->get('/user/transaction-history', 'UserController::transactionHistory');
+$routes->get('user/transaction-history', 'TransaksiController::index');
+$routes->get('transactions/detail/(:num)', 'TransaksiController::detail/$1');

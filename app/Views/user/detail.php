@@ -4,24 +4,30 @@
   <div class="container-fluid pb-5">
     <div class="row px-xl-5">
         <div class="col-lg-5 mb-30">
-            <div id="product-carousel" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner bg-light">
-                    <div class="carousel-item active">
-                        <img class="w-100 h-100" src="<?= base_url(); ?>barang/<?= $barang['foto_barang']; ?>" alt="Image">
-                    </div>
-                    <?php foreach ($foto_barang as $fb) : ?>
+        <div id="product-carousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner bg-light">
+
+                <div class="carousel-item active">
+                    <img class="w-100 h-100" src="<?= base_url(); ?>barang/<?= $barang['foto_barang']; ?>" alt="Image">
+                </div>
+                <?php if (!empty($foto_barang)): ?>
+                    <?php foreach ($foto_barang as $fb): ?>
                         <div class="carousel-item">
-                            <img class="w-100 h-100" src="<?= base_url(); ?>fotobarang/<?= $fb['foto_barang_lain']; ?>" alt="Image">
+                            <!-- Cek jika foto_barang_lain ada, jika tidak tampilkan gambar placeholder -->
+                            <img class="w-100 h-100" 
+                                src="<?= base_url(); ?>fotobarang/<?= isset($fb['foto_barang_lain']) && $fb['foto_barang_lain'] ? $fb['foto_barang_lain'] : 'default-placeholder.jpg'; ?>" 
+                                alt="Image">
                         </div>
                     <?php endforeach; ?>
-                </div>
-                <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
-                    <i class="fa fa-2x fa-angle-left text-dark bg-light"></i>
-                </a>
-                <a class="carousel-control-next" href="#product-carousel" data-slide="next">
-                    <i class="fa fa-2x fa-angle-right text-dark bg-light"></i>
-                </a>
+                <?php else: ?>
+                    <!-- Jika tidak ada foto lain, tampilkan foto placeholder -->
+                    <div class="carousel-item">
+                        <img class="w-100 h-100" src="<?= base_url(); ?>fotobarang/default-placeholder.jpg" alt="Image">
+                    </div>
+                <?php endif; ?>
             </div>
+        </div>
+
         </div>
 
         <div class="col-lg-7 h-auto mb-30">
@@ -101,44 +107,44 @@
                     }
                 </style>
 
-                <form id="variasiForm" method="POST" action="<?= base_url(); ?>add_chart">
-                    <input type="hidden" id="harga_barang_awal" name="harga_barang_awal" value="<?= $barang['harga_barang']; ?>">
-                    <input type="hidden" id="jumlah_barang" name="jumlah_barang" value="<?= $barang['jumlah_barang']; ?>">
-                    <input type="hidden" id="harga_barang" name="harga_barang" value="<?= $barang['harga_barang']; ?>">
+            <form id="variasiForm" method="POST" action="<?= base_url(); ?>add_chart">
+                <input type="hidden" id="harga_barang_awal" name="harga_barang_awal" value="<?= $barang['harga_barang']; ?>">
+                <input type="hidden" id="jumlah_barang" name="jumlah_barang" value="<?= $barang['jumlah_barang']; ?>">
+                <input type="hidden" id="harga_barang" name="harga_barang" value="<?= $barang['harga_barang']; ?>">
 
-                    <input type="hidden" name="judul_barang" value="<?= $barang['judul_barang']; ?>">
-                    <input type="hidden" name="id" value="<?= $barang['id']; ?>">
-                    <input type="hidden" name="id_barang" value="<?= $barang['id']; ?>">
-                    <input type="hidden" name="foto_barang" value="<?= $barang['foto_barang']; ?>">
-                    <input type="hidden" name="id_user" value="<?= session()->get('id'); ?>">
+                <input type="hidden" name="judul_barang" value="<?= $barang['judul_barang']; ?>">
+                <input type="hidden" name="id" value="<?= $barang['id']; ?>">
+                <input type="hidden" name="id_barang" value="<?= $barang['id']; ?>">
+                <input type="hidden" name="foto_barang" value="<?= $barang['foto_barang']; ?>">
+                <input type="hidden" name="id_user" value="<?= session()->get('id'); ?>">
 
-                    <div style="display: flex; align-items: center; position: relative;">
+                <div style="display: flex; align-items: center; position: relative;">
+                    <?php if (isset($barang['diskon']) && $barang['diskon'] > 0): ?>
+                        <div class="diskon-label">
+                            <?= $barang['diskon']; ?>% OFF
+                        </div>
+                    <?php endif; ?>
+                    
+                    <h3 id="harga_barang_text" class="font-weight-semi-bold mb-4" style="margin-right: 10px;">
                         <?php if (isset($barang['diskon']) && $barang['diskon'] > 0): ?>
-                            <div class="diskon-label">
-                                <?= $barang['diskon']; ?>% OFF
-                            </div>
+                            <span class="harga-coret">Rp. <?= number_format($barang['harga_barang'], 0, ',', '.'); ?></span>
+                            Rp. <?= number_format($barang['harga_barang'] * (1 - $barang['diskon'] / 100), 0, ',', '.'); ?>
+                        <?php else: ?>
+                            Rp. <?= number_format($barang['harga_barang'], 0, ',', '.'); ?>
                         <?php endif; ?>
-                        
-                        <h3 id="harga_barang_text" class="font-weight-semi-bold mb-4" style="margin-right: 10px;">
-                            <?php if (isset($barang['diskon']) && $barang['diskon'] > 0): ?>
-                                <span class="harga-coret">Rp. <?= number_format($barang['harga_barang'], 0, ',', '.'); ?></span>
-                                Rp. <?= number_format($barang['harga_barang'] * (1 - $barang['diskon'] / 100), 0, ',', '.'); ?>
-                            <?php else: ?>
-                                Rp. <?= number_format($barang['harga_barang'], 0, ',', '.'); ?>
-                            <?php endif; ?>
-                        </h3>
-                    </div>
+                    </h3>
+                </div>
 
-                    <div style="display: flex; align-items: center;">
-                        <h7 id="jumlah_barang_text" class="font-weight-semi-bold mb-4" style="margin-right: 10px;">Stok: <?= $barang['jumlah_barang']; ?></h7>
-                    </div>
+                <div style="display: flex; align-items: center;">
+                    <h7 id="jumlah_barang_text" class="font-weight-semi-bold mb-4" style="margin-right: 10px;">Stok: <?= $barang['jumlah_barang']; ?></h7>
+                </div>
 
+                <!-- Hilangkan Bagian Variasi Jika Tidak Ada -->
+                <?php if (!empty($variasi)): ?>
                     <strong class="mt-4 d-block">Variasi: </strong>
                     <div class="d-flex align-items-center mb-4 pt-2">
-                        <!-- Variasi radio button container -->
                         <?php foreach ($variasi as $vsi) : ?>
                             <div class="d-flex mb-3">
-                                <!-- Radio button untuk setiap variasi -->
                                 <div class="variasi-buttons">
                                     <input type="radio" value="<?= $vsi['variasi_nama']; ?>" class="pilihan-variasi" name="variasi" data-variasi="<?= $vsi['variasi_nama']; ?>" data-value="<?= $vsi['variasi_nama']; ?>" id="radio-<?= $vsi['variasi_nama']; ?>">
                                     <label for="radio-<?= $vsi['variasi_nama']; ?>" class="btn btn-outline-primary"><?= $vsi['variasi_nama']; ?></label>
@@ -146,32 +152,36 @@
                             </div>
                         <?php endforeach; ?>
                     </div>
+                <?php endif; ?>
 
-                    <div class="d-flex align-items-center mb-4 pt-2">
-                        <div class="input-group quantity mr-3" style="width: 130px;">
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-primary btn-minus">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                            <input type="text" class="form-control bg-secondary border-0 text-center" value="1" name="jumlah">
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-primary btn-plus">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                            </div>
+                <div class="d-flex align-items-center mb-4 pt-2">
+                    <div class="input-group quantity mr-3" style="width: 130px;">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-minus">
+                                <i class="fa fa-minus"></i>
+                            </button>
                         </div>
-                        <!-- Add To Cart Button -->
-                        <button type="submit" name="action" value="cart" formaction="<?= base_url(); ?>add_chart" class="btn btn-primary px-3">
-                            <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
-                        </button>
-
-                        <!-- Add To Wishlist Button -->
-                        <button type="submit" name="action" value="wishlist" formaction="<?= base_url('user/add_to_wishlist/' . $barang['id']); ?>" class="btn btn-warning px-3 ml-2">
-                            <i class="fa fa-heart mr-1"></i> Add To Wishlist
-                        </button>
+                        <input type="text" class="form-control bg-secondary border-0 text-center" value="1" name="jumlah">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-plus">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
                     </div>
-                </form>
+                    
+                    <!-- Add To Cart Button -->
+                    <button type="submit" name="action" value="cart" formaction="<?= base_url(); ?>add_chart" class="btn btn-primary px-3">
+                        <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
+                    </button>
+
+                    <!-- Add To Wishlist Button -->
+                    <button type="submit" name="action" value="wishlist" formaction="<?= base_url('user/add_to_wishlist/' . $barang['id']); ?>" class="btn btn-warning px-3 ml-2">
+                        <i class="fa fa-heart mr-1"></i> Add To Wishlist
+                    </button>
+                </div>
+            </form>
+
+
             </div>
 
             <div class="d-flex pt-2">

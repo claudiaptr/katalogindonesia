@@ -13,7 +13,6 @@ use App\Models\Transaksi;
 use App\Models\Model_Auth;
 use App\Models\CartModel;
 use App\Models\WishlistModel;
-use App\Models\UserModel;
 use App\Models\AlamatToko;
 use Google_Client;
 use App\Controllers\BaseController;
@@ -21,6 +20,7 @@ use App\Controllers\BaseController;
 class UserController extends BaseController
 {
     protected $barang;
+    protected $user;
     protected $fotoBarang;
     protected $kategori, $variasi, $opsi, $iklancarausel;
     protected $iklantetap, $cart, $session, $transaksi;
@@ -41,138 +41,196 @@ class UserController extends BaseController
         $this->iklantetap = new IklanTetap();
         $this->cart = \Config\Services::cart();
         $this->session = \Config\Services::session();
+        $this->user = new Model_Auth();
         $this->transaksi = new Transaksi();
         $this->alamat = new AlamatToko(); 
         $this->pager = \Config\Services::pager();
     }
 
-    public function home()
-    {
-        // Pagination setup
-        $pager = \Config\Services::pager();  // Make sure pager is available
-        $currentPage = $this->request->getVar('page') ? $this->request->getVar('page') : 1; 
-        $perPage = 4; 
-    
-        // Get paginated data
-        $barangData = $this->barang->getBarangWithAlamatPaginated($perPage, $currentPage); // Call the model for pagination
-    
-        // Extract paginated data
-        $barang = $barangData['barang'];  // The list of items
-        $total = $barangData['total'];    // Total number of items
-    
-        // Calculate the total number of pages
-        $totalPages = ceil($total / $perPage);  // Using ceil to round up the number of pages
-    
-        $ratingBarang = [];
-        $jumlahRating = [];
-    
-        if ($barang) {
-            foreach ($barang as &$value) {
-                // Process ratings
-                $avgRating = $this->db->table('ratingbarang')->where('idbarang', $value['id'])->selectAvg('rating')->get()->getRowArray();
-                $ratingBarang[$value['id']] = isset($avgRating['rating']) ? round($avgRating['rating'] * 2) / 2 : 0;
-                $jumlahRating[$value['id']] = $this->db->table('ratingbarang')->where('idbarang', $value['id'])->countAllResults();
-    
-                // Process addresses
-                $alamat = $this->alamat->getAlamatByUser($value['pemilik']);
-                if (!$alamat) {
-                    $alamat = [
-                        'kelurahan' => 'Alamat tidak tersedia',
-                    ];
-                }
-                $value['alamat'] = $alamat;
-            }
-        }
-    
-        // Prepare data for view
-        $data = [
-            'barang' => $barang,
-            'ratingBarang' => $ratingBarang,
-            'jumlahRatingBarang' => $jumlahRating,
-            'kategori' => $this->kategori->getSubKategori(),
-            'iklan_tetap_1' => $this->iklantetap->find(1),
-            'iklan_tetap_2' => $this->iklantetap->find(2),
-            'iklan_tetap_3' => $this->iklantetap->find(3),
-            'iklan_tetap_4' => $this->iklantetap->find(4),
-            'iklan_carausel' => $this->iklancarausel->findAll(),
-            'cart' => \Config\Services::cart(),
-            'menu' => 'dashboard',
-            'pager' => $pager,
-            'currentPage' => $currentPage,
-            'totalPages' => $totalPages, // Pass total pages to view for pagination
-        ];
-    
-        return view('user/home', $data);
-    }
-
-
-    public function myaccount()
+    public function home() 
 {
-    $userId = session()->get('user_id');
-
-
-    $cartModel = new CartModel();
-    $userModel = new Model_Auth();
-
-    $total_cart = 0;
-    if ($userId) {
-        $total_cart = $cartModel->totalItemsByUser($userId);
+    // Fetch all products without pagination
+    $barang = $this->barang->findAll();  // Get all items without pagination
+    
+    // If there are no products, you can set $barang to an empty array
+    if (!$barang) {
+        $barang = [];
     }
 
-    $kategori = $this->kategori->getSubKategori();
+    // Fetch ratings and addresses for each product
+    $ratingBarang = [];
+    $jumlahRating = [];
 
-    $user = $userModel->getLogin($userId);
+    foreach ($barang as &$value) {
+        // Process ratings
+        $avgRating = $this->db->table('ratingbarang')->where('idbarang', $value['id'])->selectAvg('rating')->get()->getRowArray();
+        $ratingBarang[$value['id']] = isset($avgRating['rating']) ? round($avgRating['rating'] * 2) / 2 : 0;
+        $jumlahRating[$value['id']] = $this->db->table('ratingbarang')->where('idbarang', $value['id'])->countAllResults();
+
+        // Process addresses
+        $alamat = $this->alamat->getAlamatByUser($value['pemilik']);
+        if (!$alamat) {
+            $alamat = [
+                'kelurahan' => 'Alamat tidak tersedia',
+            ];
+        }
+        $value['alamat'] = $alamat;
+    }
+
+    // Prepare data for the view
+    $data = [
+        'barang' => $barang, // Pass all products to the view
+        'ratingBarang' => $ratingBarang,
+        'jumlahRatingBarang' => $jumlahRating,
+        'kategori' => $this->kategori->getSubKategori(),
+        'iklan_tetap_1' => $this->iklantetap->find(1),
+        'iklan_tetap_2' => $this->iklantetap->find(2),
+        'iklan_tetap_3' => $this->iklantetap->find(3),
+        'iklan_tetap_4' => $this->iklantetap->find(4),
+        'iklan_carausel' => $this->iklancarausel->findAll(),
+        'cart' => \Config\Services::cart(),
+        'menu' => 'dashboard',
+    ];
+
+    // Return the view with the data
+    return view('user/home', $data);
+}
+
+public function myaccount()
+{
+
+    $userId = session()->get('id'); 
+    $user   = $this->user->getLogin($userId);
+
+    
+    if (!$user) {
+        return redirect()->to('/auth/login')->with('error', 'Pengguna tidak ditemukan. Silakan login kembali.');
+    }
 
 
-    var_dump($user);  // Memeriksa struktur data yang diterima
-    exit;
-    // if ($user === null) {
-    //     return redirect()->to('/error');  
-    // }
-
-    // $data = [
-    //     'user' => $user,               
-    //     'total_cart' => $total_cart,  
-    //     'kategori' => $kategori,      
-    //     'menu' => 'myaccount',     
-    //     'username' => $user['username'], 
-    // ];
-
-    // return view('user/myaccount', $data);
+    return view('user/myaccount', [
+        'user' => $user,
+        'kategori' => $this->kategori->getSubKategori(),
+        'menu' => 'myaccount', 
+    ]);
 }
 
 
-    public function detail($id)
-    {
-        // Mengambil satu barang berdasarkan ID
-        $barang = $this->barang->find($id);
+public function updateProfile()
+{
+    $userId = session()->get('id'); // ID user dari session
 
-        // Mengambil rata-rata rating untuk barang tersebut
-        $avgRating = $this->db->table('ratingbarang')->where('idbarang', $id)->selectAvg('rating')->get()->getRowArray();
+    // Validasi input
+    $validation = \Config\Services::validation();
+    $validation->setRules([
+        'username'   => 'required|min_length[3]|max_length[50]',
+        'email'      => 'required|valid_email|max_length[100]',
+        'no_hp'      => 'required|max_length[15]|numeric',
+        'alamat'     => 'permit_empty|max_length[255]',
+        'foto_profil'=> 'permit_empty|is_image[foto_profil]|max_size[foto_profil,1024]|mime_in[foto_profil,image/jpg,image/jpeg,image/png]',
+    ]);
 
-        // Bulatkan rating ke terdekat 0.5
-        $rating = isset($avgRating['rating']) ? round($avgRating['rating'] * 2) / 2 : 0;
-
-        // Menghitung total review untuk barang tersebut
-        $totalReview = $this->db->table('ratingbarang')->where('idbarang', $id)->countAllResults();
-
-        // Ambil semua review
-        $dataRating = $this->db->table('ratingbarang')->where('idbarang', $id)->orderBy('created_at', 'DESC')->get()->getResult();
-
-        $data = [
-            'barang' => $barang,
-            'rating' => $rating,
-            'totalReview' => $totalReview,
-            'foto_barang' => $this->fotoBarang->where('id_barang', $id)->findAll(),
-            'variasi' => $this->variasi->data_opsi($id),
-            'kategori' => $this->kategori->getSubKategori(),
-            'cart' => \Config\Services::cart(),
-            'menu' => 'shop',
-            'dataRating' => $dataRating, // Return all reviews
-        ];
-
-        return view('user/detail', $data);
+    if (!$this->validate($validation->getRules())) {
+        return redirect()->back()->withInput()->with('error', $validation->listErrors());
     }
+
+    // Ambil data pengguna saat ini
+    $user = $this->user->getLogin($userId);
+    if (!$user) {
+        return redirect()->to('/auth/login')->with('error', 'Pengguna tidak ditemukan. Silakan login kembali.');
+    }
+
+    // Proses upload gambar profil jika ada
+    $fotoProfil = $this->request->getFile('foto_profil');
+    $newFileName = $user['foto_profil']; // Default to the current profile picture
+
+    if ($fotoProfil->isValid() && !$fotoProfil->hasMoved()) {
+        // Generate a new file name if the upload is valid
+        $newFileName = $fotoProfil->getRandomName();
+
+        // Move the uploaded file to the 'uploads/profiles' directory
+        $fotoProfil->move('uploads/profiles', $newFileName);
+
+        // Hapus gambar lama jika ada
+        if ($user['foto_profil'] && file_exists('uploads/profiles/' . $user['foto_profil'])) {
+            unlink('uploads/profiles/' . $user['foto_profil']);
+        }
+    }
+
+    // Data untuk diperbarui
+    $data = [
+        'username'    => $this->request->getPost('username'),
+        'email'       => $this->request->getPost('email'),
+        'no_hp'       => $this->request->getPost('no_hp'),
+        'alamat'      => $this->request->getPost('alamat'),
+        'foto_profil' => $newFileName, // Update with the new file name
+    ];
+
+    // Update ke database
+    $this->user->update_register($data, $userId);
+
+    // Redirect dengan pesan sukses
+    return redirect()->to('/myaccount')->with('success', 'Profil berhasil diperbarui.');
+}
+
+
+public function detail($id)
+{
+    $barang = $this->barang->find($id);
+
+    // Mengambil data rating barang
+    $ratingData = $this->db->table('ratingbarang')
+        ->select('AVG(rating) as avg_rating, COUNT(*) as total_review')
+        ->where('idbarang', $id)
+        ->get()
+        ->getRowArray();
+
+    // Menangani jika ada data rating
+    if ($ratingData) {
+        $rating = isset($ratingData['avg_rating']) ? round($ratingData['avg_rating'] * 2) / 2 : 0;
+        $totalReview = isset($ratingData['total_review']) ? $ratingData['total_review'] : 0;
+    } else {
+        $rating = 0;
+        $totalReview = 0;
+    }
+
+    // Mengambil data rating terperinci
+    $dataRating = $this->db->table('ratingbarang')
+        ->where('idbarang', $id)
+        ->orderBy('created_at', 'DESC')
+        ->get()
+        ->getResult();
+
+    // Mengambil foto barang, menggunakan gambar default jika tidak ada
+    $fotoBarang = $this->fotoBarang->where('id_barang', $id)->findAll();
+    if (empty($fotoBarang)) {
+        $fotoBarang = [['foto' => 'default-placeholder.jpg']]; // Gambar placeholder
+    }
+
+    // Memeriksa variasi barang (jika ada)
+    $variasi = $this->variasi->data_opsi($id);
+
+    // Mengambil kategori produk
+    $kategori = $this->kategori->getSubKategori();
+
+    // Menyusun data untuk dikirim ke view
+    $data = [
+        'barang' => $barang,
+        'rating' => $rating,           // Nilai rating, 0 jika tidak ada
+        'totalReview' => $totalReview, // Total review, 0 jika tidak ada
+        'foto_barang' => $fotoBarang,
+        'variasi' => $variasi, // Variasi produk
+        'kategori' => $kategori,
+        'cart' => \Config\Services::cart(),
+        'menu' => 'shop',
+        'dataRating' => $dataRating, // Daftar review
+    ];
+
+    return view('user/detail', $data);
+}
+
+
+
 
     public function review($id)
     {
@@ -208,77 +266,129 @@ class UserController extends BaseController
     }
 
     public function shop()
+    {
+        $provinsi = strtolower(str_replace(["PROVINSI", "+"], ["", " "], $this->request->getGet('provinsi')));
+        $kabupaten = strtolower(str_replace(["KABUPATEN", "+"], ["", " "], $this->request->getGet('kabupaten')));
+        $kecamatan = strtolower(str_replace(["KECAMATAN", "+"], ["", " "], $this->request->getGet('kecamatan')));
+        $kelurahan = strtolower(str_replace(["KELURAHAN", "+"], ["", " "], $this->request->getGet('kelurahan')));
+    
+        $provinsi = trim(ucwords(strtolower($provinsi)));
+        $kabupaten = trim(ucwords(strtolower($kabupaten)));
+        $kecamatan = trim(ucwords(strtolower($kecamatan)));
+        $kelurahan = trim(ucwords(strtolower($kelurahan)));
+    
+        if ($provinsi && $kabupaten && $kecamatan && $kelurahan) {
+            // If location filters are provided, use getBarangByWilayah
+            $data['barang'] = $this->barang->getBarangByWilayah($provinsi, $kabupaten, $kecamatan, $kelurahan);
+        } else {
+            // Otherwise, fetch all products (you can use getBarangWithAlamat or similar)
+            $data['barang'] = $this->barang->getNewBarang(10); // Adjust the limit as needed
+        }
+    
+        // Fetch barang items berdasarkan nama kategori 'barang'
+        $kategoriNama = 'barang'; 
+        $barang = $this->barang->getBarangByNamaKategori($kategoriNama);
+    
+        // Ambil rating semua barang yang relevan sekaligus
+        $barangIds = array_column($barang, 'id'); 
+        $ratings = $this->db->table('ratingbarang')
+            ->whereIn('idbarang', $barangIds)
+            ->select('idbarang, AVG(rating) as avg_rating')
+            ->groupBy('idbarang')
+            ->get()
+            ->getResultArray();
+    
+        // Buat array rating dengan ID barang sebagai key
+        $rating = [];
+        foreach ($ratings as $r) {
+            // Bulatkan rating ke terdekat 0.5
+            $rating[$r['idbarang']] = round($r['avg_rating'] * 2) / 2;
+        }
+    
+        // Prepare data for view
+        $data = [
+            'barang' => $data['barang'], // Data barang
+            'kategori' => $this->kategori->getSubKategori(),
+            'cart' => \Config\Services::cart(),
+            'menu' => 'shop',
+            'rating' => $rating,
+        ];
+    
+        // Return the view with data
+        return view('user/shop', $data);
+    }
+    
+
+public function filter_toko()
 {
-    // Fetch barang items berdasarkan nama kategori 'barang'
-    $kategoriNama = 'barang'; // Jika ingin mengambil berdasarkan nama kategori
-    $barang = $this->barang->getBarangByNamaKategori($kategoriNama); // Mengambil barang berdasarkan nama kategori
+    $provinsi = $this->request->getVar('provinsi');
+    $kabupaten = $this->request->getVar('kabupaten');
+    $kecamatan = $this->request->getVar('kecamatan');
+    $kelurahan = $this->request->getVar('kelurahan');
 
-    // Ambil rating semua barang yang relevan sekaligus
-    $barangIds = array_column($barang, 'id'); // Ambil ID barang dari barang yang sudah diambil
-    $ratings = $this->db->table('ratingbarang')
-        ->whereIn('idbarang', $barangIds) // Ambil rating berdasarkan ID barang yang ada
-        ->select('idbarang, AVG(rating) as avg_rating') // Hitung rata-rata rating per barang
-        ->groupBy('idbarang') // Kelompokkan berdasarkan idbarang
-        ->get()
-        ->getResultArray();
+    // Panggil model untuk mengambil data barang sesuai filter
+    $barang = $this->barang->getbarang($provinsi, $kabupaten, $kecamatan, $kelurahan);
+    log_message('info', 'Data barang yang dikembalikan: ' . json_encode($barang));
+    // Mengembalikan data barang dalam bentuk JSON
+    return $this->response->setJSON($barang);
+}
 
-    // Buat array rating dengan ID barang sebagai key
-    $rating = [];
-    foreach ($ratings as $r) {
-        // Bulatkan rating ke terdekat 0.5
-        $rating[$r['idbarang']] = round($r['avg_rating'] * 2) / 2;
+public function jasa()
+{
+    // Ambil filter lokasi dari input GET
+    $provinsi = trim(ucwords(strtolower(str_replace(["PROVINSI", "+"], ["", " "], $this->request->getGet('provinsi')))));
+    $kabupaten = trim(ucwords(strtolower(str_replace(["KABUPATEN", "+"], ["", " "], $this->request->getGet('kabupaten')))));
+    $kecamatan = trim(ucwords(strtolower(str_replace(["KECAMATAN", "+"], ["", " "], $this->request->getGet('kecamatan')))));
+    $kelurahan = trim(ucwords(strtolower(str_replace(["KELURAHAN", "+"], ["", " "], $this->request->getGet('kelurahan')))));
+
+    // Ambil data barang berdasarkan kategori 'jasa'
+    $kategoriNama = 'jasa';
+    $barang = $this->barang->getBarangByNamaKategori($kategoriNama);
+
+    // Filter barang berdasarkan lokasi jika filter lokasi diberikan
+    if ($provinsi && $kabupaten && $kecamatan && $kelurahan) {
+        $barang = array_filter($barang, function ($item) use ($provinsi, $kabupaten, $kecamatan, $kelurahan) {
+            return (
+                strtolower($item['provinsi']) === strtolower($provinsi) &&
+                strtolower($item['kabupaten']) === strtolower($kabupaten) &&
+                strtolower($item['kecamatan']) === strtolower($kecamatan) &&
+                strtolower($item['kelurahan']) === strtolower($kelurahan)
+            );
+        });
     }
 
-    // Persiapkan data untuk view
+    // Ambil ID barang untuk menghitung rating
+    $barangIds = array_column($barang, 'id');
+    $rating = [];
+
+    if (!empty($barangIds)) {
+        $ratings = $this->db->table('ratingbarang')
+            ->whereIn('idbarang', $barangIds)
+            ->select('idbarang, AVG(rating) as avg_rating')
+            ->groupBy('idbarang')
+            ->get()
+            ->getResultArray();
+
+        // Buat array rating dengan ID barang sebagai key
+        foreach ($ratings as $r) {
+            $rating[$r['idbarang']] = round($r['avg_rating'] * 2) / 2; // Bulatkan ke 0.5
+        }
+    }
+
+    // Siapkan data untuk dikirim ke view
     $data = [
         'barang' => $barang,
         'kategori' => $this->kategori->getSubKategori(),
         'cart' => \Config\Services::cart(),
-        'menu' => 'shop',
+        'menu' => 'jasa',
         'rating' => $rating,
     ];
 
-    // Return view dengan data yang telah disiapkan
-    return view('user/shop', $data);
-}
-
-
-    public function filter_toko()
-    {
-        $provinsi = $this->request->getVar('provinsi');
-        $kabupaten = $this->request->getVar('kabupaten');
-        $kecamatan = $this->request->getVar('kecamatan');
-        $kelurahan = $this->request->getVar('kelurahan');
-
-        // Panggil model untuk mengambil data barang sesuai filter
-        $barang = $this->barang->getbarang($provinsi, $kabupaten, $kecamatan, $kelurahan);
-        log_message('info', 'Data barang yang dikembalikan: ' . json_encode($barang));
-        // Mengembalikan data barang dalam bentuk JSON
-        return $this->response->setJSON($barang);
-    }
-
-
-
-    // Jasa
-    public function jasa()
-{
-    helper('form');
-
-    $data = [
-        'barang' => $this->barang->getBarangByNamaKategori('Jasa'), 
-        'barang_baru' => $this->barang->getNewBarang(8),
-        'kategori' => $this->kategori->getSubKategori(), 
-        'menu' => 'jasa', // Menentukan menu aktif
-        'iklan_tetap_1' => $this->iklantetap->find(1), 
-        'iklan_tetap_2' => $this->iklantetap->find(2), 
-        'iklan_tetap_3' => $this->iklantetap->find(3), 
-        'iklan_tetap_4' => $this->iklantetap->find(4), 
-        'iklan_carausel' => $this->iklancarausel->findAll() 
-    ];
-
-    // Menampilkan view 'user/jasa' dengan data yang telah dipersiapkan
+    // Return view
     return view('user/jasa', $data);
 }
+
+
 
 
     public function contact()
@@ -337,24 +447,15 @@ class UserController extends BaseController
         echo '</pre>';
     }
     public function add_chart()
-    {
+{
+    $cart = \Config\Services::cart();
+    $variasi = $this->request->getVar('variasi');
+    $id_user = $this->session->get('id');
+    $options = [];
 
-        $cart = \Config\Services::cart();
-        $variasi = $this->request->getVar('variasi');
-        $id_user = $this->session->get('id');
-        $options = [];
-
-        if ($variasi && is_array($variasi)) {
-
-            foreach ($variasi as $variation) {
-                $options[$variation] = $this->request->getVar($variation); // Get the selected option for this variation
-            }
-        }
-
-        if (empty($this->request->getPost('variasi'))) {
-            return redirect()->back()->with('error', 'Anda belum memilih spesifikasi');
-        }
-
+    // Jika variasi tidak ada, barang bisa langsung masuk ke keranjang
+    if (empty($variasi)) {
+        // Langsung masukkan ke keranjang tanpa opsi variasi
         $qty = $this->request->getPost('jumlah');
         $id = $this->request->getPost('id');
         $jumlahbarang = $this->db->table('barang')->where('id', $id)->get()->getRow();
@@ -363,17 +464,56 @@ class UserController extends BaseController
         if ($jumlahbarangisa < 0) {
             return redirect()->back()->with('error', 'Jumlah barang tidak mencukupi, stok yang tersedia adalah ' . $jumlahbarang->jumlah_barang);
         }
+
+        // Menambahkan barang ke cart tanpa variasi
         $cart->insert(array(
             'id'      => $this->request->getPost('id'),
             'qty'     => $this->request->getPost('jumlah'),
             'price'   => $this->request->getPost('harga_barang'),
             'name'    => $this->request->getPost('judul_barang'),
             'id_barang'    => $this->request->getPost('id_barang'),
-            'options' => $options,
+            'options' => $options,  // Variasi tidak digunakan
             'id_user' => $id_user
         ));
+
         return redirect()->to('cart');
     }
+
+    // Jika variasi ada, lakukan pengecekan seperti biasa
+    if ($variasi && is_array($variasi)) {
+        foreach ($variasi as $variation) {
+            $options[$variation] = $this->request->getVar($variation); // Ambil opsi variasi yang dipilih
+        }
+    }
+
+    // Cek apakah variasi dipilih, jika tidak maka beri pesan error
+    if (empty($this->request->getPost('variasi'))) {
+        return redirect()->back()->with('error', 'Anda belum memilih spesifikasi');
+    }
+
+    $qty = $this->request->getPost('jumlah');
+    $id = $this->request->getPost('id');
+    $jumlahbarang = $this->db->table('barang')->where('id', $id)->get()->getRow();
+
+    $jumlahbarangisa = $jumlahbarang->jumlah_barang - $qty;
+    if ($jumlahbarangisa < 0) {
+        return redirect()->back()->with('error', 'Jumlah barang tidak mencukupi, stok yang tersedia adalah ' . $jumlahbarang->jumlah_barang);
+    }
+
+    // Menambahkan barang dengan variasi ke cart
+    $cart->insert(array(
+        'id'      => $this->request->getPost('id'),
+        'qty'     => $this->request->getPost('jumlah'),
+        'price'   => $this->request->getPost('harga_barang'),
+        'name'    => $this->request->getPost('judul_barang'),
+        'id_barang'    => $this->request->getPost('id_barang'),
+        'options' => $options,
+        'id_user' => $id_user
+    ));
+
+    return redirect()->to('cart');
+}
+
     public function harga_barang()
     {
         $request = service('request');
@@ -433,6 +573,34 @@ class UserController extends BaseController
         return redirect()->to('cart');
     }
 
+    public function transactionHistory()
+    {
+        $transactionModel = new Transaksi();
+
+        // Ambil ID user yang sedang login
+        $userId = session()->get('id');
+
+        if (!$userId) {
+            return redirect()->to('/login')->with('error', 'Silakan login terlebih dahulu.');
+        }
+
+        $transactions = $transactionModel
+            ->select('transaksi.*, barang.judul_barang, barang.harga_barang, barang.foto_barang')
+            ->join('barang', 'barang.id = transaksi.id_barang')
+            ->where('transaksi.id_user', $userId)
+            ->orderBy('transaksi.created_at', 'DESC')
+            ->findAll();
+
+        $data = [
+            'kategori' => $this->kategori->getSubKategori(),
+            'transactions' => $transactions,
+            'menu' => 'transaction_history',
+        ];
+
+        // Kirim semua data ke view
+        return view('user/transaction_history', $data);
+    }
+
         public function wishlist()
         {
 
@@ -487,7 +655,7 @@ class UserController extends BaseController
             public function profile()
             {
                 // Assuming you have a model to get user data
-                $userModel = new UserModel();
+                $userModel = new Model_Auth();
                 $userId = session()->get('user_id'); // Adjust this according to how you get the user ID
                 $user = $userModel->find($userId);
 
@@ -510,11 +678,32 @@ class UserController extends BaseController
                     'barang' => $barang,
                     'title'=> $title,
                 ];
-            
+
                 // Return view dengan data pencarian
-                return view('user/hasil', $data);
+                return view('user/hasil_pencarian', $data);
+            }
+
+            public function subkategori()
+            {
+                $subkategoriNama = $this->request->getGet('subkategori_nama');
+                
+                // Query the database for products based on subkategoriNama
+                $barang = $this->barang->getProductsBySubkategori($subkategoriNama);
+            
+                // Prepare the data to be passed to the view
+                $data = [
+                    'kategori' => $this->kategori->getSubKategori(),
+                    'menu' => 'hasil_pencarian',
+                    'barang' => $barang,
+                ];
+            
+                return view('user/hasil_pencarian', $data);
             }
             
-            
+
+
+
+
 }
+
 
