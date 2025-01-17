@@ -347,12 +347,7 @@ class AdminController extends BaseController
             'jumlah_verifikasi' => $this->barang->where('verifikasi', 1)->countAllResults(),
             'jumlah_verifikasi_pembayaran' => $this->transaksi->where('verifikasi', 1)->countAllResults()
         ];
-        // $coba = $this->transaksi
-        // ->select('transaksi.*, barang.judul_barang, barang.pemilik, user.username')
-        // ->join('barang', 'barang.id = transaksi.id_barang')
-        // ->join('user', 'user.id = transaksi.id_user')
-        // ->where('transaksi.verifikasi', 1)->findAll();
-        // dd($coba);
+    
 
         return view('admin/pembayaran/view_blm_verifikasi', $data);
     }
@@ -364,13 +359,14 @@ class AdminController extends BaseController
             'transaksi' => $this->transaksi
                 ->select('transaksi.*, barang.judul_barang, barang.pemilik, user_transaksi.username as username_transaksi, user_barang.username as username_pemilik')
                 ->join('barang', 'barang.id = transaksi.id_barang')
-                ->join('user as user_transaksi', 'user_transaksi.id = transaksi.id_user') // Alias untuk user yang terkait dengan transaksi
-                ->join('user as user_barang', 'user_barang.id = barang.pemilik') // Alias untuk user yang terkait dengan barang
+                ->join('user as user_transaksi', 'user_transaksi.id = transaksi.id_user') 
+                ->join('user as user_barang', 'user_barang.id = barang.pemilik') 
                 ->find($id),
             'jumlah_verifikasi' => $this->barang->where('verifikasi', 1)->countAllResults()
         ];
         return view('admin/pembayaran/detail_pembayaran', $data);
     }
+    
     public function verifikasi_pembayaran($id)
     {
         $this->transaksi->save([

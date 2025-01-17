@@ -72,6 +72,7 @@ $keranjang = $cart->contentsByUser($id_user);
                             <input class="form-control" name="sub_total[]" type="hidden" value="<?= $krng['subtotal']; ?>">
                             <input class="form-control" name="id_barang[]" type="hidden" value="<?= $krng['id_barang']; ?>">
                             <input class="form-control" name="jumlah[]" type="hidden" value="<?= $krng['qty']; ?>">
+                            <input class="form-control" name="variasi[]" type="hidden" value="<?= $krng['variasi']; ?>">
                             <textarea name="options[]" style="display:none;"><?= htmlspecialchars(serialize($krng['options'])); ?></textarea>
                         <?php endforeach; ?>
                         <div class="col-md-12 form-group">

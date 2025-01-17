@@ -77,33 +77,38 @@
                             </h2>
                         </div>
                         <div class="mt-4 row ">
+                            <!-- Tombol Verifikasi hanya muncul jika verifikasi == 1 -->
                             <?php if ($transaksi['verifikasi'] == 1) : ?>
                                 <div class="col">
                                     <form class="verifikasi" action="<?= base_url(); ?>admin/verifikasi_pembayaran/<?= $transaksi['id']; ?>" method="post">
                                         <?= csrf_field(); ?>
                                         <input type="hidden" name="_method" value="PUT">
-                                        <button class="btn btn-success btn-lg btn-flat "> <i class="fas fa-check fa-lg mr-2"></i>Verifikasi</button>
+                                        <button class="btn btn-success btn-lg btn-flat">
+                                            <i class="fas fa-check fa-lg mr-2"></i>Verifikasi
+                                        </button>
                                     </form>
                                 </div>
-                            <?php endif ?>
+                            <?php endif; ?>
+
+                            <!-- Tombol Tolak muncul jika verifikasi == 1 atau verifikasi == 3 -->
                             <?php if ($transaksi['verifikasi'] == 1 || $transaksi['verifikasi'] == 3) : ?>
                                 <div class="col">
                                     <form class="tolak" action="<?= base_url(); ?>admin/tolak_verifikasi_pembayaran/<?= $transaksi['id']; ?>" method="post">
                                         <?= csrf_field(); ?>
                                         <input type="hidden" name="_method" value="PUT">
-                                        <button class="btn btn-danger btn-lg btn-flat "> <i class="fas fa-ban fa-lg mr-2"></i>Tolak</button>
+                                        <button class="btn btn-danger btn-lg btn-flat">
+                                            <i class="fas fa-ban fa-lg mr-2"></i>Tolak
+                                        </button>
                                     </form>
                                 </div>
-                            <?php endif ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
-
             </div>
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
-
     </section>
 </div>
 <?= $this->endSection(); ?>

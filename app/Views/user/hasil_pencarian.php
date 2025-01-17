@@ -27,10 +27,5 @@
     </div>
 </div>
 
-
-<!-- Shop End -->
-
-
-
 <?= $this->endSection(); ?>
 

@@ -19,8 +19,8 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <a href="<?= base_url(); ?>sales/add_jasa" class="btn btn-primary">Tambah Jasa</a>
-                       
+                        <a href="<?= base_url(); ?>sales/jasa/add_jasa" class="btn btn-primary">Tambah Jasa</a>
+
                     </div><!-- /.box-header -->
                     <div class="box-body">
                         <table id="example1" class="table table-bordered table-striped">
@@ -48,11 +48,11 @@
                                         <td><?= number_format($bk['harga_barang'], 0, ',', '.'); ?></td>
                                         <td><?= number_format($bk['harga_setelah_diskon'], 0, ',', '.'); ?></td>
                                         <td>
-                                            <?php if ($bk['verifikasi']==1) : ?>
+                                            <?php if ($bk['verifikasi'] == 1) : ?>
                                                 <span class="label label-warning">Pending</span>
-                                            <?php elseif($bk['verifikasi']==2) : ?>
+                                            <?php elseif ($bk['verifikasi'] == 2) : ?>
                                                 <span class="label label-danger">Ditolak</span>
-                                            <?php elseif($bk['verifikasi']==3) : ?>
+                                            <?php elseif ($bk['verifikasi'] == 3) : ?>
                                                 <span class="label label-success">Diterima</span>
                                             <?php endif ?>
                                         </td>

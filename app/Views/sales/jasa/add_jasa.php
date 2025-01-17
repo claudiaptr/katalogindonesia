@@ -26,7 +26,7 @@
 
     <!-- Main content -->
     <section class="content">
-        <form role="form" id="demoform" method="post" enctype="multipart/form-data" action="<?= base_url('sales/store_jasa'); ?>">
+        <form role="form" id="demoform" method="post" enctype="multipart/form-data" action="<?= base_url('sales/jasa/store_jasa'); ?>">
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box box-warning">

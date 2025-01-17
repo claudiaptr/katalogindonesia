@@ -244,8 +244,6 @@ class UserController extends BaseController
     
     
 
-
-
     public function review($id)
     {
 
@@ -459,15 +457,24 @@ public function jasa()
         echo '</pre>';
     }
     public function add_chart()
-{
-    $cart = \Config\Services::cart();
-    $variasi = $this->request->getVar('variasi');
-    $id_user = $this->session->get('id');
-    $options = [];
+    {
 
-    // Jika variasi tidak ada, barang bisa langsung masuk ke keranjang
-    if (empty($variasi)) {
-        // Langsung masukkan ke keranjang tanpa opsi variasi
+        $cart = \Config\Services::cart();
+        $variasi = $this->request->getVar('variasi');
+        $id_user = $this->session->get('id');
+        $options = [];
+
+        if ($variasi && is_array($variasi)) {
+
+            foreach ($variasi as $variation) {
+                $options[$variation] = $this->request->getVar($variation); // Get the selected option for this variation
+            }
+        }
+
+        if (empty($this->request->getPost('variasi'))) {
+            return redirect()->back()->with('error', 'Anda belum memilih spesifikasi');
+        }
+
         $qty = $this->request->getPost('jumlah');
         $id = $this->request->getPost('id');
         $jumlahbarang = $this->db->table('barang')->where('id', $id)->get()->getRow();
@@ -477,54 +484,20 @@ public function jasa()
             return redirect()->back()->with('error', 'Jumlah barang tidak mencukupi, stok yang tersedia adalah ' . $jumlahbarang->jumlah_barang);
         }
 
-        // Menambahkan barang ke cart tanpa variasi
+        // dd($id);
+
         $cart->insert(array(
             'id'      => $this->request->getPost('id'),
             'qty'     => $this->request->getPost('jumlah'),
             'price'   => $this->request->getPost('harga_barang'),
             'name'    => $this->request->getPost('judul_barang'),
+            'variasi'    => $this->request->getPost('variasi'),
             'id_barang'    => $this->request->getPost('id_barang'),
-            'options' => $options,  // Variasi tidak digunakan
+            'options' => $options,
             'id_user' => $id_user
         ));
-
         return redirect()->to('cart');
     }
-
-    // Jika variasi ada, lakukan pengecekan seperti biasa
-    if ($variasi && is_array($variasi)) {
-        foreach ($variasi as $variation) {
-            $options[$variation] = $this->request->getVar($variation); // Ambil opsi variasi yang dipilih
-        }
-    }
-
-    // Cek apakah variasi dipilih, jika tidak maka beri pesan error
-    if (empty($this->request->getPost('variasi'))) {
-        return redirect()->back()->with('error', 'Anda belum memilih spesifikasi');
-    }
-
-    $qty = $this->request->getPost('jumlah');
-    $id = $this->request->getPost('id');
-    $jumlahbarang = $this->db->table('barang')->where('id', $id)->get()->getRow();
-
-    $jumlahbarangisa = $jumlahbarang->jumlah_barang - $qty;
-    if ($jumlahbarangisa < 0) {
-        return redirect()->back()->with('error', 'Jumlah barang tidak mencukupi, stok yang tersedia adalah ' . $jumlahbarang->jumlah_barang);
-    }
-
-    // Menambahkan barang dengan variasi ke cart
-    $cart->insert(array(
-        'id'      => $this->request->getPost('id'),
-        'qty'     => $this->request->getPost('jumlah'),
-        'price'   => $this->request->getPost('harga_barang'),
-        'name'    => $this->request->getPost('judul_barang'),
-        'id_barang'    => $this->request->getPost('id_barang'),
-        'options' => $options,
-        'id_user' => $id_user
-    ));
-
-    return redirect()->to('cart');
-}
 
     public function harga_barang()
     {
@@ -556,6 +529,7 @@ public function jasa()
         $sub_total = $this->request->getVar('sub_total');
         $total = $this->request->getVar('total');
         $jumlah = $this->request->getVar('jumlah');
+        $variasi = $this->request->getVar('variasi');
         $nomortelp = $this->request->getVar('nomortelp');
         $alamat = $this->request->getVar('alamat');
         $bukti_pembayaran = $this->request->getFile('bukti_pembayaran');
@@ -575,6 +549,7 @@ public function jasa()
                     'nomortelp' => $nomortelp,
                     'alamat' => $alamat,
                     'bukti_pembayaran' => $nama_foto,
+                    'variasi' => $variasi[$key],
                     'verifikasi' => 1,
                 ];
             }
@@ -704,6 +679,7 @@ public function jasa()
                     'kategori' => $this->kategori->getSubKategori(),
                     'menu' => 'cart',
                     'barang' => $barang,
+                    'subkategori' => $subkategoriNama,
                 ];
 
                 return view('user/hasil_pencarian', $data);

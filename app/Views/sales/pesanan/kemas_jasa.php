@@ -75,10 +75,10 @@
                             </tbody>
                         </table>
                     </div><!-- /.box-body -->
-                </div><!-- /.box -->
-            </div><!-- /.col -->
-        </div><!-- /.row -->
-    </section><!-- /.content -->
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
 <?= $this->endSection(); ?>
 

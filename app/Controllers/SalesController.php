@@ -496,7 +496,10 @@ class SalesController extends BaseController
         $id = session()->get('id');
         $data = [
             'barang' => $this->transaksi
-                ->select('transaksi.id as transaksi_id, transaksi.verifikasi as verifikasi_transaksi, transaksi.*, barang.id as barang_id, barang.verifikasi as verifikasi_barang, barang.*, kategori.nama_kategori as kategori_name, sub_kategori.nama_sub_kategori as sub_kategori_name,user.username')
+                ->select('transaksi.id as transaksi_id, transaksi.verifikasi as verifikasi_transaksi, transaksi.total, transaksi.jumlah, transaksi.options, transaksi.nomortelp, transaksi.alamat, transaksi.bukti_pembayaran, 
+                         barang.id as barang_id, barang.foto_barang, barang.judul_barang, barang.harga_barang, barang.verifikasi as verifikasi_barang, barang.jumlah_barang, 
+                         kategori.nama_kategori as kategori_name, sub_kategori.nama_sub_kategori as sub_kategori_name, 
+                         user.username, transaksi.variasi')
                 ->join('barang', 'barang.id = transaksi.id_barang')
                 ->join('kategori', 'kategori.id = barang.id_kategori_barang')
                 ->join('sub_kategori', 'sub_kategori.id = barang.id_sub_kategori_barang')
@@ -507,9 +510,13 @@ class SalesController extends BaseController
                 ->findAll(),
             'menu' => 'pesanan',
         ];
-
+    
         return view('sales/pesanan/view_pesanan', $data);
     }
+    
+
+    
+
 
     public function kemas($idtransaksi)
     {
@@ -911,12 +918,12 @@ class SalesController extends BaseController
 
         return view('sales/pesanan/kemas_pesanan', $data);
     }
-    public function kemasan_jasa()
+        public function kemasan_jasa()
     {
         $id = session()->get('id');
         $data = [
             'barang' => $this->transaksi
-                ->select('transaksi.id as transaksi_id, transaksi.verifikasi as verifikasi_transaksi, transaksi.*, barang.id as barang_id, barang.verifikasi as verifikasi_barang, barang.*, kategori.nama_kategori as kategori_name, sub_kategori.nama_sub_kategori as sub_kategori_name,user.username')
+                ->select('transaksi.id as transaksi_id, transaksi.verifikasi as verifikasi_transaksi, transaksi.*, barang.id as barang_id, barang.verifikasi as verifikasi_barang, barang.*, kategori.nama_kategori as kategori_name, sub_kategori.nama_sub_kategori as sub_kategori_name, user.username, transaksi.options')
                 ->join('barang', 'barang.id = transaksi.id_barang')
                 ->join('kategori', 'kategori.id = barang.id_kategori_barang')
                 ->join('sub_kategori', 'sub_kategori.id = barang.id_sub_kategori_barang')
@@ -931,6 +938,7 @@ class SalesController extends BaseController
 
         return view('sales/pesanan/kemas_jasa', $data);
     }
+
     public function selesai_pesanan()
     {
         $id = session()->get('id');
