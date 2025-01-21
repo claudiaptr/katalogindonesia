@@ -456,48 +456,62 @@ public function jasa()
         print_r($data);
         echo '</pre>';
     }
+
     public function add_chart()
-    {
+{
+    $cart = \Config\Services::cart();
+    $variasi = $this->request->getVar('variasi'); // Ambil variasi yang dipilih
+    $id_user = $this->session->get('id');
+    $options = [];
 
-        $cart = \Config\Services::cart();
-        $variasi = $this->request->getVar('variasi');
-        $id_user = $this->session->get('id');
-        $options = [];
-
-        if ($variasi && is_array($variasi)) {
-
-            foreach ($variasi as $variation) {
-                $options[$variation] = $this->request->getVar($variation); // Get the selected option for this variation
-            }
+    // Pastikan jika ada variasi yang dipilih, simpan dalam options
+    if ($variasi) {
+        // Pastikan hanya satu variasi yang dipilih
+        if (is_array($variasi)) {
+            // Jika ada lebih dari satu variasi, kembalikan error
+            return redirect()->back()->with('error', 'Hanya satu variasi yang bisa dipilih.');
         }
+        // Simpan variasi yang dipilih dalam options
+        $options['variasi'] = $variasi;  
+    }
 
-        if (empty($this->request->getPost('variasi'))) {
+    // Cek apakah variasi diperlukan dan belum dipilih
+    if ($this->request->getPost('has_variasi') == 1) {
+        if (empty($variasi)) {
             return redirect()->back()->with('error', 'Anda belum memilih spesifikasi');
         }
-
-        $qty = $this->request->getPost('jumlah');
-        $id = $this->request->getPost('id');
-        $jumlahbarang = $this->db->table('barang')->where('id', $id)->get()->getRow();
-
-        $jumlahbarangisa = $jumlahbarang->jumlah_barang - $qty;
-        if ($jumlahbarangisa < 0) {
-            return redirect()->back()->with('error', 'Jumlah barang tidak mencukupi, stok yang tersedia adalah ' . $jumlahbarang->jumlah_barang);
-        }
-
-        // dd($id);
-
-        $cart->insert(array(
-            'id'      => $this->request->getPost('id'),
-            'qty'     => $this->request->getPost('jumlah'),
-            'price'   => $this->request->getPost('harga_barang'),
-            'name'    => $this->request->getPost('judul_barang'),
-            'variasi'    => $this->request->getPost('variasi'),
-            'id_barang'    => $this->request->getPost('id_barang'),
-            'options' => $options,
-            'id_user' => $id_user
-        ));
-        return redirect()->to('cart');
     }
+
+    // Ambil jumlah dan ID barang
+    $qty = $this->request->getPost('jumlah');
+    $id = $this->request->getPost('id');
+    
+    // Ambil data barang dari database berdasarkan ID
+    $jumlahbarang = $this->db->table('barang')->where('id', $id)->get()->getRow();
+
+    // Cek stok yang tersedia
+    $jumlahbarangisa = $jumlahbarang->jumlah_barang - $qty;
+    if ($jumlahbarangisa < 0) {
+        return redirect()->back()->with('error', 'Jumlah barang tidak mencukupi, stok yang tersedia adalah ' . $jumlahbarang->jumlah_barang);
+    }
+
+    // Masukkan item ke dalam keranjang (cart)
+    $cart->insert(array(
+        'id'        => $this->request->getPost('id'),
+        'qty'       => $qty,
+        'price'     => $this->request->getPost('harga_barang'),
+        'name'      => $this->request->getPost('judul_barang'),
+        'variasi'   => $variasi,  // Menyertakan variasi jika ada
+        'id_barang' => $this->request->getPost('id_barang'),
+        'options'   => $options,  // Menyimpan variasi dalam options
+        'id_user'   => $id_user
+    ));
+
+    // Redirect ke halaman keranjang belanja
+    return redirect()->to('cart');
+}
+
+
 
     public function harga_barang()
     {

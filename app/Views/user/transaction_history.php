@@ -31,8 +31,10 @@
                             <select name="status" class="form-control">
                                 <option value="">Semua</option>
                                 <option value="1" <?= ($filters['status'] ?? '') == '1' ? 'selected' : '' ?>>Menunggu Verifikasi</option>
-                                <option value="2" <?= ($filters['status'] ?? '') == '2' ? 'selected' : '' ?>>Diproses</option>
-                                <option value="3" <?= ($filters['status'] ?? '') == '3' ? 'selected' : '' ?>>Selesai</option>
+                                <option value="2" <?= ($filters['status'] ?? '') == '3' ? 'selected' : '' ?>>Diproses</option>
+                                <option value="3" <?= ($filters['status'] ?? '') == '2' ? 'selected' : '' ?>>Dikemas</option>
+                                <option value="3" <?= ($filters['status'] ?? '') == '4' ? 'selected' : '' ?>>Dikirim</option>
+                                <option value="3" <?= ($filters['status'] ?? '') == '5' ? 'selected' : '' ?>>Selesai</option>
                             </select>
                         </div>
                     </div>
@@ -73,7 +75,13 @@
                                 <tr>
                                     <td><?= $transaction['id'] ?></td>
                                     <td><?= number_format($transaction['total'], 2) ?></td>
-                                    <td><?= $transaction['verifikasi'] == '1' ? 'Menunggu Verifikasi' : ($transaction['verifikasi'] == '2' ? 'Diproses' : 'Selesai') ?></td>
+                                    <td>
+                                    <?= $transaction['verifikasi'] == '1' ? 'Menunggu Verifikasi' : 
+                                        ($transaction['verifikasi'] == '2' ? 'Dikemas' : 
+                                        ($transaction['verifikasi'] == '3' ? 'Diproses' : 
+                                        ($transaction['verifikasi'] == '4' ? 'Dikirim' : 
+                                        ($transaction['verifikasi'] == '5' ? 'Selesai' : 'Status Tidak Dikenal')))) ?>
+                                    </td>
                                     <td><?= $transaction['created_at'] ?></td>
                                     <td><a href="/transactions/detail/<?= $transaction['id'] ?>">Detail</a></td>
                                 </tr> 

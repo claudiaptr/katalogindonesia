@@ -42,13 +42,9 @@
                                  <?= $krng['qty']; ?>
                              </td>
                              <td class="align-middle"> <?= $krng['subtotal']; ?></td>
-                             <!-- yang diganti -->
-                             <td class="align-middle"> <?= $krng['variasi']; ?></td>
-                             <!-- <td class="align-middle">
-                                 <?php foreach ($krng['options'] as $key => $value) : ?>
-                                     <?= $key; ?>: <?= $value; ?><br>
-                                 <?php endforeach; ?>
-                             </td> -->
+                             <td class="align-middle"> 
+                                <?= is_array($krng['variasi']) ? implode(', ', $krng['variasi']) : $krng['variasi']; ?>
+                            </td>
                              <td class="align-middle">
                                  <a href="<?= base_url(); ?>user/delete_chart/<?= $krng['rowid']; ?>" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a>
                              </td>

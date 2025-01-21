@@ -140,14 +140,15 @@
                     <h7 id="jumlah_barang_text" class="font-weight-semi-bold mb-4" style="margin-right: 10px;">Stok: <?= $barang['jumlah_barang']; ?></h7>
                 </div>
 
-                <!-- Hilangkan Bagian Variasi Jika Tidak Ada -->
+                <!-- Bagian Variasi -->
                 <?php if (!empty($variasi)): ?>
+                    <input type="hidden" name="has_variasi" value="1"> <!-- Menandakan bahwa produk memiliki variasi -->
                     <strong class="mt-4 d-block">Variasi: </strong>
                     <div class="d-flex align-items-center mb-4 pt-2">
                         <?php foreach ($variasi as $vsi) : ?>
                             <div class="d-flex mb-3">
                                 <div class="variasi-buttons">
-                                    <input type="radio" value="<?= $vsi['variasi_nama']; ?>" class="pilihan-variasi" name="variasi" data-variasi="<?= $vsi['variasi_nama']; ?>" data-value="<?= $vsi['variasi_nama']; ?>" id="radio-<?= $vsi['variasi_nama']; ?>">
+                                    <input type="radio" value="<?= $vsi['variasi_nama']; ?>" class="pilihan-variasi" name="variasi" id="radio-<?= $vsi['variasi_nama']; ?>">
                                     <label for="radio-<?= $vsi['variasi_nama']; ?>" class="btn btn-outline-primary"><?= $vsi['variasi_nama']; ?></label>
                                 </div>
                             </div>
@@ -155,6 +156,8 @@
                     </div>
                 <?php endif; ?>
 
+
+                <!-- Quantity Input -->
                 <div class="d-flex align-items-center mb-4 pt-2">
                     <div class="input-group quantity mr-3" style="width: 130px;">
                         <div class="input-group-btn">
@@ -181,7 +184,6 @@
                     </button>
                 </div>
             </form>
-
 
             </div>
 
@@ -268,8 +270,56 @@
                             <?php endif ?>
                         </div>
 
-                        <!-- JavaScript for Pagination -->
-                        <script>
+                        <div class="col-md-6">
+                            <h4 class="mb-4">Leave a review</h4>
+                            <small>Your email address will not be published. Required fields are marked *</small>
+                            <div class="d-flex my-3">
+                                <p class="mb-0 mr-2">Your Rating * :</p>
+                                <div class="text-primary rating-stars">
+                                    <i class="far fa-star" data-value="1"></i>
+                                    <i class="far fa-star" data-value="2"></i>
+                                    <i class="far fa-star" data-value="3"></i>
+                                    <i class="far fa-star" data-value="4"></i>
+                                    <i class="far fa-star" data-value="5"></i>
+                                </div>
+                            </div>
+
+                            <!-- Hidden input to store the rating value -->
+
+                            <form action="<?= base_url('user/review/' . $barang['id']); ?>" method="POST">
+                                <input type="hidden" name="rating" id="rating-value" value="0">
+                                <div class="form-group">
+                                    <label for="message">Your Review *</label>
+                                    <textarea id="message" cols="30" rows="5" class="form-control" name="comment"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nama">Your Name *</label>
+                                    <input type="text" class="form-control" id="nama" name="nama">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Your Email *</label>
+                                    <input type="email" class="form-control" id="email" name="email">
+                                </div>
+                                <div class="form-group mb-0">
+                                    <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Shop Detail End -->
+
+  <?= $this->endSection(); ?>
+
+  <?= $this->section('scripts'); ?>
+
+                          <script>
                             let currentPage = 1;
                             const reviewsPerPage = 5;
                             const totalReviews = <?= count($dataRating); ?>;
@@ -278,30 +328,27 @@
                             const currentPageElement = document.getElementById('current-page');
                             const totalPagesElement = document.getElementById('total-pages');
 
-                            // Function to display reviews for the current page
                             function showReviews() {
                                 const start = (currentPage - 1) * reviewsPerPage;
                                 const end = currentPage * reviewsPerPage;
                                 const reviews = <?= json_encode($dataRating); ?>;
 
-                                // Clear current reviews
                                 reviewsContainer.innerHTML = '';
 
-                                // Display reviews for the current page
                                 reviews.slice(start, end).forEach(review => {
                                     const reviewHTML = `
-                <div class="review-item">
-                    <div class="media mb-4">
-                        <div class="media-body">
-                            <h6>${review.nama} <small> - <i>${new Date(review.created_at).toLocaleDateString()}</i></small></h6>
-                            <div class="text-primary mb-2">
-                                ${getStars(review.rating)}
-                            </div>
-                            <p>${review.comment}</p>
-                        </div>
-                    </div>
-                </div>
-            `;
+                                <div class="review-item">
+                                    <div class="media mb-4">
+                                        <div class="media-body">
+                                            <h6>${review.nama} <small> - <i>${new Date(review.created_at).toLocaleDateString()}</i></small></h6>
+                                            <div class="text-primary mb-2">
+                                                ${getStars(review.rating)}
+                                            </div>
+                                            <p>${review.comment}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                `;
                                     reviewsContainer.innerHTML += reviewHTML;
                                 });
 
@@ -339,222 +386,6 @@
                             // Initialize page
                             showReviews();
                         </script>
-
-                        <div class="col-md-6">
-                            <h4 class="mb-4">Leave a review</h4>
-                            <small>Your email address will not be published. Required fields are marked *</small>
-                            <div class="d-flex my-3">
-                                <p class="mb-0 mr-2">Your Rating * :</p>
-                                <div class="text-primary rating-stars">
-                                    <i class="far fa-star" data-value="1"></i>
-                                    <i class="far fa-star" data-value="2"></i>
-                                    <i class="far fa-star" data-value="3"></i>
-                                    <i class="far fa-star" data-value="4"></i>
-                                    <i class="far fa-star" data-value="5"></i>
-                                </div>
-                            </div>
-
-                            <!-- Hidden input to store the rating value -->
-
-                            <form action="<?= base_url('user/review/' . $barang['id']); ?>" method="POST">
-                                <input type="hidden" name="rating" id="rating-value" value="0">
-                                <div class="form-group">
-                                    <label for="message">Your Review *</label>
-                                    <textarea id="message" cols="30" rows="5" class="form-control" name="comment"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="nama">Your Name *</label>
-                                    <input type="text" class="form-control" id="nama" name="nama">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Your Email *</label>
-                                    <input type="email" class="form-control" id="email" name="email">
-                                </div>
-                                <div class="form-group mb-0">
-                                    <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
-                                </div>
-                            </form>
-                        </div>
-
-                        <script>
-                            // JavaScript for handling the rating system
-                            const stars = document.querySelectorAll('.rating-stars i');
-                            const ratingValue = document.getElementById('rating-value');
-
-                            stars.forEach(star => {
-                                star.addEventListener('click', function() {
-                                    const rating = this.getAttribute('data-value');
-                                    ratingValue.value = rating;
-
-                                    // Update the appearance of the stars based on the clicked value
-                                    stars.forEach(s => {
-                                        if (s.getAttribute('data-value') <= rating) {
-                                            s.classList.remove('far'); // Non-filled star
-                                            s.classList.add('fas'); // Filled star
-                                        } else {
-                                            s.classList.remove('fas');
-                                            s.classList.add('far');
-                                        }
-                                    });
-                                });
-                            });
-                        </script>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-<!-- Shop Detail End -->
-
-
-  <!-- Products Start -->
-  <div class="container-fluid py-5">
-      <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">You May Also Like</span></h2>
-      <div class="row px-xl-5">
-          <div class="col">
-              <div class="owl-carousel related-carousel">
-                  <div class="product-item bg-light">
-                      <div class="product-img position-relative overflow-hidden">
-                          <img class="img-fluid w-100" src="img/product-1.jpg" alt="">
-                          <div class="product-action">
-                              <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                              <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
-                              <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
-                              <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
-                          </div>
-                      </div>
-                      <div class="text-center py-4">
-                          <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
-                          <div class="d-flex align-items-center justify-content-center mt-2">
-                              <h5>$123.00</h5>
-                              <h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                          </div>
-                          <div class="d-flex align-items-center justify-content-center mb-1">
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small>(99)</small>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="product-item bg-light">
-                      <div class="product-img position-relative overflow-hidden">
-                          <img class="img-fluid w-100" src="img/product-2.jpg" alt="">
-                          <div class="product-action">
-                              <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                              <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
-                              <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
-                              <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
-                          </div>
-                      </div>
-                      <div class="text-center py-4">
-                          <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
-                          <div class="d-flex align-items-center justify-content-center mt-2">
-                              <h5>$123.00</h5>
-                              <h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                          </div>
-                          <div class="d-flex align-items-center justify-content-center mb-1">
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small>(99)</small>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="product-item bg-light">
-                      <div class="product-img position-relative overflow-hidden">
-                          <img class="img-fluid w-100" src="img/product-3.jpg" alt="">
-                          <div class="product-action">
-                              <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                              <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
-                              <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
-                              <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
-                          </div>
-                      </div>
-                      <div class="text-center py-4">
-                          <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
-                          <div class="d-flex align-items-center justify-content-center mt-2">
-                              <h5>$123.00</h5>
-                              <h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                          </div>
-                          <div class="d-flex align-items-center justify-content-center mb-1">
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small>(99)</small>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="product-item bg-light">
-                      <div class="product-img position-relative overflow-hidden">
-                          <img class="img-fluid w-100" src="img/product-4.jpg" alt="">
-                          <div class="product-action">
-                              <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                              <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
-                              <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
-                              <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
-                          </div>
-                      </div>
-                      <div class="text-center py-4">
-                          <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
-                          <div class="d-flex align-items-center justify-content-center mt-2">
-                              <h5>$123.00</h5>
-                              <h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                          </div>
-                          <div class="d-flex align-items-center justify-content-center mb-1">
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small>(99)</small>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="product-item bg-light">
-                      <div class="product-img position-relative overflow-hidden">
-                          <img class="img-fluid w-100" src="img/product-5.jpg" alt="">
-                          <div class="product-action">
-                              <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                              <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
-                              <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
-                              <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
-                          </div>
-                      </div>
-                      <div class="text-center py-4">
-                          <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
-                          <div class="d-flex align-items-center justify-content-center mt-2">
-                              <h5>$123.00</h5>
-                              <h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                          </div>
-                          <div class="d-flex align-items-center justify-content-center mb-1">
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small class="fa fa-star text-primary mr-1"></small>
-                              <small>(99)</small>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-  <!-- Products End -->
-
-  <?= $this->endSection(); ?>
-
-  <?= $this->section('scripts'); ?>
                 <script>
                     $(document).ready(function() {
                     $('input[type=radio]').change(function() {
@@ -607,4 +438,29 @@
                         });
                     });
                 </script>
+
+                        <script>
+                            // JavaScript for handling the rating system
+                            const stars = document.querySelectorAll('.rating-stars i');
+                            const ratingValue = document.getElementById('rating-value');
+
+                            stars.forEach(star => {
+                                star.addEventListener('click', function() {
+                                    const rating = this.getAttribute('data-value');
+                                    ratingValue.value = rating;
+
+                                    // Update the appearance of the stars based on the clicked value
+                                    stars.forEach(s => {
+                                        if (s.getAttribute('data-value') <= rating) {
+                                            s.classList.remove('far'); // Non-filled star
+                                            s.classList.add('fas'); // Filled star
+                                        } else {
+                                            s.classList.remove('fas');
+                                            s.classList.add('far');
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+
   <?= $this->endSection(); ?>

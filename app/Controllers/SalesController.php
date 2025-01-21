@@ -532,7 +532,7 @@ class SalesController extends BaseController
             'verifikasi' => 2
         ]);
 
-        return redirect()->to('/sales/kemas_pesanan');
+        return redirect()->to('/sales/view_pesanan');
     }
 
     public function view_jasa()
