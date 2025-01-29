@@ -65,29 +65,25 @@ class Barang extends Model
     }
 
     public function getProductsBySubkategori($subkategoriNama)
-{
-    // Menambahkan pengecekan apakah parameter valid
-    if (empty($subkategoriNama)) {
-        return []; // Mengembalikan array kosong jika subkategoriNama kosong
-    }
+    {
 
-    $builder = $this->db->table('barang');
-    
-    // Melakukan join dengan tabel sub_kategori
-    $builder->join('sub_kategori', 'sub_kategori.id = barang.id_sub_kategori_barang', 'left');
-    $builder->where('sub_kategori.nama_sub_kategori', $subkategoriNama);
-    
-    // Mengeksekusi query dan mengembalikan hasil dalam bentuk array
-    $result = $builder->get()->getResultArray();
+        if (empty($subkategoriNama)) {
+            return [];
+        }
 
-    // Mengecek apakah hasil query ada dan valid
-    if (isset($result) && !empty($result)) {
-        return $result; // Jika ada data, kembalikan hasilnya
-    } else {
-        // Jika tidak ada data ditemukan, kembalikan array kosong
-        return [];
+        $builder = $this->db->table('barang');
+
+        $builder->join('sub_kategori', 'sub_kategori.id = barang.id_sub_kategori_barang', 'inner');
+        $builder->where('sub_kategori.nama_sub_kategori', $subkategoriNama);
+
+        $result = $builder->get()->getResultArray();
+
+        if (isset($result) && !empty($result)) {
+            return $result;
+        } else {
+            return [];
+        }
     }
-}
 
     /**
      * Get the newest products with a limit.
@@ -161,38 +157,40 @@ class Barang extends Model
      */
     public function getBarangByWilayah($provinsi = null, $kabupaten = null, $kecamatan = null, $kelurahan = null)
     {
-        // Inisialisasi query builder
         $builder = $this->db->table($this->table);
 
         // Seleksi kolom yang diperlukan
         $builder->select('
-        barang.*,
-        alamat_toko.id AS id_alamat,
+        barang.*, 
+        alamat_toko.id AS id_alamat, 
         alamat_toko.provinsi,
         alamat_toko.kabupaten,
         alamat_toko.kecamatan,
         alamat_toko.kelurahan
-        ');
+    ');
 
-        // Join tabel alamat_toko dengan tabel barang
+        // Join dengan alamat_toko
         $builder->join('alamat_toko', 'barang.pemilik = alamat_toko.user');
 
-        // Tambahkan kondisi barang yang sudah diverifikasi
+        // Memastikan barang yang sudah diverifikasi
         $builder->where('barang.verifikasi', 3);
 
-        $builder->where('barang.id_kategori_barang', 1);
-
-
-        // Tambahkan filter wilayah jika parameter diberikan
+        // Jika ada filter provinsi
         if (!empty($provinsi)) {
             $builder->where('alamat_toko.provinsi', $provinsi);
         }
+
+        // Jika ada filter kabupaten
         if (!empty($kabupaten)) {
             $builder->where('alamat_toko.kabupaten', $kabupaten);
         }
+
+        // Jika ada filter kecamatan
         if (!empty($kecamatan)) {
             $builder->where('alamat_toko.kecamatan', $kecamatan);
         }
+
+        // Jika ada filter kelurahan
         if (!empty($kelurahan)) {
             $builder->where('alamat_toko.kelurahan', $kelurahan);
         }
@@ -200,11 +198,10 @@ class Barang extends Model
         // Acak hasil untuk variasi tampilan
         $builder->orderBy('RAND()');
 
-        // Eksekusi query dan kembalikan hasil sebagai array
-        $result = $builder->get()->getResultArray();
-
-        return $result;
+        // Eksekusi query dan kembalikan hasil
+        return $builder->get()->getResultArray();
     }
+
 
     /**
      * Search products by title.
@@ -222,7 +219,7 @@ class Barang extends Model
             $builder->like('judul_barang', $title);
         }
 
-        // Get results as an array
+
         $result = $builder->get()->getResultArray();
 
         if (isset($result) && !empty($result)) {
@@ -231,6 +228,4 @@ class Barang extends Model
             return [];
         }
     }
-
-
 }

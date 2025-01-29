@@ -213,7 +213,13 @@
         <div class="bg-light p-30">
             
             <p><strong>Nama Toko:</strong> <?= esc($pemilik_barang['nama_toko']) ?></p>
-            <p><strong>Alamat:</strong> <?= esc($barang['alamat']['kelurahan']) ?></p>
+            <p><strong>Alamat Toko:</strong> 
+                <?= esc($barang['alamat_user']) ?>,
+                <?= esc($barang['alamat_toko']['kelurahan']) ?>, 
+                <?= esc($barang['alamat_toko']['kecamatan']) ?>, 
+                <?= esc($barang['alamat_toko']['kabupaten']) ?>, 
+                <?= esc($barang['alamat_toko']['provinsi']) ?>
+            </p>
 
             <div class="nav nav-tabs mb-4">
                 <a class="nav-item nav-link text-dark active" data-toggle="tab" href="#tab-pane-1">Description</a>

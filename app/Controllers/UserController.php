@@ -115,9 +115,9 @@ class UserController extends BaseController
 
     public function updateProfile()
     {
-        $userId = session()->get('id'); // ID user dari session
+        $userId = session()->get('id');
 
-        // Validasi input
+
         $validation = \Config\Services::validation();
         $validation->setRules([
             'username'   => 'required|min_length[3]|max_length[50]',
@@ -173,56 +173,51 @@ class UserController extends BaseController
 
     public function detail($id)
     {
-        // Ambil data barang
+
         $barang = $this->barang->find($id);
-    
-        // Ambil rating barang
+
         $ratingData = $this->db->table('ratingbarang')
             ->select('AVG(rating) as avg_rating, COUNT(*) as total_review')
             ->where('idbarang', $id)
             ->get()
             ->getRowArray();
     
-        // Proses rating dan total review
         $rating = $ratingData ? round($ratingData['avg_rating'] * 2) / 2 : 0;
         $totalReview = $ratingData ? $ratingData['total_review'] : 0;
-    
-        // Ambil daftar rating
         $dataRating = $this->db->table('ratingbarang')
             ->where('idbarang', $id)
             ->orderBy('created_at', 'DESC')
             ->get()
             ->getResult();
     
-        // Ambil foto barang
+    
         $fotoBarang = $this->fotoBarang->where('id_barang', $id)->findAll();
         if (empty($fotoBarang)) {
-            $fotoBarang = [['foto' => 'default-placeholder.jpg']]; // Gambar placeholder
+            $fotoBarang = [['foto' => 'default-placeholder.jpg']];
         }
     
-        // Ambil variasi produk
         $variasi = $this->variasi->data_opsi($id);
     
-        // Ambil kategori produk
         $kategori = $this->kategori->getSubKategori();
     
-        // Ambil informasi pemilik toko
         $pemilikBarang = $this->db->table('user')
-            ->select('nama_toko')
+            ->select('nama_toko, alamat')
             ->where('id', $barang['pemilik'])
             ->get()
             ->getRowArray();
     
-        // Ambil alamat berdasarkan pemilik
-        $alamat = $this->alamat->getAlamatByUser($barang['pemilik']);
-        if (!$alamat) {
-            $alamat = [
+        $alamatToko = $this->alamat->getAlamatByUser($barang['pemilik']);
+        if (!$alamatToko) {
+            $alamatToko = [
+                'provinsi' => 'Alamat tidak tersedia',
+                'kabupaten' => 'Alamat tidak tersedia',
+                'kecamatan' => 'Alamat tidak tersedia',
                 'kelurahan' => 'Alamat tidak tersedia',
             ];
         }
     
-        // Gabungkan alamat ke dalam barang
-        $barang['alamat'] = $alamat;
+        $barang['alamat_user'] = $pemilikBarang['alamat'];
+        $barang['alamat_toko'] = $alamatToko; 
     
         // Data untuk dikirim ke view
         $data = [
@@ -235,14 +230,14 @@ class UserController extends BaseController
             'cart' => \Config\Services::cart(),
             'menu' => 'shop',
             'dataRating' => $dataRating,
-            'pemilik_barang' => $pemilikBarang, // Tambahkan data pemilik barang
+            'pemilik_barang' => $pemilikBarang, 
         ];
     
         // Tampilkan view dengan data
         return view('user/detail', $data);
     }
     
-    
+
 
     public function review($id)
     {
@@ -276,18 +271,21 @@ class UserController extends BaseController
             return redirect()->to('user/detail/' . $id);
         }
     }
+   
 
     public function shop()
     {
-
-        $provinsi = trim(ucwords(strtolower(str_replace(["PROVINSI", "+"], ["", " "], $this->request->getGet('provinsi')))));
-        $kabupaten = trim(ucwords(strtolower(str_replace(["KABUPATEN", "+"], ["", " "], $this->request->getGet('kabupaten')))));
-        $kecamatan = trim(ucwords(strtolower(str_replace(["KECAMATAN", "+"], ["", " "], $this->request->getGet('kecamatan')))));
-        $kelurahan = trim(ucwords(strtolower(str_replace(["KELURAHAN", "+"], ["", " "], $this->request->getGet('kelurahan')))));
+        // Mengambil data input wilayah dan memastikan formatnya sesuai
+        $provinsi = trim(ucwords(strtolower(urldecode($this->request->getGet('provinsi')))));
+        $kabupaten = trim(ucwords(strtolower(urldecode($this->request->getGet('kabupaten')))));
+        $kecamatan = trim(ucwords(strtolower(urldecode($this->request->getGet('kecamatan')))));
+        $kelurahan = trim(ucwords(strtolower(urldecode($this->request->getGet('kelurahan')))));
     
+        // Mendapatkan data produk berdasarkan kategori
         $kategoriNama = 'barang';
         $barang = $this->barang->getBarangByNamaKategori($kategoriNama);
     
+        // Jika semua wilayah dipilih, filter produk berdasarkan wilayah
         if ($provinsi && $kabupaten && $kecamatan && $kelurahan) {
             $barang = array_filter($barang, function ($item) use ($provinsi, $kabupaten, $kecamatan, $kelurahan) {
                 return (
@@ -298,8 +296,9 @@ class UserController extends BaseController
                 );
             });
         }
-
+    
         $barangIds = array_column($barang, 'id');
+        shuffle($barang);
         $rating = [];
     
         if (!empty($barangIds)) {
@@ -315,7 +314,6 @@ class UserController extends BaseController
             }
         }
     
-
         $data = [
             'barang' => $barang,
             'kategori' => $this->kategori->getSubKategori(),
@@ -324,82 +322,94 @@ class UserController extends BaseController
             'rating' => $rating,
         ];
     
-
         return view('user/shop', $data);
     }
     
 
-public function filter_toko()
-{
-    $provinsi = $this->request->getVar('provinsi');
-    $kabupaten = $this->request->getVar('kabupaten');
-    $kecamatan = $this->request->getVar('kecamatan');
-    $kelurahan = $this->request->getVar('kelurahan');
+    
 
-    // Panggil model untuk mengambil data barang sesuai filter
-    $barang = $this->barang->getbarang($provinsi, $kabupaten, $kecamatan, $kelurahan);
-    log_message('info', 'Data barang yang dikembalikan: ' . json_encode($barang));
-    // Mengembalikan data barang dalam bentuk JSON
-    return $this->response->setJSON($barang);
-}
-
-public function jasa()
-{
-    // Ambil filter lokasi dari input GET
-    $provinsi = trim(ucwords(strtolower(str_replace(["PROVINSI", "+"], ["", " "], $this->request->getGet('provinsi')))));
-    $kabupaten = trim(ucwords(strtolower(str_replace(["KABUPATEN", "+"], ["", " "], $this->request->getGet('kabupaten')))));
-    $kecamatan = trim(ucwords(strtolower(str_replace(["KECAMATAN", "+"], ["", " "], $this->request->getGet('kecamatan')))));
-    $kelurahan = trim(ucwords(strtolower(str_replace(["KELURAHAN", "+"], ["", " "], $this->request->getGet('kelurahan')))));
-
-    // Ambil data barang berdasarkan kategori 'jasa'
-    $kategoriNama = 'jasa';
-    $barang = $this->barang->getBarangByNamaKategori($kategoriNama);
-
-    // Filter barang berdasarkan lokasi jika filter lokasi diberikan
-    if ($provinsi && $kabupaten && $kecamatan && $kelurahan) {
-        $barang = array_filter($barang, function ($item) use ($provinsi, $kabupaten, $kecamatan, $kelurahan) {
-            return (
-                strtolower($item['provinsi']) === strtolower($provinsi) &&
-                strtolower($item['kabupaten']) === strtolower($kabupaten) &&
-                strtolower($item['kecamatan']) === strtolower($kecamatan) &&
-                strtolower($item['kelurahan']) === strtolower($kelurahan)
-            );
-        });
-    }
-
-    // Ambil ID barang untuk menghitung rating
-    $barangIds = array_column($barang, 'id');
-    $rating = [];
-
-    if (!empty($barangIds)) {
-        $ratings = $this->db->table('ratingbarang')
-            ->whereIn('idbarang', $barangIds)
-            ->select('idbarang, AVG(rating) as avg_rating')
-            ->groupBy('idbarang')
-            ->get()
-            ->getResultArray();
-
-        // Buat array rating dengan ID barang sebagai key
-        foreach ($ratings as $r) {
-            $rating[$r['idbarang']] = round($r['avg_rating'] * 2) / 2; // Bulatkan ke 0.5
+    public function filter_toko()
+    {
+        // Ambil data wilayah dari request
+        $provinsi = $this->request->getVar('provinsi');
+        $kabupaten = $this->request->getVar('kabupaten');
+        $kecamatan = $this->request->getVar('kecamatan');
+        $kelurahan = $this->request->getVar('kelurahan');
+    
+        if (empty($provinsi) || empty($kabupaten) || empty($kecamatan) || empty($kelurahan)) {
+            return $this->response->setJSON(['error' => 'Semua parameter wilayah harus diisi.'])->setStatusCode(400);
         }
+    
+        $barang = $this->barang->getBarangByWilayah($provinsi, $kabupaten, $kecamatan, $kelurahan);
+
+        log_message('info', 'Data barang yang dikembalikan: ' . json_encode($barang));
+    
+        if (empty($barang)) {
+            return $this->response->setJSON(['message' => 'Tidak ada produk yang ditemukan berdasarkan filter wilayah.'])->setStatusCode(404);
+        }
+    
+        return $this->response->setJSON($barang);
     }
-
-    // Siapkan data untuk dikirim ke view
-    $data = [
-        'barang' => $barang,
-        'kategori' => $this->kategori->getSubKategori(),
-        'cart' => \Config\Services::cart(),
-        'menu' => 'jasa',
-        'rating' => $rating,
-    ];
-
-    // Return view
-    return view('user/jasa', $data);
-}
-
-
-
+    
+    public function jasa()
+    {
+        // Ambil filter lokasi dari input GET
+        $provinsi = trim(ucwords(strtolower(str_replace(["PROVINSI", "+"], ["", " "], $this->request->getGet('provinsi')))));
+        $kabupaten = trim(ucwords(strtolower(str_replace(["KABUPATEN", "+"], ["", " "], $this->request->getGet('kabupaten')))));
+        $kecamatan = trim(ucwords(strtolower(str_replace(["KECAMATAN", "+"], ["", " "], $this->request->getGet('kecamatan')))));
+        $kelurahan = trim(ucwords(strtolower(str_replace(["KELURAHAN", "+"], ["", " "], $this->request->getGet('kelurahan')))));
+    
+        // Ambil data barang berdasarkan kategori 'jasa'
+        $kategoriNama = 'jasa';
+        $barang = $this->barang->getBarangByNamaKategori($kategoriNama);
+    
+        // Filter barang berdasarkan lokasi jika filter lokasi diberikan
+        if ($provinsi && $kabupaten && $kecamatan && $kelurahan) {
+            $barang = array_filter($barang, function ($item) use ($provinsi, $kabupaten, $kecamatan, $kelurahan) {
+                return (
+                    strtolower($item['provinsi']) === strtolower($provinsi) &&
+                    strtolower($item['kabupaten']) === strtolower($kabupaten) &&
+                    strtolower($item['kecamatan']) === strtolower($kecamatan) &&
+                    strtolower($item['kelurahan']) === strtolower($kelurahan)
+                );
+            });
+        }
+    
+        // Tambahkan pengacakan barang di sini
+        $barang = array_values($barang); // Pastikan array memiliki indeks yang benar
+        shuffle($barang); // Acak urutan barang
+    
+        // Ambil ID barang untuk menghitung rating
+        $barangIds = array_column($barang, 'id');
+        $rating = [];
+    
+        if (!empty($barangIds)) {
+            $ratings = $this->db->table('ratingbarang')
+                ->whereIn('idbarang', $barangIds)
+                ->select('idbarang, AVG(rating) as avg_rating')
+                ->groupBy('idbarang')
+                ->get()
+                ->getResultArray();
+    
+            // Buat array rating dengan ID barang sebagai key
+            foreach ($ratings as $r) {
+                $rating[$r['idbarang']] = round($r['avg_rating'] * 2) / 2; // Bulatkan ke 0.5
+            }
+        }
+    
+        // Siapkan data untuk dikirim ke view
+        $data = [
+            'barang' => $barang,
+            'kategori' => $this->kategori->getSubKategori(),
+            'cart' => \Config\Services::cart(),
+            'menu' => 'jasa',
+            'rating' => $rating,
+        ];
+    
+        // Return view
+        return view('user/jasa', $data);
+    }
+    
 
     public function contact()
     {
@@ -421,7 +431,6 @@ public function jasa()
         ];
         return view('user/tracking', $data);
     }
-
 
     public function checkout()
     {
@@ -510,8 +519,6 @@ public function jasa()
     // Redirect ke halaman keranjang belanja
     return redirect()->to('cart');
 }
-
-
 
     public function harga_barang()
     {
@@ -686,8 +693,11 @@ public function jasa()
 
             public function subkategori()
             {
+
+                $barangModel = new Barang();
+
                 $subkategoriNama = $this->request->getGet('subkategori_nama');
-                $barang = $this->barang->getProductsBySubkategori($subkategoriNama);
+                $barang = $barangModel->getProductsBySubkategori($subkategoriNama);
 
                 $data = [
                     'kategori' => $this->kategori->getSubKategori(),

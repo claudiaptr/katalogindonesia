@@ -1070,7 +1070,7 @@ class SalesController extends BaseController
     }
     public function store_penarikan()
     {
-        // Retrieve input values
+
         $bank = $this->request->getVar('bank');
         $rekening = $this->request->getVar('rekening');
         $jumlah_penarikan = $this->request->getVar('jumlah_penarikan');
@@ -1098,7 +1098,6 @@ class SalesController extends BaseController
         return view('daftar_penjual');
     }
 
-    // Add seller details
     public function add_penjual()
     {
         if ($this->validate([
@@ -1114,54 +1113,60 @@ class SalesController extends BaseController
             ]
         ])) {
             $id = session()->get('id');
+    
+            // Mengambil nama wilayah dan format dengan ucwords()
+            $provinsiName = ucwords(trim($this->request->getPost('provinsi-name')));
+            $kabupatenName = ucwords(trim($this->request->getPost('kabupaten-name')));
+            $kecamatanName = ucwords(trim($this->request->getPost('kecamatan-name')));
+            $kelurahanName = ucwords(trim($this->request->getPost('kelurahan-name')));
+    
+            // Menyimpan data toko dan alamat
             $data = [
                 'nama_toko' => $this->request->getPost('nama_toko'),
                 'alamat' => $this->request->getPost('alamat'),
-                'level' => 3, // Level pendaftar (tetap level 3 saat pendaftaran)
+                'level' => 3, // Menyimpan level penjual
             ];
-
-            // Update penjual data
+    
+            // Update data toko
             $this->user->update_register($data, $id);
-
-            // Save alamat toko
+    
+            // Menyimpan data alamat toko
             $this->alamat_toko->save([
-                'provinsi' => $this->request->getPost('provinsi'),
-                'kabupaten' => $this->request->getPost('kabupaten'),
-                'kecamatan' => $this->request->getPost('kecamatan'),
-                'kelurahan' => $this->request->getPost('kelurahan'),
-                'user' => $id,
+                'provinsi' => $provinsiName, 
+                'kabupaten' => $kabupatenName, 
+                'kecamatan' => $kecamatanName, 
+                'kelurahan' => $kelurahanName, 
+                'user' => $id, 
             ]);
-
+    
             session()->setFlashdata('pesan', 'Pendaftaran Penjual berhasil! Menunggu verifikasi admin.');
-
-            // Redirect ke halaman beranda atau halaman lainnya
-            return redirect()->to('user/home'); // Sesuaikan URL sesuai rute yang sesuai
+    
+            return redirect()->to('user/home');
         }
     }
+    
+
 
     public function profilepenjual()
     {
-        // Ambil ID pengguna yang sedang login dari session
-        $userId = session()->get('id'); // Pastikan session id diatur saat login
+        $userId = session()->get('id'); 
         $user   = $this->user->getLogin($userId);
 
-        // Pastikan data user ditemukan
+
         if (!$user) {
             return redirect()->to('/auth/login')->with('error', 'Pengguna tidak ditemukan. Silakan login kembali.');
         }
 
-        // Kirim data ke view dengan menambahkan 'menu' => 'profile'
         return view('sales/profilepenjual', [
             'user' => $user,
-            'menu' => 'profile', // Menambahkan menu dengan nilai 'profile'
+            'menu' => 'profile', 
         ]);
     }
 
     public function updateProfile()
     {
-        $userId = session()->get('id'); // ID user dari session
+        $userId = session()->get('id'); 
 
-        // Validasi input
         $validation = \Config\Services::validation();
         $validation->setRules([
             'username'   => 'required|min_length[3]|max_length[50]',
@@ -1176,28 +1181,24 @@ class SalesController extends BaseController
             return redirect()->back()->withInput()->with('error', $validation->listErrors());
         }
 
-        // Ambil data pengguna saat ini
         $user = $this->user->getLogin($userId);
         if (!$user) {
             return redirect()->to('/auth/login')->with('error', 'Pengguna tidak ditemukan. Silakan login kembali.');
         }
 
-        // Proses upload gambar profil jika ada
         $fotoProfil = $this->request->getFile('foto_profil');
         $newFileName = $fotoProfil->isValid() && !$fotoProfil->hasMoved()
             ? $fotoProfil->getRandomName()
-            : $user['foto_profil']; // Gunakan gambar lama jika tidak ada upload baru
+            : $user['foto_profil']; 
 
         if ($fotoProfil->isValid() && !$fotoProfil->hasMoved()) {
-            $fotoProfil->move('uploads/profiles', $newFileName); // Pindahkan file ke direktori
+            $fotoProfil->move('uploads/profiles', $newFileName);
 
-            // Hapus gambar lama jika ada
             if ($user['foto_profil'] && file_exists('uploads/profiles/' . $user['foto_profil'])) {
                 unlink('uploads/profiles/' . $user['foto_profil']);
             }
         }
 
-        // Data untuk diperbarui
         $data = [
             'username'    => $this->request->getPost('username'),
             'email'       => $this->request->getPost('email'),
@@ -1207,10 +1208,7 @@ class SalesController extends BaseController
             'foto_profil' => $newFileName,
         ];
 
-        // Update ke database
         $this->user->update_register($data, $userId);
-
-        // Redirect dengan pesan sukses
         return redirect()->to('/sales/profilepenjual')->with('success', 'Profil berhasil diperbarui.');
     }
 }

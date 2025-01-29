@@ -42,7 +42,7 @@
                 }
                 ?>
 
-                    <form action="<?= base_url('store/penjual') ?>" method="post" enctype="multipart/form-data">
+                <form action="<?= base_url('store/penjual') ?>" method="post" enctype="multipart/form-data">
                     <?= csrf_field(); ?>
 
                     <!-- Nama Toko -->
@@ -136,6 +136,12 @@
                         </div>
                     </div>
 
+                    <!-- Hidden Fields to Store Names -->
+                    <input type="hidden" name="provinsi-name" id="provinsi-name">
+                    <input type="hidden" name="kabupaten-name" id="kabupaten-name">
+                    <input type="hidden" name="kecamatan-name" id="kecamatan-name">
+                    <input type="hidden" name="kelurahan-name" id="kelurahan-name">
+
                     <!-- Tombol Submit -->
                     <div class="row">
                         <div class="col-8"></div>
@@ -164,15 +170,20 @@
             .then(provinces => {
                 let options = '<option value="">Pilih Provinsi</option>';
                 provinces.forEach(element => {
-                    options += `<option data-reg="${element.id}" value="${element.id}">${element.name}</option>`;
+                    options += `<option data-name="${element.name}" value="${element.id}">${element.name}</option>`;
                 });
                 document.getElementById('provinsi').innerHTML = options;
-            });
+            })
+            .catch(error => console.error('Error fetching provinces:', error));
 
         // Event listener untuk provinsi
         document.getElementById('provinsi').addEventListener('change', (e) => {
-            const provinsiId = e.target.value; // Mengambil ID provinsi
-            if (!provinsiId) return; // Menghentikan jika tidak ada ID
+            const provinsiId = e.target.value;
+            const provinsiName = e.target.selectedOptions[0].getAttribute('data-name'); // Nama Provinsi yang dipilih
+            if (!provinsiId) return;
+
+            // Menyimpan nama provinsi di input hidden
+            document.getElementById('provinsi-name').value = provinsiName;
 
             fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/regencies/${provinsiId}.json`)
                 .then(response => response.json())
@@ -182,7 +193,7 @@
                     document.getElementById('kelurahan').innerHTML = '<option value="">Pilih Kelurahan</option>';
 
                     regencies.forEach(element => {
-                        options += `<option data-dist="${element.id}" value="${element.id}">${element.name}</option>`;
+                        options += `<option data-name="${element.name}" value="${element.id}">${element.name}</option>`;
                     });
                     document.getElementById('kabupaten').innerHTML = options;
                 })
@@ -191,8 +202,12 @@
 
         // Event listener untuk kabupaten
         document.getElementById('kabupaten').addEventListener('change', (e) => {
-            const kabupatenId = e.target.value; // Mengambil ID kabupaten
-            if (!kabupatenId) return; // Menghentikan jika tidak ada ID
+            const kabupatenId = e.target.value;
+            const kabupatenName = e.target.selectedOptions[0].getAttribute('data-name'); // Nama Kabupaten yang dipilih
+            if (!kabupatenId) return;
+
+            // Menyimpan nama kabupaten di input hidden
+            document.getElementById('kabupaten-name').value = kabupatenName;
 
             fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/districts/${kabupatenId}.json`)
                 .then(response => response.json())
@@ -201,7 +216,7 @@
                     document.getElementById('kelurahan').innerHTML = '<option value="">Pilih Kelurahan</option>';
 
                     districts.forEach(element => {
-                        options += `<option data-vill="${element.id}" value="${element.id}">${element.name}</option>`;
+                        options += `<option data-name="${element.name}" value="${element.id}">${element.name}</option>`;
                     });
                     document.getElementById('kecamatan').innerHTML = options;
                 })
@@ -210,8 +225,12 @@
 
         // Event listener untuk kecamatan
         document.getElementById('kecamatan').addEventListener('change', (e) => {
-            const kecamatanId = e.target.value; // Mengambil ID kecamatan
-            if (!kecamatanId) return; // Menghentikan jika tidak ada ID
+            const kecamatanId = e.target.value;
+            const kecamatanName = e.target.selectedOptions[0].getAttribute('data-name'); // Nama Kecamatan yang dipilih
+            if (!kecamatanId) return;
+
+            // Menyimpan nama kecamatan di input hidden
+            document.getElementById('kecamatan-name').value = kecamatanName;
 
             fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/villages/${kecamatanId}.json`)
                 .then(response => response.json())
@@ -219,13 +238,23 @@
                     let options = '<option value="">Pilih Kelurahan</option>';
 
                     villages.forEach(element => {
-                        options += `<option value="${element.name}">${element.name}</option>`;
+                        options += `<option data-name="${element.name}" value="${element.id}">${element.name}</option>`;
                     });
                     document.getElementById('kelurahan').innerHTML = options;
                 })
                 .catch(error => console.error('Error fetching villages:', error));
         });
+
+
+        document.getElementById('kelurahan').addEventListener('change', (e) => {
+            const kelurahanId = e.target.value;  
+            const kelurahanName = e.target.selectedOptions[0].getAttribute('data-name'); 
+            if (!kelurahanId) return;
+
+            document.getElementById('kelurahan-name').value = kelurahanName;
+        });
     </script>
+
 </body>
 
 </html>
