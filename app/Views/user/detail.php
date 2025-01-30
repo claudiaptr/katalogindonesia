@@ -325,7 +325,7 @@
 
     
                                   function getStars(rating) {
-                                      let starsHTML = '';
+                                      let starsHTML = ''; 
                                       for (let i = 1; i <= 5; i++) {
                                           if (i <= Math.floor(rating)) {
                                               starsHTML += '<small class="fas fa-star"></small>';
