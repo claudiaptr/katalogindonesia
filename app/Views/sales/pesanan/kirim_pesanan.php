@@ -34,7 +34,6 @@
                                     <th>Nomor Telp</th>
                                     <th>Alamat</th>
                                     <th>Status</th>
-                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody> 
@@ -58,16 +57,6 @@
                                                 <?php elseif ($bk['verifikasi_transaksi'] == 4) : ?>
                                                     <span class="label label-success">Pesanan Dikirim</span>
                                                 <?php endif ?>
-                                            </td>
-                                            <td style="display: flex;">
-                                                <form action="<?= base_url('sales/selesai/' . $bk['transaksi_id']); ?>" method="POST">
-                                                    <button type="submit" style=" margin-left: 10px;" class="btn btn-success mr-3"> Selesai </button>
-                                                </form>
-                                                <!-- <form class="delete" style=" margin-left: 10px;" action="<?= base_url(); ?>#">
-                                                    <?= csrf_field(); ?>
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    <button class="btn btn-danger ">Selesai </button>
-                                                </form> -->
                                             </td>
                                         </tr>
                                     <?php endif ?>

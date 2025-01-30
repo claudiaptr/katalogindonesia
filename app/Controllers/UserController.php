@@ -241,20 +241,27 @@ class UserController extends BaseController
 
     public function review($id)
     {
-
         if (empty(session()->id)) {
             session()->setFlashdata('errorlogin', 'Anda Harus Login');
             return redirect()->to('auth/login');
-        } 
-        
+        }
+
         if (empty($this->request->getPost('nama')) || empty($this->request->getPost('rating')) || empty($this->request->getPost('comment')) || empty($this->request->getPost('email'))) {
             return redirect()->back()->with('error', 'Anda belum mengisi semua data');
-        }
-        
-        else {
-            // Mengambil satu barang berdasarkan ID
+        } else {
+            
             $barang = $this->barang->find($id);
 
+            
+            $foto = '';
+            if ($this->request->getFile('foto')->isValid()) {
+                $fotoFile = $this->request->getFile('foto');
+                $fotoName = $fotoFile->getRandomName(); 
+                $fotoFile->move('uploads/foto/', $fotoName); 
+                $foto = $fotoName; 
+            }
+
+            
             $data = [
                 'idbarang' => $id,
                 'iduser' => session()->get('id'),
@@ -262,10 +269,11 @@ class UserController extends BaseController
                 'comment' => $this->request->getPost('comment'),
                 'nama' => $this->request->getPost('nama'),
                 'email' => $this->request->getPost('email'),
+                'foto' => $foto, 
+                'status' => 'Non Active' 
             ];
 
-            // dd($data);
-
+            
             $this->db->table('ratingbarang')->insert($data);
 
             return redirect()->to('user/detail/' . $id);
