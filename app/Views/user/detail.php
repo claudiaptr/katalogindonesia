@@ -280,7 +280,6 @@
                                   <?php endif ?>
                               </div>
 
-                              <!-- JavaScript for Pagination -->
                               <script>
                                   let currentPage = 1;
                                   const reviewsPerPage = 5;
@@ -290,36 +289,33 @@
                                   const currentPageElement = document.getElementById('current-page');
                                   const totalPagesElement = document.getElementById('total-pages');
 
-                                  // Function to display reviews for the current page
                                   function showReviews() {
                                       const start = (currentPage - 1) * reviewsPerPage;
                                       const end = currentPage * reviewsPerPage;
                                       const reviews = <?= json_encode($dataRating); ?>;
 
-                                      // Clear current reviews
                                       reviewsContainer.innerHTML = '';
 
-                                      // Display reviews for the current page
-                                      reviews.slice(start, end).forEach(review => {
-                                          console.log(review); // Check data for debugging
+                                       reviews.slice(start, end).forEach(review => {
+                                          console.log(review);
                                           const reviewHTML = `
-            <div class="review-item">
-                <div class="media mb-4">
-                    <div class="media-body">
-                        <h6>${review.nama} <small> - <i>${new Date(review.created_at).toLocaleDateString()}</i></small></h6>
-                        ${review.foto && review.foto !== '' ? `
-                            <div class="review-photo mb-2">
-                                <img src="<?= base_url('uploads/foto/') ?>${review.foto}" alt="Review photo" class="img-fluid" style="max-width: 100px;">
-                            </div>
-                        ` : ''}
-                        <div class="text-primary mb-2">
-                            ${getStars(review.rating)}
-                        </div>
-                        <p>${review.comment}</p>
-                    </div>
-                </div>
-            </div>
-        `;
+                                            <div class="review-item">
+                                                <div class="media mb-4">
+                                                    <div class="media-body">
+                                                        <h6>${review.nama} <small> - <i>${new Date(review.created_at).toLocaleDateString()}</i></small></h6>
+                                                        ${review.foto && review.foto !== '' ? `
+                                                            <div class="review-photo mb-2">
+                                                                <img src="<?= base_url('uploads/foto/') ?>${review.foto}" alt="Review photo" class="img-fluid" style="max-width: 100px;">
+                                                            </div>
+                                                        ` : ''}
+                                                        <div class="text-primary mb-2">
+                                                            ${getStars(review.rating)}
+                                                        </div>
+                                                        <p>${review.comment}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        `;
                                           reviewsContainer.innerHTML += reviewHTML;
                                       });
 
@@ -327,7 +323,7 @@
                                       currentPageElement.textContent = currentPage;
                                   }
 
-                                  // Function to generate star rating HTML
+    
                                   function getStars(rating) {
                                       let starsHTML = '';
                                       for (let i = 1; i <= 5; i++) {
