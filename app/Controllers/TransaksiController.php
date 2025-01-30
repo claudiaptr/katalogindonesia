@@ -3,8 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\Transaksi;
-// use App\Models\TransaksiModel;
 use App\Models\Kategori;
+use App\Models\Barang;
 use App\Models\Model_Auth;
 
 class TransaksiController extends BaseController
@@ -15,60 +15,56 @@ class TransaksiController extends BaseController
         $this->kategori = new Kategori();
     }
 
-    public function index()
-    {
-        $transactionModel = new Transaksi();
-
-        // Mendapatkan data user yang sedang login
-        $session = session();
-        $userId = $session->get('id'); // Pastikan 'id' tersedia di session
-
-        // Filter berdasarkan inputan
-        $filters = $this->request->getGet();
-        $builder = $transactionModel->where('id_user', $userId);
-
-        if (!empty($filters['status'])) {
-            $builder->where('verifikasi', $filters['status']);
-        }
-
-        if (!empty($filters['start_date']) && !empty($filters['end_date'])) {
-            $builder->where('created_at >=', $filters['start_date'])
-                    ->where('created_at <=', $filters['end_date']);
-        }
-
-        if (!empty($filters['min_total'])) {
-            $builder->where('total >=', $filters['min_total']);
-        }
-
-        if (!empty($filters['max_total'])) {
-            $builder->where('total <=', $filters['max_total']);
-        }
-
-        $transactions = $builder->findAll();
-
-        return view('user/transaction_history', [
-            'transactions' => $transactions,
-            'filters'      => $filters,
-        ]);
-    }
-
     public function detail($id)
 {
     $transactionModel = new Transaksi();
+    $barang = new Barang();  
 
-    $transaction = $transactionModel->find($id);
+    $transaction = $transactionModel->select('transaksi.*, barang.judul_barang, barang.foto_barang, barang.harga_barang, barang.pemilik')
+        ->join('barang', 'barang.id = transaksi.id_barang')
+        ->where('transaksi.id', $id)
+        ->first();
+
     if (!$transaction) {
-        throw new \CodeIgniter\Exceptions\PageNotFoundException('Transaction not found');
+        throw new \CodeIgniter\Exceptions\PageNotFoundException('Transaksi tidak ditemukan');
+    }
+
+    $userModel = new Model_Auth(); 
+    $toko = $userModel->select('nama_toko')
+        ->where('id', $transaction['pemilik'])  
+        ->first();
+
+    if (!$toko) {
+        $toko = ['nama_toko' => 'Nama Toko Tidak Tersedia'];
     }
 
     $data = [
-        'kategori' => $this->kategori->getSubKategori(),
+        'kategori'    => $this->kategori->getSubKategori(),
         'transaction' => $transaction,
-        'menu' => 'transaction_history',
+        'toko'        => $toko,  
+        'menu'        => 'transaction_history',
     ];
 
     // Return view dengan data
     return view('user/transaksi_detail', $data);
 }
+
+public function updateStatus($id)
+{
+    $transactionModel = new Transaksi();
+    $transaction = $transactionModel->find($id);
+    
+    if (!$transaction) {
+        throw new \CodeIgniter\Exceptions\PageNotFoundException('Transaction tidak ditemukan');
+    }
+
+    if ($transaction['verifikasi'] == 4) {
+        $transactionModel->update($id, ['verifikasi' => 5]);
+        session()->setFlashdata('success', 'Transaksi Selesai!');
+    }
+    
+    return redirect()->to('/user/transaction-history');
+}
+
 
 }

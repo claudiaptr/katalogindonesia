@@ -173,7 +173,7 @@ class UserController extends BaseController
 
     public function detail($id)
     {
-
+        // Ambil data barang
         $barang = $this->barang->find($id);
 
         $ratingData = $this->db->table('ratingbarang')
@@ -588,24 +588,54 @@ class UserController extends BaseController
         // Ambil ID user yang sedang login
         $userId = session()->get('id');
 
+        // Cek apakah user sudah login
         if (!$userId) {
             return redirect()->to('/login')->with('error', 'Silakan login terlebih dahulu.');
         }
 
-        $transactions = $transactionModel
+        // Ambil filter yang diterima dari URL (GET)
+        $filters = $this->request->getGet();
+
+        // Build query untuk mengambil transaksi sesuai filter
+        $builder = $transactionModel
             ->select('transaksi.*, barang.judul_barang, barang.harga_barang, barang.foto_barang')
             ->join('barang', 'barang.id = transaksi.id_barang')
             ->where('transaksi.id_user', $userId)
-            ->orderBy('transaksi.created_at', 'DESC')
-            ->findAll();
+            ->orderBy('transaksi.created_at', 'DESC');
 
+        // Filter berdasarkan status
+        if (!empty($filters['status'])) {
+            $builder->where('transaksi.verifikasi', $filters['status']);
+        }
+
+        // Filter berdasarkan rentang tanggal
+        if (!empty($filters['start_date']) && !empty($filters['end_date'])) {
+            $builder->where('transaksi.created_at >=', $filters['start_date'])
+                    ->where('transaksi.created_at <=', $filters['end_date']);
+        }
+
+        // Filter berdasarkan total minimal
+        if (!empty($filters['min_total'])) {
+            $builder->where('transaksi.total >=', $filters['min_total']);
+        }
+
+        // Filter berdasarkan total maksimal
+        if (!empty($filters['max_total'])) {
+            $builder->where('transaksi.total <=', $filters['max_total']);
+        }
+
+        // Ambil transaksi yang telah difilter
+        $transactions = $builder->findAll();
+
+        // Kirim data ke view
         $data = [
             'kategori' => $this->kategori->getSubKategori(),
             'transactions' => $transactions,
+            'filters' => $filters, // Kirimkan filter ke view
             'menu' => 'transaction_history',
         ];
 
-        // Kirim semua data ke view
+        // Return view dengan data transaksi yang telah difilter
         return view('user/transaction_history', $data);
     }
 

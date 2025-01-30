@@ -200,5 +200,6 @@ $routes->post('myaccount/update_profile', 'UserController::updateProfile');
 
 
 $routes->get('/user/transaction-history', 'UserController::transactionHistory');
-$routes->get('user/transaction-history', 'TransaksiController::index');
 $routes->get('transactions/detail/(:num)', 'TransaksiController::detail/$1');
+$routes->post('transactions/updateStatus/(:segment)', 'TransaksiController::updateStatus/$1');
+

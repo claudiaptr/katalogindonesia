@@ -1,82 +1,68 @@
 <?php
 
-namespace App\Database\Migrations;
+namespace App\Controllers;
 
-use CodeIgniter\Database\Migration;
-use CodeIgniter\Database\RawSql;
+use App\Models\Transaksi;
+use App\Models\Barang;
+use App\Models\AlamatToko;
+use App\Models\Kategori;
 
-class Transaksi extends Migration
+class TransaksiController extends BaseController
 {
-    public function up()
+    protected $kategori;
+    
+    public function __construct()
     {
-        $this->forge->addField([
-            'id' => [
-                'type'           => 'BIGINT',
-                'constraint'     => 20,
-                'unsigned'       => true,
-                'auto_increment' => true,
-            ],
-            'sub_total' => [
-                'type'       => 'INT',
-            ],
-            'jumlah' => [
-                'type' => 'INT',
-            ],
-            'total' => [
-                'type' => 'INT',
-            ],
-            'id_barang' => [
-                'type'           => 'BIGINT',
-                'constraint'     => 20,
-                'unsigned'       => true,
-            ],
-            'variasi' => [ 
-                'type'       => 'VARCHAR',
-                'constraint' => '250',
-            ],
-            'id_user' => [
-                'type'           => 'BIGINT',
-                'constraint'     => 20,
-                'unsigned'       => true,
-            ],
-            'nomortelp' => [
-                'type' => 'VARCHAR',
-                'constraint' => 15,
-            ],
-            'alamat' => [
-                'type'           => 'TEXT',
-            ],
-            'bukti_pembayaran' => [
-                'type'           => 'VARCHAR',
-                'constraint' => 100,
-            ],
-            'options' => [
-                'type'           => 'TEXT',
-            ],
-            'verifikasi' => [  
-                'constraint' => ['1', '2', '3', '4', '5'],
-                'default' => '1',
-            ],
-            'created_at' => [
-                'type'    => 'TIMESTAMP',
-                'default' => new RawSql('CURRENT_TIMESTAMP'),
-            ],
-            'updated_at' => [
-                'type'    => 'TIMESTAMP',
-                'default' => new RawSql('CURRENT_TIMESTAMP'),
-            ],
-        ]);
-        
-        // Add the primary key
-        $this->forge->addKey('id', true);
-        $this->forge->createTable('transaksi', true);
-
-        $this->db->query('ALTER TABLE `transaksi` ADD CONSTRAINT `my_fk_transaksiuser` FOREIGN KEY (`id_user`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE');
-        $this->db->query('ALTER TABLE `transaksi` ADD CONSTRAINT `my_fk_transaksibarang` FOREIGN KEY (`id_barang`) REFERENCES `barang`(`id`) ON DELETE CASCADE ON UPDATE CASCADE');
+        $this->kategori = new Kategori();
     }
 
-    public function down()
+    public function detail($id)
     {
-        $this->forge->dropTable('transaksi');
+        $transactionModel = new Transaksi();
+        $barangModel = new Barang();
+        $tokoModel = new AlamatToko();
+
+        // Mengambil data transaksi berdasarkan ID
+        $transaction = $transactionModel->find($id);
+        if (!$transaction) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Transaction not found');
+        }
+
+        // Mengambil data barang terkait transaksi
+        $barang = $barangModel->find($transaction['id_barang']);
+        $toko = $tokoModel->find($barang['pemilik']); 
+
+        $data = [
+            'transaction' => $transaction,
+            'barang' => $barang,
+            'toko' => $toko,
+            'statusLabels' => [
+                '1' => 'Menunggu Verifikasi',
+                '3' => 'Diproses',
+                '2' => 'Dikemas',
+                '4' => 'Dikirim',
+                '5' => 'Selesai'
+            ],
+            'menu' => 'transaction_history',
+        ];
+
+        return view('user/transaksi_detail', $data);
+    }
+
+    public function updateStatus($id)
+    {
+        $transactionModel = new Transaksi();
+
+        $transaction = $transactionModel->find($id);
+
+        if (!$transaction) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Transaction not found');
+        }
+
+        if ($transaction['verifikasi'] == 4) {
+            $transactionModel->update($id, ['verifikasi' => 5]);
+        }
+
+        return redirect()->to('/transactions/detail/' . $id);
     }
 }

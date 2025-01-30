@@ -5,93 +5,99 @@
     <div class="row">
         <!-- Sidebar -->
         <div class="col-lg-2">
-            
+            <!-- Sidebar content (if needed) -->
         </div>
-
 
         <!-- Main Content -->
         <div class="col-lg-9 col-md-8 col-sm-12">
-        <div class="card">
-            <div class="card-body">
-                <h2 class="mb-4">Riwayat Transaksi</h2>
-                
-                <!-- Form Filter -->
-                <form method="get" class="mb-4">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label for="start_date">Tanggal Mulai:</label>
-                            <input type="date" name="start_date" class="form-control" value="<?= $filters['start_date'] ?? '' ?>">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="mb-4">Riwayat Transaksi</h2>
+                    
+                    <!-- Form Filter -->
+                    <form method="get" class="mb-4">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="start_date">Tanggal Mulai:</label>
+                                <input type="date" name="start_date" class="form-control" value="<?= $filters['start_date'] ?? '' ?>">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="end_date">Tanggal Selesai:</label>
+                                <input type="date" name="end_date" class="form-control" value="<?= $filters['end_date'] ?? '' ?>">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="status">Status:</label>
+                                <select name="status" class="form-control">
+                                    <option value="">Semua</option>
+                                    <option value="1" <?= ($filters['status'] ?? '') == '1' ? 'selected' : '' ?>>Menunggu Verifikasi</option>
+                                    <option value="2" <?= ($filters['status'] ?? '') == '2' ? 'selected' : '' ?>>Diproses</option>
+                                    <option value="3" <?= ($filters['status'] ?? '') == '3' ? 'selected' : '' ?>>Dikemas</option>
+                                    <option value="4" <?= ($filters['status'] ?? '') == '4' ? 'selected' : '' ?>>Dikirim</option>
+                                    <option value="5" <?= ($filters['status'] ?? '') == '5' ? 'selected' : '' ?>>Selesai</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <label for="end_date">Tanggal Selesai:</label>
-                            <input type="date" name="end_date" class="form-control" value="<?= $filters['end_date'] ?? '' ?>">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="status">Status:</label>
-                            <select name="status" class="form-control">
-                                <option value="">Semua</option>
-                                <option value="1" <?= ($filters['status'] ?? '') == '1' ? 'selected' : '' ?>>Menunggu Verifikasi</option>
-                                <option value="2" <?= ($filters['status'] ?? '') == '3' ? 'selected' : '' ?>>Diproses</option>
-                                <option value="3" <?= ($filters['status'] ?? '') == '2' ? 'selected' : '' ?>>Dikemas</option>
-                                <option value="3" <?= ($filters['status'] ?? '') == '4' ? 'selected' : '' ?>>Dikirim</option>
-                                <option value="3" <?= ($filters['status'] ?? '') == '5' ? 'selected' : '' ?>>Selesai</option>
-                            </select>
-                        </div>
-                    </div>
 
-                    <div class="row mt-3">
-                        <div class="col-md-4">
-                            <label for="min_total">Total Minimum:</label>
-                            <input type="number" name="min_total" class="form-control" value="<?= $filters['min_total'] ?? '' ?>">
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <label for="min_total">Total Minimum:</label>
+                                <input type="number" name="min_total" class="form-control" value="<?= $filters['min_total'] ?? '' ?>">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="max_total">Total Maksimum:</label>
+                                <input type="number" name="max_total" class="form-control" value="<?= $filters['max_total'] ?? '' ?>">
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary w-100">Filter</button>
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <label for="max_total">Total Maksimum:</label>
-                            <input type="number" name="max_total" class="form-control" value="<?= $filters['max_total'] ?? '' ?>">
-                        </div>
-                        <div class="col-md-4 d-flex align-items-end">
-                            <button type="submit" class="btn btn-primary w-100">Filter</button>
-                        </div>
-                    </div>
-                </form>
+                    </form>
 
-                <!-- Tabel Riwayat Transaksi -->
-                <table class="table table-striped table-bordered" style="background-color: #ffffff; border-radius: 8px;">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Total</th>
-                            <th>Status</th>
-                            <th>Tanggal</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (empty($transactions)): ?>
+                    <!-- Tabel Riwayat Transaksi -->
+                    <table class="table table-striped table-bordered" style="background-color: #ffffff; border-radius: 8px;">
+                        <thead>
                             <tr>
-                                <td colspan="5">Tidak ada data transaksi.</td>
+                                <th>No</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Tanggal</th>
+                                <th>Aksi</th>
                             </tr>
-                        <?php else: ?>
-                            <?php foreach ($transactions as $transaction): ?>
+                        </thead>
+                        <tbody>
+                            <?php if (empty($transactions)): ?>
                                 <tr>
-                                    <td><?= $transaction['id'] ?></td>
-                                    <td><?= number_format($transaction['total'], 2) ?></td>
-                                    <td>
-                                    <?= $transaction['verifikasi'] == '1' ? 'Menunggu Verifikasi' : 
-                                        ($transaction['verifikasi'] == '2' ? 'Dikemas' : 
-                                        ($transaction['verifikasi'] == '3' ? 'Diproses' : 
-                                        ($transaction['verifikasi'] == '4' ? 'Dikirim' : 
-                                        ($transaction['verifikasi'] == '5' ? 'Selesai' : 'Status Tidak Dikenal')))) ?>
-                                    </td>
-                                    <td><?= $transaction['created_at'] ?></td>
-                                    <td><a href="/transactions/detail/<?= $transaction['id'] ?>">Detail</a></td>
-                                </tr> 
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+                                    <td colspan="5">Tidak ada data transaksi.</td>
+                                </tr>
+                            <?php else: ?>
+                                <?php $index = 1; ?>
+                                <?php foreach ($transactions as $transaction): ?>
+                                    <tr>
+                                        <td><?= $index++ ?></td> <!-- Menampilkan nomor urut -->
+                                        <td><?= number_format($transaction['total'], 2) ?></td>
+                                        <td>
+                                            <?php
+                                            // Menampilkan status dengan label
+                                            $statusLabels = [
+                                                '1' => 'Menunggu Verifikasi',
+                                                '3' => 'Diproses',
+                                                '2' => 'Dikemas',
+                                                '4' => 'Dikirim',
+                                                '5' => 'Selesai'
+                                            ];
+                                            $status = $statusLabels[$transaction['verifikasi']] ?? 'Status Tidak Dikenal';
+                                            echo "<span class='badge bg-" . ($transaction['verifikasi'] == '5' ? 'success' : ($transaction['verifikasi'] == '4' ? 'warning' : 'primary')) . "'>$status</span>";
+                                            ?>
+                                        </td>
+                                        <td><?= date('d-m-Y H:i:s', strtotime($transaction['created_at'])) ?></td>
+                                        <td><a href="/transactions/detail/<?= $transaction['id'] ?>" class="btn btn-info btn-sm">Detail</a></td>
+                                    </tr> 
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-</div>
-
         </div>
     </div>
 </div>
@@ -112,13 +118,6 @@
 
     .card-body {
         padding: 20px;
-    }
-
-
-    .list-group-item {
-        font-weight: bold;
-        border: none;
-        padding: 10px;
     }
 
     /* Form Styling */
@@ -177,6 +176,12 @@
     .table td, .table th {
         text-align: center;
         vertical-align: middle;
+    }
+
+    /* Badge Styling */
+    .badge {
+        font-size: 14px;
+        padding: 6px 12px;
     }
 
     /* Responsive Design */
